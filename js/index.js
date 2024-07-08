@@ -180,10 +180,13 @@ document.addEventListener('DOMContentLoaded', function() {
 				//	"表格内容": [["A1","B1","C1"],["A2","B2","C2"]]
 				//}
 				
+				const documentTitle = jsonObject['网页标题'];
+				if (documentTitle){
+					document.title = documentTitle;
+				}
 				const tableTitle = jsonObject['表格标题'];
 				const headers = jsonObject['表格首行'];
 				const content = jsonObject['表格内容'];
-
 				// 调用函数，传入数据来填充表格
 				populateTable(tableTitle, headers, content);
 
