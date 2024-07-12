@@ -19,9 +19,6 @@
     align-items: center;
     flex-direction: row;
     background:linear-gradient(135deg, var(--color1) 50%, var(--color2));
-	
-    max-width: 100%; /* 最大宽度为100% */
-    overflow-x: auto; /* 横向溢出时显示滚动条 */
 }
 #circle-org{
     width:165px;
@@ -86,6 +83,8 @@ body{
 	border-radius: 12px;
 	-webkit-border-radius: 12px;
 	color: rgb(255, 255, 255);
+	
+
 }
 
 .welcome{
@@ -123,7 +122,11 @@ body{
 
 
 
-
+.table-container {
+    width: 100%;
+    max-width: 100%; /* 设置最大宽度，根据需要调整 */
+    overflow-x: auto; /* 当表格宽度超出容器时显示横向滚动条 */
+}
 table{
   border: none;
     width: 100%; /* 让表格宽度占满容器 */
@@ -153,6 +156,7 @@ th{
   border-bottom: 1px solid rgba(255,255,255,0.3);
   border-left: 1px solid rgba(255,255,255,0.5);
   border-right: none;
+   min-width: 20px;
 }
 /*行内容*/
 td{
@@ -162,6 +166,7 @@ td{
   font-weight: 300;
   font-size: 12px;
   color: #000;
+   min-width: 20px;
   border: solid 2px rgba(255,255,255,0.33);
 }
 
