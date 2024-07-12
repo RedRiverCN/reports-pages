@@ -19,6 +19,9 @@
     align-items: center;
     flex-direction: row;
     background:linear-gradient(135deg, var(--color1) 50%, var(--color2));
+	
+    max-width: 100%; /* 最大宽度为100% */
+    overflow-x: auto; /* 横向溢出时显示滚动条 */
 }
 #circle-org{
     width:165px;
@@ -122,8 +125,9 @@ body{
 
 
 table{
-  width: 100%;
   border: none;
+    width: 100%; /* 让表格宽度占满容器 */
+    border-collapse: collapse; /* 合并表格边框 */
 }
 /*标题栏*/
 .tbl-header{
