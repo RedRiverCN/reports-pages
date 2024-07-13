@@ -4,7 +4,7 @@
     --highlight-color:orange;
     --support-color:grey;
     --border-radius:12px;
-    --color1:#a7cee0;
+    --color1:#a7cee0;/* 背景渐变色 */
     --color2:#d0dea7;
     --border:1px;
     --blur:6px;
@@ -15,17 +15,18 @@
 body {
     margin: 0;
     padding: 0;
+    height: 100vh; /* 设置 body 高度为视窗高度 */
     flex-direction: row;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     
     align-items: center;
 	
-  background-repeat: no-repeat;
+	background-repeat: no-repeat;
     background: linear-gradient(135deg, var(--color1) 50%, var(--color2));
 }
 
 .panel {
-    padding: 30px; /* 统一设置上下左右的内边距 */
+    padding: 30px 8px 30px 8px; /* 统一设置上下左右的内边距 */
     margin: 16px 8px; /* 上下边距16px，左右边距8px */
     font-weight: 100;
     flex-direction: row;
