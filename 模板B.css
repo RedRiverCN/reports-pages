@@ -115,6 +115,7 @@ body {
 	display: block;
     overflow-x: hidden; /* 溢出内容隐藏 */
 	overflow-y: scroll;
+	max-height: 600px;
 	/* height: 600px; */
 }
 .table th {
