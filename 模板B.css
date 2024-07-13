@@ -11,79 +11,33 @@
     --opacity:0.25;
     --text-color:rgb(128, 128, 128, calc(var(--opacity)*4));
 }
-#workspace-div{
-    width:100%;
-    height:auto;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: row;
-    background:linear-gradient(135deg, var(--color1) 50%, var(--color2));
-}
-#circle-org{
-    width:165px;
-    height:165px;
 
-    border-radius: 50%;
-    margin-top: -250px;
-    margin-right: -155px;
-    background: linear-gradient(135deg,#ffb566,#ff6677);
-}
-#circle-blue{
-    width: 175px;
-    height: 175px;
-    border-radius: 50%;
-    margin-top: 255px;
-    margin-left: -165px;
-    background: linear-gradient(135deg,#de82ca,#259fac);
-}
-
-body{
-    margin: 0px;
-    display: flex;
+body {
+    margin: 0;
+    padding: 0;
     flex-direction: row;
-    font-family: 'Roboto', sans-serif;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     
-}
-.panel{
-  flex-grow: 1;
-  
-  padding-top:30px;
-  padding-bottom:30px;
-  padding-right:20px;
-  padding-left:20px;
-  margin-top:16px;
-  margin-bottom:16px;
-  margin-right:8px;
-  margin-left:8px;
-  
-  font-style:;
-  font-variant-ligatures:;
-  font-variant-caps:;
-  font-variant-numeric:;
-  font-variant-east-asian:;
-  font-variant-alternates:;
-  font-variant-position:;
-  font-stretch:;
-  font-size:;
-  line-height:;
-  font-family:;
-  font-optical-sizing:;
-  font-kerning:;
-  font-feature-settings:;
-  font-variation-settings:;
-  font-weight:100;
-  
-  background-color: rgba(255, 255, 255, 0.35);
-	backdrop-filter: blur(6.5px);
-	-webkit-backdrop-filter: blur(6.5px);
-	border: 1px solid rgba(255, 255, 255, 0.18);
-	box-shadow: rgba(142, 142, 142, 0.19) 0px 6px 15px 0px;
-	-webkit-box-shadow: rgba(142, 142, 142, 0.19) 0px 6px 15px 0px;
-	border-radius: 12px;
-	-webkit-border-radius: 12px;
-	color: rgb(255, 255, 255);
+    align-items: center;
 	
+  background-repeat: no-repeat;
+    background: linear-gradient(135deg, var(--color1) 50%, var(--color2));
+}
+
+.panel {
+    padding: 30px; /* 统一设置上下左右的内边距 */
+    margin: 16px 8px; /* 上下边距16px，左右边距8px */
+    font-weight: 100;
+    flex-direction: row;
+
+    background-color: rgba(255, 255, 255, 0.35);
+    backdrop-filter: blur(6.5px);
+    -webkit-backdrop-filter: blur(6.5px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 12px;
+    box-shadow: rgba(142, 142, 142, 0.19) 0px 6px 15px 0px;
+    -webkit-box-shadow: rgba(142, 142, 142, 0.19) 0px 6px 15px 0px;
+    -webkit-border-radius: 12px;
 
 }
 
@@ -95,55 +49,77 @@ body{
   margin-bottom:0px;
   margin-left:0px;
 }
-.logo path{
-  pointer-events:none;
-  fill:none;
-  stroke-linecap:round;
-  stroke-width:7;
-  stroke:rgb(255, 255, 255);
-}
-.big-title{
-  text-align:center;
-  font-size:3.5rem;
-  margin-top:15px;
-  margin-right:0px;
-  margin-bottom:15px;
-  margin-left:0px;
-}
-.description{
-  text-align:center;
-  font-size:1rem;
-  line-height:1.5rem;
-  margin-bottom:1rem;
-}
-.c1739{
-  background-image:url(https://static.htmlpage.cn/editor/images/bg_0.svg);
-}
-
 
 .table-container {
-    width: 100%;
-    max-width: 96%; /* 根据需要调整最大宽度 */
-    overflow-x: auto; /* 当表格宽度超出容器时显示横向滚动条 */
-    margin-top: 20px; /* 适当的上边距 */
+	border-radius: 6px;
+	display: flex;
+    overflow: auto; /* 水平滚动条 */
+    max-width: 100%; /* 设置最大宽度为父元素的100% */
+	
+    width: auto; /* 根据内容自动调整宽度 */
+    margin-top: 20px; /* 上边距 */
+}
+/* 滚动条整体样式 */
+.table-container::-webkit-scrollbar,
+.table thead::-webkit-scrollbar ,
+.table tbody::-webkit-scrollbar {
+    width: 10px; /* 滚动条宽度 */
+    height: 10px; /* 滚动条高度 */
+}
+/* 滚动条轨道 */
+.table-container::-webkit-scrollbar-track,
+.table tbody::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.15); /* 轨道背景色 */
+    border-radius: 0 0 6px 0; /* 滑块圆角 */
+}
+.table thead::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.3); /* 轨道背景色 */
+    border-radius: 0 6px 0 0; /* 滑块圆角 */
+}
+/* 滚动条滑块 */
+.table-container::-webkit-scrollbar-thumb,
+.table tbody::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.25); /* 滑块背景色 */
+    border-radius: 6px; /* 滑块圆角 */
+}
+/* 鼠标悬停时滑块样式 */
+.table-container::-webkit-scrollbar-thumb:hover,
+.table tbody::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg,#ffb566,#ff6677); /* 悬停时滑块背景色 */
+	overflow-y: scroll;
 }
 
-table {
-    width: 100%; /* 让表格宽度占满容器 */
+.table {
     border-collapse: collapse; /* 合并表格边框 */
-	white-space: nowrap;
+    white-space: nowrap; /* 防止表格内部内容换行 */
+    display: inline-table; /* 让表格并排显示 */
+	width: 100%;
+	max-width: 100%;
+	min-width: 600px; 
 }
-
-.tbl-header {
+.table thead{
+	display: block;
+	width: 100%;	
+	table-layout: fixed;
+	overflow-y: scroll;
+    overflow-x: hidden; /* 溢出内容隐藏 */
+}
+.table  tr{
+	display: table;
+	width: 100%;	
+	table-layout: fixed;
+	overflow-y: scroll;
+}
+.table tbody {
+	display: block;
+    overflow-x: hidden; /* 溢出内容隐藏 */
+	overflow-y: scroll;
+	/* height: 600px; */
+}
+.table th {
     background-color: rgba(255, 255, 255, 0.3);
-}
-
-.tbl-content {
-    background-color: rgba(255, 255, 255, 0.05);
-}
-
-th {
     padding: 10px;
+    line-height: 1.22857143;
     text-align: center;
     font-weight: 500;
     font-size: 14px;
@@ -152,64 +128,24 @@ th {
     border-top: 1px solid rgba(255, 255, 255, 0.3);
     border-bottom: 1px solid rgba(255, 255, 255, 0.3);
     border-left: 1px solid rgba(255, 255, 255, 0.5);
-    border-right: none;
-    min-width: 20px; /* 根据需要调整最小宽度 */
+    border-right: 1px solid rgba(255, 255, 255, 0.5);
+     
 }
-
-td {
+.table td {
+	word-wrap: break-word;
+    background-color: rgba(255, 255, 255, 0.05);
     padding: 6px;
     text-align: center;
     vertical-align: middle;
     font-weight: 300;
     font-size: 12px;
+	max-height: 3.6em; /* 换算为3行文本的最大高度，每行大约1.2em */
+    overflow: hidden; /* 溢出内容隐藏 */
+    text-overflow: ellipsis; /* 文本溢出时显示省略号 */
+    white-space: normal; /* 允许内容换行 */
     color: #000;
-    min-width: 20px; /* 根据需要调整最小宽度 */
-    border: 2px solid rgba(255, 255, 255, 0.33);
+    border: 1px solid rgba(255, 255, 255, 0.33);
 }
-
-
-@media only screen and (max-width: 600px) {
-    body {
-        display: flex;
-        flex-direction: column;
-    }
-
-    #workspace-div{
-        width:100vw;
-		height:auto;
-        overflow:scroll;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: row;
-        background:linear-gradient(135deg, var(--color1) 50%, var(--color2));
-    }
-
-
-    #circle-org{
-        width:120px;
-        height:120px;
-        border-radius: 50%;
-        margin-top: -230px;
-        margin-right: -125px;
-        background: linear-gradient(135deg,#ffb566,#ff6677);
-    }
-
-    #circle-blue{
-        width: 80px;
-        height: 80px;
-        border-radius: 50%;
-        margin-top: 150px;
-        margin-left: -85px;
-        background: linear-gradient(135deg,#de82ca,#259fac);
-    }
-
-    #subject-div{
-        width:420px;
-        height:260px;
-        border-radius: 12px;
-        display: flex;
-        justify-content: center;
-        align-items: flex-end;
-    }
+.table-striped>tbody>tr:nth-of-type(odd) {
+	background-color: rgba(255, 255, 255, 0.15);
 }
