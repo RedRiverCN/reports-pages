@@ -15,19 +15,43 @@
 body {
     margin: 0;
     padding: 0;
-    height: 100vh; /* 设置 body 高度为视窗高度 */
+    height: ; /* 设置 body 高度为视窗高度 */
     flex-direction: row;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     
     align-items: center;
 	
-	background-repeat: no-repeat;
-    background: linear-gradient(135deg, var(--color1) 50%, var(--color2));
+    /*background: linear-gradient(135deg, var(--color1) 50%, var(--color2));*/
+    background-color: rgba(238, 228, 224, 1);
+	
+	/* 
+    background-image: url('path/to/your/image.jpg'); 替换为你的背景图路径 
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+	*/
 }
 
+.top-banner {
+			background-color: rgba(238, 228, 224, 1);
+            height: 300px;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+}
+.top-banner img {
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-position: center;
+	width:auto;
+	height:100%;
+}
+		
+		
 .panel {
-    padding: 30px 8px 30px 8px; /* 统一设置上下左右的内边距 */
-    margin: 16px 8px; /* 上下边距16px，左右边距8px */
+    padding: 0px 8px 30px 8px; /* 统一设置上下左右的内边距 */
+    margin: 0px 8px 0px 8px; /* 上下边距16px，左右边距8px */
     font-weight: 100;
     flex-direction: row;
 
@@ -61,15 +85,12 @@ body {
     margin-top: 20px; /* 上边距 */
 }
 /* 滚动条整体样式 */
-.table-container::-webkit-scrollbar,
-.table thead::-webkit-scrollbar ,
-.table tbody::-webkit-scrollbar {
-    width: 10px; /* 滚动条宽度 */
-    height: 10px; /* 滚动条高度 */
+::-webkit-scrollbar {
+    width: 6px; /* 滚动条宽度 */
+    height: 6px; /* 滚动条高度 */
 }
 /* 滚动条轨道 */
-.table-container::-webkit-scrollbar-track,
-.table tbody::-webkit-scrollbar-track {
+::-webkit-scrollbar-track {
     background: rgba(255, 255, 255, 0.15); /* 轨道背景色 */
     border-radius: 0 0 6px 0; /* 滑块圆角 */
 }
@@ -78,16 +99,16 @@ body {
     border-radius: 0 6px 0 0; /* 滑块圆角 */
 }
 /* 滚动条滑块 */
-.table-container::-webkit-scrollbar-thumb,
-.table tbody::-webkit-scrollbar-thumb {
+::-webkit-scrollbar-thumb {
     background: rgba(0, 0, 0, 0.25); /* 滑块背景色 */
     border-radius: 6px; /* 滑块圆角 */
 }
 /* 鼠标悬停时滑块样式 */
-.table-container::-webkit-scrollbar-thumb:hover,
-.table tbody::-webkit-scrollbar-thumb:hover {
+::-webkit-scrollbar-thumb:hover {
     background: linear-gradient(135deg,#ffb566,#ff6677); /* 悬停时滑块背景色 */
 	overflow-y: scroll;
+}
+.table thead::-webkit-scrollbar-thumb:hover {
 }
 
 .table {
@@ -115,7 +136,7 @@ body {
 	display: block;
     overflow-x: hidden; /* 溢出内容隐藏 */
 	overflow-y: scroll;
-	max-height: 600px;
+	max-height: 580px; 
 	/* height: 600px; */
 }
 .table th {
@@ -151,3 +172,34 @@ body {
 .table-striped>tbody>tr:nth-of-type(odd) {
 	background-color: rgba(255, 255, 255, 0.15);
 }
+
+
+
+
+.footer-1{
+  margin-top:60px;
+  background-color:rgb(34, 34, 34);
+}
+.footer-1 .media-container-row{
+  padding-top:10px;
+  padding-right:0px;
+  padding-bottom:10px;
+  padding-left:0px;
+  width:100%;
+  color:rgb(122, 122, 122);
+}
+.footer-1 a{
+  color:rgb(255, 255, 255);
+  text-decoration-line:none;
+  text-decoration-thickness:initial;
+  text-decoration-style:initial;
+  text-decoration-color:initial;
+}
+.align-center{
+  text-align:center;
+}
+.footer-1 .mbr-text{
+  font-size:14px;
+  font-family:-apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, Roboto, Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft Yahei", "Microsoft Jhenghei", sans-serif;
+}
+
