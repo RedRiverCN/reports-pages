@@ -16,6 +16,7 @@ body {
     margin: 0;
     padding: 0;
     height: ; /* 设置 body 高度为视窗高度 */
+			max-width: 100%;
     flex-direction: row;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     
@@ -33,19 +34,24 @@ body {
 }
 
 .top-banner {
-			background-color: rgba(238, 228, 224, 1);
-            height: 300px;
-            text-align: center;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+	background-color: rgba(238, 228, 224, 1);
+	height: 300px;
+	width: 100%;
+	max-width: 100%;
+	text-align: center;
+	overflow: hidden; /* 超出部分裁切 */
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 .top-banner img {
 	background-repeat: no-repeat;
 	background-size: cover;
 	background-position: center;
-	width:auto;
 	height:100%;
+	width: auto; /* 自适应宽度 */
+	display: block; /* 移除底部空白 */
+	margin: 0; /* 移除默认的外边距 */
 }
 		
 		
