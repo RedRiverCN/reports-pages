@@ -1,0 +1,211 @@
+:root{
+
+    --sidebar-width:250px;
+    --highlight-color:orange;
+    --support-color:grey;
+    --border-radius:12px;
+    --color1:#a7cee0;/* 背景渐变色 */
+    --color2:#d0dea7;
+    --border:1px;
+    --blur:6px;
+    --opacity:0.25;
+    --text-color:rgb(128, 128, 128, calc(var(--opacity)*4));
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    /*height: ;  设置 body 高度为视窗高度 */
+    max-width: 100%;
+    flex-direction: row;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    
+    align-items: center;
+	
+    /*background: linear-gradient(135deg, var(--color1) 50%, var(--color2));*/
+    background-color: rgba(238, 228, 224, 1);
+	
+	/* 
+    background-image: url('path/to/your/image.jpg'); 替换为你的背景图路径 
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+	*/
+}
+
+.top-banner {
+	background-color: rgba(238, 228, 224, 1);
+	height: 300px;
+	width: 100%;
+	max-width: 100%;
+	text-align: center;
+	overflow: hidden; /* 超出部分裁切 */
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.top-banner img {
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-position: center;
+	height:100%;
+	width: auto; /* 自适应宽度 */
+	display: block; /* 移除底部空白 */
+	margin: 0; /* 移除默认的外边距 */
+}
+		
+		
+.panel {
+    padding: 0px 8px 30px 8px; /* 统一设置上下左右的内边距 */
+    margin: 0px 8px 0px 8px; /* 上下边距16px，左右边距8px */
+    font-weight: 100;
+    flex-direction: row;
+
+    background-color: rgba(255, 255, 255, 0.35);
+    backdrop-filter: blur(6.5px);
+    -webkit-backdrop-filter: blur(6.5px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 12px;
+    box-shadow: rgba(142, 142, 142, 0.19) 0px 6px 15px 0px;
+    -webkit-box-shadow: rgba(142, 142, 142, 0.19) 0px 6px 15px 0px;
+    -webkit-border-radius: 12px;
+
+}
+
+.welcome{
+  text-align:center;
+  font-weight:100;
+  margin-top:0px;
+  margin-right:0px;
+  margin-bottom:0px;
+  margin-left:0px;
+}
+
+.table-container {
+	border-radius: 6px;
+	display: flex;
+    overflow: auto; /* 水平滚动条 */
+    max-width: 100%; /* 设置最大宽度为父元素的100% */
+	
+    width: auto; /* 根据内容自动调整宽度 */
+    margin-top: 20px; /* 上边距 */
+}
+/* 滚动条整体样式 */
+::-webkit-scrollbar {
+    width: 6px; /* 滚动条宽度 */
+    height: 6px; /* 滚动条高度 */
+}
+/* 滚动条轨道 */
+::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.15); /* 轨道背景色 */
+    border-radius: 0 0 6px 0; /* 滑块圆角 */
+}
+.table thead::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.3); /* 轨道背景色 */
+    border-radius: 0 6px 0 0; /* 滑块圆角 */
+}
+/* 滚动条滑块 */
+::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.25); /* 滑块背景色 */
+    border-radius: 6px; /* 滑块圆角 */
+}
+/* 鼠标悬停时滑块样式 */
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg,#ffb566,#ff6677); /* 悬停时滑块背景色 */
+	overflow-y: scroll;
+}
+.table thead::-webkit-scrollbar-thumb:hover {
+}
+
+.table {
+    border-collapse: collapse; /* 合并表格边框 */
+    white-space: nowrap; /* 防止表格内部内容换行 */
+    display: inline-table; /* 让表格并排显示 */
+	width: 100%;
+	max-width: 100%;
+	min-width: 600px; 
+}
+.table thead{
+	display: block;
+	width: 100%;	
+	table-layout: fixed;
+	overflow-y: scroll;
+    overflow-x: hidden; /* 溢出内容隐藏 */
+}
+.table  tr{
+	display: table;
+	width: 100%;	
+	table-layout: fixed;
+	overflow-y: scroll;
+}
+.table tbody {
+	display: block;
+    overflow-x: hidden; /* 溢出内容隐藏 */
+	overflow-y: scroll;
+	max-height: 580px; 
+	/* height: 600px; */
+}
+.table th {
+    background-color: rgba(255, 255, 255, 0.3);
+    padding: 10px;
+    line-height: 1.22857143;
+    text-align: center;
+    font-weight: 500;
+    font-size: 14px;
+    color: #000;
+    text-transform: uppercase;
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    border-left: 1px solid rgba(255, 255, 255, 0.5);
+    border-right: 1px solid rgba(255, 255, 255, 0.5);
+     
+}
+.table td {
+	word-wrap: break-word;
+    background-color: rgba(255, 255, 255, 0.05);
+    padding: 6px;
+    text-align: center;
+    vertical-align: middle;
+    font-weight: 300;
+    font-size: 12px;
+	max-height: 3.6em; /* 换算为3行文本的最大高度，每行大约1.2em */
+    overflow: hidden; /* 溢出内容隐藏 */
+    text-overflow: ellipsis; /* 文本溢出时显示省略号 */
+    white-space: normal; /* 允许内容换行 */
+    color: #000;
+    border: 1px solid rgba(255, 255, 255, 0.33);
+}
+.table-striped>tbody>tr:nth-of-type(odd) {
+	background-color: rgba(255, 255, 255, 0.15);
+}
+
+
+
+
+.footer-1{
+  margin-top:60px;
+  background-color:rgb(34, 34, 34);
+}
+.footer-1 .media-container-row{
+  padding-top:10px;
+  padding-right:0px;
+  padding-bottom:10px;
+  padding-left:0px;
+  width:100%;
+  color:rgb(122, 122, 122);
+}
+.footer-1 a{
+  color:rgb(255, 255, 255);
+  text-decoration-line:none;
+  text-decoration-thickness:initial;
+  text-decoration-style:initial;
+  text-decoration-color:initial;
+}
+.align-center{
+  text-align:center;
+}
+.footer-1 .mbr-text{
+  font-size:14px;
+  font-family:-apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, Roboto, Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft Yahei", "Microsoft Jhenghei", sans-serif;
+}
+
