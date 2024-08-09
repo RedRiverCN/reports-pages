@@ -15,7 +15,7 @@ function populateTable(_tableTitle, _headers, _reportList) {
     // 清空表格内容
     tableHeader.innerHTML = '';
     tableBody.innerHTML = '';
-	tableTitle.textContent = _tableTitle;
+	tableTitle.innerHTML = _tableTitle;
     // 生成表格标题行
     const headerRow = document.createElement('tr');
     _headers.forEach(headerText => {

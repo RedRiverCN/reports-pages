@@ -79,6 +79,7 @@ body {
   margin-right:0px;
   margin-bottom:0px;
   margin-left:0px;
+  white-space:pre-wrap;   /*  保留空白符序列，但是正常地进行换行。 */
 }
 
 .table-container {
