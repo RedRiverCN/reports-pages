@@ -172,7 +172,7 @@ body {
 	max-height: 3.6em; /* 换算为3行文本的最大高度，每行大约1.2em */
     overflow: hidden; /* 溢出内容隐藏 */
     text-overflow: ellipsis; /* 文本溢出时显示省略号 */
-    white-space: normal; /* 允许内容换行 */
+    white-space:pre-wrap;   /*  保留空白符序列，但是正常地进行换行。 */
     color: #000;
     border: 1px solid rgba(255, 255, 255, 0.33);
 }
