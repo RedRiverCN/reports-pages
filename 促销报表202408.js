@@ -20,7 +20,8 @@ function populateTable(_tableTitle, _headers, _reportList) {
     const headerRow = document.createElement('tr');
     _headers.forEach(headerText => {
         const headerCell = document.createElement('th');
-        headerCell.textContent = headerText;
+        //headerCell.textContent = headerText;
+        headerCell.innerHTML = headerText;
         headerRow.appendChild(headerCell);
     });
     tableHeader.appendChild(headerRow);
@@ -32,7 +33,8 @@ function populateTable(_tableTitle, _headers, _reportList) {
         // 遍历每个人员的属性，动态生成对应的单元格
         Object.values(person).forEach(value => {
             const cell = document.createElement('td');
-            cell.textContent = value;
+            //cell.textContent = value;
+            cell.innerHTML = value;
             row.appendChild(cell);
         });
 
