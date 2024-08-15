@@ -185,8 +185,8 @@ body {
     max-width: 68px; /* 可根据需要调整 */
 }
 .col2 {
-    min-width: 62px; /* 可根据需要调整 */
-    max-width: 62px; /* 可根据需要调整 */
+    min-width: 42px; /* 可根据需要调整 */
+    max-width: 42px; /* 可根据需要调整 */
 }
 /* 后面的列自动适应 */
 .col3 {
