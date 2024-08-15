@@ -129,14 +129,14 @@ body {
 .table thead{
 	display: block;
 	width: 100%;	
-	table-layout: fixed;
+	/* table-layout: fixed; */
 	overflow-y: scroll;
     overflow-x: hidden; /* 溢出内容隐藏 */
 }
 .table  tr{
 	display: table;
 	width: 100%;	
-	table-layout: fixed;
+    
 	overflow-y: scroll;
 }
 .table tbody {
@@ -177,7 +177,22 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.33);
 }
 .table-striped>tbody>tr:nth-of-type(odd) {
-	background-color: rgba(255, 255, 255, 0.15);
+	background-color: rgba(255, 255, 255, 0.2);
+}
+/* 设置前两列的最小宽度 */
+.col1 {
+    min-width: 88px; /* 可根据需要调整 */
+    max-width: 88px; /* 可根据需要调整 */
+    padding: 6px;
+}
+.col2 {
+    min-width: 68px; /* 可根据需要调整 */
+    max-width: 68px; /* 可根据需要调整 */
+    padding: 6px;
+}
+/* 后面的列自动适应 */
+.col3 {
+    min-width:  80px;
 }
 
 

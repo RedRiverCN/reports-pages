@@ -18,23 +18,38 @@ function populateTable(_tableTitle, _headers, _reportList) {
 	tableTitle.innerHTML = _tableTitle;
     // 生成表格标题行
     const headerRow = document.createElement('tr');
-    _headers.forEach(headerText => {
+    _headers.forEach((headerText, index) => {
         const headerCell = document.createElement('th');
         //headerCell.textContent = headerText;
         headerCell.innerHTML = headerText;
+		// 如果是前两列，则添加最小宽度类
+		if (index == 0) {
+			headerCell.classList.add('col1');
+		} else if (index == 1) {
+			headerCell.classList.add('col2');
+		} else {
+			headerCell.classList.add('col3');
+		}
         headerRow.appendChild(headerCell);
     });
     tableHeader.appendChild(headerRow);
 	
     // 遍历数据并生成表格行
-    _reportList.forEach((person, index) => {
+    _reportList.forEach((person, index1) => {
         const row = document.createElement('tr');
 		
         // 遍历每个人员的属性，动态生成对应的单元格
-        Object.values(person).forEach(value => {
+        Object.values(person).forEach((value, index) => {
             const cell = document.createElement('td');
             //cell.textContent = value;
             cell.innerHTML = value;
+			if (index == 0) {
+				cell.classList.add('col1');
+			} else if (index === 1) {
+				cell.classList.add('col2');
+			} else {
+				cell.classList.add('col3');
+			}
             row.appendChild(cell);
         });
 
