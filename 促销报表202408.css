@@ -181,18 +181,18 @@ body {
 }
 /* 设置前两列的最小宽度 */
 .col1 {
-    min-width: 88px; /* 可根据需要调整 */
-    max-width: 88px; /* 可根据需要调整 */
-    padding: 6px;
-}
-.col2 {
     min-width: 68px; /* 可根据需要调整 */
     max-width: 68px; /* 可根据需要调整 */
     padding: 6px;
 }
+.col2 {
+    min-width: 60px; /* 可根据需要调整 */
+    max-width: 60px; /* 可根据需要调整 */
+    padding: 6px;
+}
 /* 后面的列自动适应 */
 .col3 {
-    min-width:  80px;
+    min-width:  72px;
 }
 
 
