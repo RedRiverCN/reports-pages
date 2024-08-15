@@ -148,17 +148,17 @@ body {
 }
 .table th {
     background-color: rgba(255, 255, 255, 0.3);
-    padding: 10px;
+    padding: 10px 6px 10px 6px;
     line-height: 1.22857143;
     text-align: center;
     font-weight: 500;
     font-size: 14px;
     color: #000;
     text-transform: uppercase;
-    border-top: 1px solid rgba(255, 255, 255, 0.3);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
-    border-left: 1px solid rgba(255, 255, 255, 0.5);
-    border-right: 1px solid rgba(255, 255, 255, 0.5);
+    border-top: 1px solid rgba(250, 250, 250, 0.3);
+    border-bottom: 1px solid rgba(250, 250, 250, 0.3);
+    border-left: 1px solid rgba(250, 250, 250, 0.5);
+    border-right: 1px solid rgba(250, 250, 250, 0.5);
     white-space:pre-wrap;   /*  保留空白符序列，但是正常地进行换行。 */
 }
 .table td {
@@ -174,21 +174,19 @@ body {
     text-overflow: ellipsis; /* 文本溢出时显示省略号 */
     white-space:pre-wrap;   /*  保留空白符序列，但是正常地进行换行。 */
     color: #000;
-    border: 1px solid rgba(255, 255, 255, 0.33);
+    border: 1px solid rgba(250, 250, 250, 0.3);
 }
 .table-striped>tbody>tr:nth-of-type(odd) {
-	background-color: rgba(255, 255, 255, 0.2);
+	background-color: rgba(250, 250, 250, 0.25);
 }
 /* 设置前两列的最小宽度 */
 .col1 {
     min-width: 68px; /* 可根据需要调整 */
     max-width: 68px; /* 可根据需要调整 */
-    padding: 6px;
 }
 .col2 {
-    min-width: 60px; /* 可根据需要调整 */
-    max-width: 60px; /* 可根据需要调整 */
-    padding: 6px;
+    min-width: 62px; /* 可根据需要调整 */
+    max-width: 62px; /* 可根据需要调整 */
 }
 /* 后面的列自动适应 */
 .col3 {
