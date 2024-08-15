@@ -177,7 +177,7 @@ body {
     border: 1px solid rgba(250, 250, 250, 0.3);
 }
 .table-striped>tbody>tr:nth-of-type(odd) {
-	background-color: rgba(250, 250, 250, 0.25);
+	background-color: rgba(230, 230, 230, 0.25);
 }
 /* 设置前两列的最小宽度 */
 .col1 {
