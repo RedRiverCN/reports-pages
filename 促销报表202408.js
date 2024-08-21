@@ -90,7 +90,7 @@ function populateTable(_tableTitle, _headers, _reportList) {
 }
 
 function extractParts(str) {
-    // 检查字符串是否以 "Merge_" 开头 
+    // 检查字符串是否以 "Merge_" 开头
     if (String(str).startsWith('Merge_')) {
         // 去掉前缀 "Merge_" 并获取剩余部分
         const remainingPart = str.substring(6);
