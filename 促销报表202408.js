@@ -114,7 +114,6 @@ function extractParts(str) {
         return [1,1,str];
     }
 }
-
 async function fetchSequentially(userid, token1, token2, token3) {
 	try {
 		// 第一次请求
@@ -190,6 +189,8 @@ async function fetchReportList(token1, token2, reportToken) {
 		throw error; // 继续抛出错误，让调用者处理
 	}
 }
+
+
 
 
 document.addEventListener('DOMContentLoaded', function() {

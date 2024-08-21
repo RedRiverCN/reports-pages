@@ -78,5 +78,21 @@
         </div>
     </div>
 	
+	<script>
+        window.addEventListener('scroll', () => {
+            const headers = document.querySelectorAll('th');
+            headers.forEach(header => {
+                const rect = header.getBoundingClientRect();
+                const isSticky = rect.top <= 0;
+
+                if (isSticky) {
+                    header.classList.add('sticky-active');
+                } else {
+                    header.classList.remove('sticky-active');
+                }
+            });
+        });
+    </script>
+
 	</body>
 </html>

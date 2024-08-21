@@ -132,9 +132,9 @@ body {
 	overflow-y: scroll;
     overflow-x: hidden; /* 溢出内容隐藏 */
 
-	position: sticky;
-	top: 0; 
-	z-index: 1;
+}
+.sticky-active {
+    background-color: rgba(248, 193, 181, 1) !important; /* Background color when sticky */
 }
 /* .table  tr{
 	display: table;
@@ -149,7 +149,12 @@ body {
 	/* height: 600px; */
 }
 .table th {
-    background-color: rgba(255, 255, 255, 0.3);
+    background-color: rgba(255, 255, 255, 0.5);
+    transition: background-color 0.3s; /* Smooth transition */
+	position: sticky;
+	top: 0; 
+	z-index: 1;
+
     padding: 10px 6px 10px 6px;
     line-height: 1.22857143;
     text-align: center;
@@ -183,8 +188,8 @@ body {
 }
 /* 设置前两列的最小宽度 */
 .col1 {
-    min-width: 68px; /* 可根据需要调整 */
-    max-width: 68px; /* 可根据需要调整 */
+    min-width: 62px; /* 可根据需要调整 68px*/
+    max-width: 62px; /* 可根据需要调整 */
 }
 .col2 {
     min-width: 42px; /* 可根据需要调整 */
