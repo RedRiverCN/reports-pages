@@ -85,7 +85,7 @@
                 const rect = header.getBoundingClientRect();
                 const headerHeight = header.offsetHeight;
                 
-                if (rect.top <= 0 && rect.top + headerHeight >= 0) {
+                if (rect.top <= 5 ) {
                     header.classList.add('sticky-active');
                 } else {
                     header.classList.remove('sticky-active');
