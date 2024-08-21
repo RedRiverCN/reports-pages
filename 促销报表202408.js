@@ -20,17 +20,33 @@ function populateTable(_tableTitle, _headers, _reportList) {
     const headerRow = document.createElement('tr');
     _headers.forEach((headerText, index) => {
         const headerCell = document.createElement('th');
-        //headerCell.textContent = headerText;
-        headerCell.innerHTML = headerText;
-		// 如果是前两列，则添加最小宽度类
-		if (index == 0) {
-			headerCell.classList.add('col1');
-		} else if (index == 1) {
-			headerCell.classList.add('col2');
+
+		
+		if (headerText == 'MergeCells') {
+
 		} else {
-			headerCell.classList.add('col3');
+			let a = extractParts(headerText)
+			headerCell.innerHTML = a[2];
+
+			// 加合并单元
+			if (a[0] > 1) {
+				headerCell.setAttribute('rowspan', a[0])
+			}
+			if (a[1] > 1) {
+				headerCell.setAttribute('colspan', a[1])
+			}
+
+			//headerCell.textContent = headerText;
+			// 如果是前两列，则添加最小宽度类
+			if (index == 0) {
+				headerCell.classList.add('col1');
+			} else if (index == 1) {
+				headerCell.classList.add('col2');
+			} else {
+				headerCell.classList.add('col3');
+			}
+			headerRow.appendChild(headerCell);
 		}
-        headerRow.appendChild(headerCell);
     });
     tableHeader.appendChild(headerRow);
 	
@@ -41,21 +57,62 @@ function populateTable(_tableTitle, _headers, _reportList) {
         // 遍历每个人员的属性，动态生成对应的单元格
         Object.values(person).forEach((value, index) => {
             const cell = document.createElement('td');
-            //cell.textContent = value;
-            cell.innerHTML = value;
-			if (index == 0) {
-				cell.classList.add('col1');
-			} else if (index === 1) {
-				cell.classList.add('col2');
+
+			if (value == 'MergeCells') {
+
 			} else {
-				cell.classList.add('col3');
+				let a = extractParts(value)
+				//cell.textContent = value;
+				cell.innerHTML = a[2];
+				// 加合并单元
+				if (a[0] > 1) {
+					cell.setAttribute('rowspan', a[0])
+				}
+				if (a[1] > 1) {
+					cell.setAttribute('colspan', a[1])
+				}
+
+				// 加样式
+				if (index == 0) {
+					cell.classList.add('col1');
+				} else if (index === 1) {
+					cell.classList.add('col2');
+				} else {
+					cell.classList.add('col3');
+				}
+				row.appendChild(cell);
 			}
-            row.appendChild(cell);
         });
 
         // 将行添加到表格主体中
         tableBody.appendChild(row);
     });
+}
+
+function extractParts(str) {
+    // 检查字符串是否以 "Merge_" 开头
+    if (String(str).startsWith('Merge_')) {
+        // 去掉前缀 "Merge_" 并获取剩余部分
+        const remainingPart = str.substring(6);
+        
+        // 使用下划线分割剩余部分，最多分割两次
+        const parts = remainingPart.split('_');
+        
+        // 检查分割后的数组长度
+        if (parts.length >= 3) {
+            return [
+                Number(parts[0]),
+                Number(parts[1]),
+                parts.slice(2).join('_') // 将第3部分及以后部分重新组合
+            ];
+        } else {
+            // 如果分割后的数组长度不符合预期
+            return [1,1,str];
+        }
+    } else {
+        // 如果字符串不以 "Merge_" 开头
+        return [1,1,str];
+    }
 }
 
 async function fetchSequentially(userid, token1, token2, token3) {
