@@ -79,20 +79,13 @@
     </div>
 
 	<script>
-        // Debounce function to limit the rate of function execution
-        function debounce(func, wait) {
-            let timeout;
-            return function(...args) {
-                clearTimeout(timeout);
-                timeout = setTimeout(() => func.apply(this, args), wait);
-            };
-        }
-
         function updateStickyHeaders() {
             const headers = document.querySelectorAll('thead');
             headers.forEach(header => {
                 const rect = header.getBoundingClientRect();
-                if (rect.top <= 0) {
+                const headerHeight = header.offsetHeight;
+                
+                if (rect.top <= 0 && rect.top + headerHeight >= 0) {
                     header.classList.add('sticky-active');
                 } else {
                     header.classList.remove('sticky-active');
