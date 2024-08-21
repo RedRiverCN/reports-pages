@@ -35,7 +35,7 @@ body {
 }
 
 .top-banner {
-	background-color: rgba(238, 228, 224, 1);
+	background-color: rgba(237, 211, 201, 1);
 	height: 300px;
 	width: 100%;
 	max-width: 100%;
@@ -149,8 +149,8 @@ body {
 	/* height: 600px; */
 }
 .table th {
-    background-color: rgba(255, 255, 255, 0.5);
-    transition: background-color 0.3s; /* Smooth transition */
+    background-color: rgba(237, 211, 201, 0.3);
+    transition: background-color 1s; /* Smooth transition */
 	position: sticky;
 	top: 0; 
 	z-index: 1;
