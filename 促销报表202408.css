@@ -84,10 +84,9 @@ body {
 
 .table-container {
 	border-radius: 6px;
-	display: flex;
-    overflow: auto; /* 水平滚动条 */
     max-width: 100%; /* 设置最大宽度为父元素的100% */
-	
+	height: 100%;
+
     width: auto; /* 根据内容自动调整宽度 */
     margin-top: 20px; /* 上边距 */
 }
@@ -131,6 +130,10 @@ body {
 	/* table-layout: fixed; */
 	overflow-y: scroll;
     overflow-x: hidden; /* 溢出内容隐藏 */
+
+	position: sticky;
+	top: 0; /* Fixes the header to the top of the viewport */
+	z-index: 1; /* Ensures header stays above the content when scrolling */
 }
 /* .table  tr{
 	display: table;

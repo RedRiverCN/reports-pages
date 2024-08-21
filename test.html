@@ -3,49 +3,254 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HTML 表格纵向合并单元格与固定宽度列</title>
+    <title>Fixed Table Header on Scroll</title>
     <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        .container {
+            max-height: 500px; /* Adjust as needed */
+            overflow-y: auto;
+            position: relative;
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
         }
+
         th, td {
-            border: 1px solid black;
             padding: 8px;
             text-align: left;
+            border: 1px solid #ddd;
         }
-        .fixed-width {
-            max-width: 10px; /* 固定宽度 100px */
+
+        thead {
+            background-color: #f4f4f4; /* Background color for header */
+        }
+
+        /* Sticky header */
+        .sticky {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: #f4f4f4;
+            border-bottom: 2px solid #ddd;
+            z-index: 10;
+            display: none; /* Hidden by default */
         }
     </style>
 </head>
 <body>
+    <div class="container">
+        <table>
+            <thead id="table-header">
+                <tr>
+                    <th>Header 1</th>
+                    <th>Header 2</th>
+                    <th>Header 3</th>
+                    <th>Header 4</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Data 1</td>
+                    <td>Data 2</td>
+                    <td>Data 3</td>
+                    <td>Data 4</td>
+                </tr>
+                <tr>
+                    <td>Data 5</td>
+                    <td>Data 6</td>
+                    <td>Data 7</td>
+                    <td>Data 8</td>
+                </tr>
+                <tr>
+                    <td>Data 5</td>
+                    <td>Data 6</td>
+                    <td>Data 7</td>
+                    <td>Data 8</td>
+                </tr>
+                <tr>
+                    <td>Data 5</td>
+                    <td>Data 6</td>
+                    <td>Data 7</td>
+                    <td>Data 8</td>
+                </tr>
+                <tr>
+                    <td>Data 5</td>
+                    <td>Data 6</td>
+                    <td>Data 7</td>
+                    <td>Data 8</td>
+                </tr>
+                <tr>
+                    <td>Data 5</td>
+                    <td>Data 6</td>
+                    <td>Data 7</td>
+                    <td>Data 8</td>
+                </tr>
+                <tr>
+                    <td>Data 5</td>
+                    <td>Data 6</td>
+                    <td>Data 7</td>
+                    <td>Data 8</td>
+                </tr>
+                <tr>
+                    <td>Data 5</td>
+                    <td>Data 6</td>
+                    <td>Data 7</td>
+                    <td>Data 8</td>
+                </tr>
+                <tr>
+                    <td>Data 5</td>
+                    <td>Data 6</td>
+                    <td>Data 7</td>
+                    <td>Data 8</td>
+                </tr>
+                <tr>
+                    <td>Data 5</td>
+                    <td>Data 6</td>
+                    <td>Data 7</td>
+                    <td>Data 8</td>
+                </tr>
+                <tr>
+                    <td>Data 5</td>
+                    <td>Data 6</td>
+                    <td>Data 7</td>
+                    <td>Data 8</td>
+                </tr>
+                <tr>
+                    <td>Data 5</td>
+                    <td>Data 6</td>
+                    <td>Data 7</td>
+                    <td>Data 8</td>
+                </tr>
+                <tr>
+                    <td>Data 5</td>
+                    <td>Data 6</td>
+                    <td>Data 7</td>
+                    <td>Data 8</td>
+                </tr>
+                <tr>
+                    <td>Data 5</td>
+                    <td>Data 6</td>
+                    <td>Data 7</td>
+                    <td>Data 8</td>
+                </tr>
+                <tr>
+                    <td>Data 5</td>
+                    <td>Data 6</td>
+                    <td>Data 7</td>
+                    <td>Data 8</td>
+                </tr>
+                <tr>
+                    <td>Data 5</td>
+                    <td>Data 6</td>
+                    <td>Data 7</td>
+                    <td>Data 8</td>
+                </tr>
+                <tr>
+                    <td>Data 5</td>
+                    <td>Data 6</td>
+                    <td>Data 7</td>
+                    <td>Data 8</td>
+                </tr>
+                <tr>
+                    <td>Data 5</td>
+                    <td>Data 6</td>
+                    <td>Data 7</td>
+                    <td>Data 8</td>
+                </tr>
+                <tr>
+                    <td>Data 5</td>
+                    <td>Data 6</td>
+                    <td>Data 7</td>
+                    <td>Data 8</td>
+                </tr>
+                <tr>
+                    <td>Data 5</td>
+                    <td>Data 6</td>
+                    <td>Data 7</td>
+                    <td>Data 8</td>
+                </tr>
+                <tr>
+                    <td>Data 5</td>
+                    <td>Data 6</td>
+                    <td>Data 7</td>
+                    <td>Data 8</td>
+                </tr>
+                <tr>
+                    <td>Data 5</td>
+                    <td>Data 6</td>
+                    <td>Data 7</td>
+                    <td>Data 8</td>
+                </tr>
+                <tr>
+                    <td>Data 5</td>
+                    <td>Data 6</td>
+                    <td>Data 7</td>
+                    <td>Data 8</td>
+                </tr>
+                <tr>
+                    <td>Data 5</td>
+                    <td>Data 6</td>
+                    <td>Data 7</td>
+                    <td>Data 8</td>
+                </tr>
+                <tr>
+                    <td>Data 5</td>
+                    <td>Data 6</td>
+                    <td>Data 7</td>
+                    <td>Data 8</td>
+                </tr>
+                <tr>
+                    <td>Data 5</td>
+                    <td>Data 6</td>
+                    <td>Data 7</td>
+                    <td>Data 8</td>
+                </tr>
+                <tr>
+                    <td>Data 5</td>
+                    <td>Data 6</td>
+                    <td>Data 7</td>
+                    <td>Data 8</td>
+                </tr>
+                <!-- Add more rows as needed -->
+            </tbody>
+        </table>
+    </div>
+    
+    <!-- Clone of the header for fixed positioning -->
+    <div id="fixed-header" class="sticky">
+        <table>
+            <thead>
+                <tr>
+                    <th>Header 1</th>
+                    <th>Header 2</th>
+                    <th>Header 3</th>
+                    <th>Header 4</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
 
-<table>
-    <thead>
-        <tr>
-            <th class="fixed-width">标题 1</th>
-            <th>标题 2</th>
-            <th>标题 3</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td class="fixed-width" rowspan="2">合并单元格5assssssssssssssssssssssssssssssssssssssssssssssssssssssssss</td> <!-- 纵向合并两行 -->
-            <td>数据 1</td>
-            <td>数据 2</td>
-        </tr>
-        <tr>
-            <td >数据 3</td>
-            <td>数据 4</td>
-        </tr>
-        <tr>
-            <td class="fixed-width" >数据 5assssssssssssssssssssssssssssssssssssssssssssssssssssssssss</td>
-            <td>数据 6</td>
-            <td>数据 7</td>
-        </tr>
-    </tbody>
-</table>
+    <script>
+        document.addEventListener('scroll', function() {
+            const header = document.getElementById('table-header');
+            const fixedHeader = document.getElementById('fixed-header');
+            const container = document.querySelector('.container');
+            const threshold = container.offsetTop;
 
+            if (window.scrollY > threshold) {
+                fixedHeader.style.display = 'block';
+                fixedHeader.style.width = `${header.offsetWidth}px`; // Match the table width
+            } else {
+                fixedHeader.style.display = 'none';
+            }
+        });
+    </script>
 </body>
 </html>
