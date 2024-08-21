@@ -77,21 +77,42 @@
           </div>
         </div>
     </div>
-	
+
 	<script>
-        window.addEventListener('scroll', () => {
-            const headers = document.querySelectorAll('th');
+        // Debounce function to limit the rate of function execution
+        function debounce(func, wait) {
+            let timeout;
+            return function(...args) {
+                clearTimeout(timeout);
+                timeout = setTimeout(() => func.apply(this, args), wait);
+            };
+        }
+
+        function updateStickyHeaders() {
+            const headers = document.querySelectorAll('thead');
             headers.forEach(header => {
                 const rect = header.getBoundingClientRect();
-                const isSticky = rect.top <= 0;
-
-                if (isSticky) {
+                if (rect.top <= 0) {
                     header.classList.add('sticky-active');
                 } else {
                     header.classList.remove('sticky-active');
                 }
             });
-        });
+        }
+
+        // Use requestAnimationFrame to optimize scroll event handling
+        let isScrolling = false;
+        function handleScroll() {
+            if (!isScrolling) {
+                isScrolling = true;
+                window.requestAnimationFrame(() => {
+                    updateStickyHeaders();
+                    isScrolling = false;
+                });
+            }
+        }
+
+        window.addEventListener('scroll', handleScroll);
     </script>
 
 	</body>

@@ -132,6 +132,11 @@ body {
 	overflow-y: scroll;
     overflow-x: hidden; /* 溢出内容隐藏 */
 
+    background-color: rgba(237, 211, 201, 0.3);
+    transition: background-color 1s; /* Smooth transition */
+	position: sticky;
+	top: 0; 
+	z-index: 1;
 }
 .sticky-active {
     background-color: rgba(248, 193, 181, 1) !important; /* Background color when sticky */
@@ -149,11 +154,7 @@ body {
 	/* height: 600px; */
 }
 .table th {
-    background-color: rgba(237, 211, 201, 0.3);
-    transition: background-color 1s; /* Smooth transition */
-	position: sticky;
-	top: 0; 
-	z-index: 1;
+    /* background-color: rgba(237, 211, 201, 0.3); */
 
     padding: 10px 6px 10px 6px;
     line-height: 1.22857143;
