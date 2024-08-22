@@ -156,7 +156,7 @@ body {
 .table th {
     /* background-color: rgba(237, 211, 201, 0.3); */
 
-    padding: 10px 6px 10px 6px;
+    padding: 8px 3px 8px 3px;
     line-height: 1.22857143;
     text-align: center;
     font-weight: 500;
@@ -172,7 +172,7 @@ body {
 .table td {
 	word-wrap: break-word;
     background-color: rgba(255, 255, 255, 0.05);
-    padding: 6px;
+    padding: 3px;
     text-align: center;
     vertical-align: middle;
     font-weight: 300;
@@ -189,16 +189,16 @@ body {
 }
 /* 设置前两列的最小宽度 */
 .col1 {
-    min-width: 62px; /* 可根据需要调整 68px*/
+    min-width: 42px; /* 可根据需要调整 68px*/
     max-width: 62px; /* 可根据需要调整 */
 }
 .col2 {
-    min-width: 42px; /* 可根据需要调整 */
+    min-width: 32px; /* 可根据需要调整 */
     max-width: 42px; /* 可根据需要调整 */
 }
 /* 后面的列自动适应 */
 .col3 {
-    min-width:  72px;
+    min-width:  52px;
 }
 
 
