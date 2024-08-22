@@ -124,7 +124,7 @@ body {
     display: inline-table; /* 让表格并排显示 */
 	width: 100%;
 	max-width: 100%;
-	min-width: 600px; 
+	min-width: 400px; 
 }
 .table thead{
 	width: 100%;	
