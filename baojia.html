@@ -97,7 +97,6 @@
                         <button class="category-btn whitespace-nowrap px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition-all-300" data-category="camera">摄像枪</button>
                         <button class="category-btn whitespace-nowrap px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition-all-300" data-category="nvr">录像机</button>
                         <button class="category-btn whitespace-nowrap px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition-all-300" data-category="harddisk">硬盘</button>
-						
                     </div>
 
                     <!-- 商品列表 -->
@@ -362,6 +361,7 @@
     <script>
         // 商品数据
         const products = [
+
   {
     "id": 1,
     "name": "皓视通摄像枪",
@@ -1425,12 +1425,7 @@
   }
   
   
-  
-  
-  
-  
-  
-  
+
         ];
 
         // 全局变量
@@ -1679,7 +1674,7 @@
             
             modal.innerHTML = `
                 <div class="bg-white rounded-lg max-w-md w-full mx-4">
-                    <div class="p-6">
+                    <div class="p-6 max-h-[70vh] overflow-y-auto">
                         <div class="flex justify-between items-center mb-4">
                             <h3 class="text-xl font-bold text-gray-800">选择规格</h3>
                             <button class="close-specs-modal text-gray-500 hover:text-gray-700">
@@ -2441,9 +2436,7 @@
                 'nvr': '录像机',
                 'harddisk': '硬盘'
             };
-
-
-
+            
             return categoryNames[category] || '其他';
         }
 
