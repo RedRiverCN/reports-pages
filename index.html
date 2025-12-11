@@ -1,60 +1,2469 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
-    <title>报表</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-	
-	<link rel="stylesheet" href="css/reset.min.css">
-	<link rel="stylesheet" href="css/style.css">
-
+    <title>报价单生成器</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- html2canvas -->
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+    <!-- Tailwind 配置 -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1a56db',
+                        secondary: '#e2e8f0',
+                        accent: '#3b82f6',
+                        neutral: '#f8fafc',
+                        'neutral-dark': '#334155'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif']
+                    },
+                    boxShadow: {
+                        'card': '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
+                        'card-hover': '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)'
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .transition-all-300 {
+                transition: all 300ms ease-in-out;
+            }
+            .scrollbar-hide::-webkit-scrollbar {
+                display: none;
+            }
+            .scrollbar-hide {
+                -ms-overflow-style: none;
+                scrollbar-width: none;
+            }
+        }
+    </style>
 </head>
-<body>
+<body class="bg-gray-50 font-sans">
+    <!-- 顶部导航栏 -->
+    <header class="bg-white shadow-sm">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <i class="fa fa-file-text-o text-primary text-2xl"></i>
+                <h1 class="text-xl font-bold text-gray-800">报价单生成器</h1>
+            </div>
+            <div class="hidden md:flex items-center space-x-4">
+                <button id="resetBtn" class="px-4 py-2 text-gray-600 hover:text-gray-800 transition-all-300">
+                    <i class="fa fa-refresh mr-1"></i> 重置
+                </button>
+                <button id="helpBtn" class="px-4 py-2 text-gray-600 hover:text-gray-800 transition-all-300">
+                    <i class="fa fa-question-circle mr-1"></i> 帮助
+                </button>
+            </div>
+        </div>
+    </header>
 
-  <section>
-  <h1><p id="tableTitle">未加载完成</p></h1>
-  <div class="tbl-header" style="padding-right: 6px;">
-    <table cellpadding="0" cellspacing="0" border="1">
-      <thead>
-        <tr>
-          <th>标题1</th>
-          <th>标题2</th>
-          <th>标题3</th>
-        </tr>
-		
-	  <tr>
-			<th colspan="2">标题12</th>
-          <th>标题33</th>
-	  </tr>
-      </thead>
-    </table>
-  </div>
-  <div class="tbl-content">
-    <table cellpadding="0" cellspacing="0" border="0">
-      <tbody>
-        <tr>
-          <td>数据A</td>
-          <td>数据B</td>
-          <td>数据f</td>
-        </tr>
-        <tr>
-          <td>数据C</td>
-          <td>数据D</td>
-          <td>数据g</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</section>
- 
-	<div style="text-align:center;clear:both">
+    <!-- 主内容区 -->
+    <main class="container mx-auto px-4 py-6">
+        <!-- 移动端工具栏 -->
+        <div class="md:hidden flex justify-between mb-4">
+            <button id="resetBtnMobile" class="flex-1 py-2 bg-gray-200 text-gray-700 rounded-l-lg hover:bg-gray-300 transition-all-300">
+                <i class="fa fa-refresh"></i>
+            </button>
+            <button id="helpBtnMobile" class="flex-1 py-2 bg-gray-200 text-gray-700 rounded-r-lg hover:bg-gray-300 transition-all-300">
+                <i class="fa fa-question-circle"></i>
+            </button>
+        </div>
 
-	</div>
+        <div class="flex flex-col lg:flex-row gap-6">
+            <!-- 左侧商品选择区 -->
+            <div class="w-full lg:w-1/2">
+                <div class="bg-white rounded-lg shadow-sm p-4 mb-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-lg font-semibold text-gray-800">商品选择</h2>
+                        <div class="relative">
+                            <input type="text" id="searchInput" placeholder="搜索商品..." class="pl-8 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                            <i class="fa fa-search absolute left-3 top-3 text-gray-400"></i>
+                        </div>
+                    </div>
 
-	<script src="js/jquery.min.js"></script>
-	<script src="js/index.js"></script>
+                    <!-- 商品分类标签 -->
+                    <div class="flex overflow-x-auto scrollbar-hide space-x-2 mb-4 pb-2">
+                        <button class="category-btn whitespace-nowrap px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/90 transition-all-300" data-category="all">全部</button>
+                        <button class="category-btn whitespace-nowrap px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition-all-300" data-category="camera">摄像枪</button>
+                        <button class="category-btn whitespace-nowrap px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition-all-300" data-category="nvr">录像机</button>
+                        <button class="category-btn whitespace-nowrap px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition-all-300" data-category="harddisk">硬盘</button>
+						
+                    </div>
+
+                    <!-- 商品列表 -->
+                    <div id="productsContainer" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <!-- 商品卡片将通过JavaScript动态生成 -->
+                    </div>
+                </div>
+
+                <!-- 报价单信息 -->
+                <div class="bg-white rounded-lg shadow-sm p-4">
+                    <h2 class="text-lg font-semibold text-gray-800 mb-4">报价单信息</h2>
+                    <div class="space-y-4">
+                        <div>
+                            <label for="clientName" class="block text-sm font-medium text-gray-700 mb-1">客户名称</label>
+                            <input type="text" id="clientName" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="请输入客户名称">
+                        </div>
+                        <div>
+                            <label for="clientContact" class="block text-sm font-medium text-gray-700 mb-1">客户联系人</label>
+                            <input type="text" id="clientContact" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="请输入客户联系人姓名">
+                        </div>
+                        <div>
+                            <label for="clientPhone" class="block text-sm font-medium text-gray-700 mb-1">客户联系电话</label>
+                            <input type="text" id="clientPhone" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="请输入客户联系电话">
+                        </div>
+                        <div>
+                            <label for="companyName" class="block text-sm font-medium text-gray-700 mb-1">公司名称</label>
+                            <input type="text" id="companyName" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="请输入公司名称">
+                        </div>
+                        <div>
+                            <label for="contactPerson" class="block text-sm font-medium text-gray-700 mb-1">联系人</label>
+                            <input type="text" id="contactPerson" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="请输入联系人姓名">
+                        </div>
+                        <div>
+                            <label for="contactPhone" class="block text-sm font-medium text-gray-700 mb-1">联系电话</label>
+                            <input type="text" id="contactPhone" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="请输入联系电话">
+                        </div>
+                        <div>
+                            <label for="creatorName" class="block text-sm font-medium text-gray-700 mb-1">制单人</label>
+                            <input type="text" id="creatorName" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="请输入制单人姓名">
+                        </div>
+                        <div>
+                            <label for="quoteNotes" class="block text-sm font-medium text-gray-700 mb-1">备注</label>
+                            <textarea id="quoteNotes" rows="3" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="请输入备注信息"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 右侧报价单预览区 -->
+            <div class="w-full lg:w-1/2">
+                <div class="bg-white rounded-lg shadow-sm p-4 mb-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-lg font-semibold text-gray-800">报价单预览</h2>
+                        <div class="flex space-x-2">
+                            <button id="downloadBtn" class="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/90 transition-all-300">
+                                <i class="fa fa-download mr-1"></i> 下载报价单
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 报价单预览 -->
+                    <div class="overflow-x-auto scrollbar-hide">
+                        <div id="quotePreview" class="border border-gray-200 rounded-lg overflow-hidden min-w-[800px]">
+                        <!-- 报价单头部 -->
+                        <div class="bg-gradient-to-r from-primary to-primary/80 text-white p-6">
+                            <div class="flex justify-between items-center">
+                                <div>
+                                    <h3 class="text-2xl font-bold">报价单</h3>
+                                    <p class="text-white/80 mt-1">Quotation Sheet</p>
+                                </div>
+                                <div>
+                                    <p class="text-white/80 text-sm">报价单号：<span id="previewQuoteId">QD-2025-07-21</span></p>
+                                    <p class="text-white/80 text-sm">日期：<span id="previewDate">2025-07-21</span></p>
+                                    <p class="text-white/80 text-sm">有效期：<span id="previewValidity">30天</span></p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 报价单内容 -->
+                        <div class="p-6">
+                            <!-- 客户信息 -->
+                            <div class="mb-6">
+                                <div class="border-b-2 border-gray-200 pb-2 mb-3">
+                                    <h4 class="font-semibold text-gray-700">客户信息</h4>
+                                </div>
+                                <div class="grid grid-cols-3 gap-4">
+                                    <div>
+                                        <p class="text-sm text-gray-600">客户名称</p>
+                                        <p class="text-sm font-medium text-gray-800" id="previewClientName">未设置</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm text-gray-600">联系人</p>
+                                        <p class="text-sm font-medium text-gray-800" id="previewClientContact">未设置</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm text-gray-600">联系电话</p>
+                                        <p class="text-sm font-medium text-gray-800" id="previewClientPhone">未设置</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- 商品列表 -->
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-left">
+                                    <thead>
+                                        <tr class="border-b-2 border-gray-200">
+                                            <th class="pb-3 font-semibold text-gray-700">商品名称</th>
+                                            <th class="pb-3 font-semibold text-gray-700">规格</th>
+                                            <th class="pb-3 font-semibold text-gray-700">数量</th>
+                                            <th class="pb-3 font-semibold text-gray-700">单价</th>
+                                            <th class="pb-3 font-semibold text-gray-700">金额</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="previewProductsList">
+                                        <tr>
+                                            <td colspan="5" class="py-8 text-center text-gray-500">
+                                                <i class="fa fa-shopping-cart text-2xl mb-2"></i>
+                                                <p>请选择商品添加到报价单</p>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <!-- 备注 -->
+                            <div class="mt-6">
+                                <h4 class="font-semibold text-gray-700 mb-2">备注</h4>
+                                <p id="previewNotes" class="text-gray-600 bg-gray-50 p-3 rounded-md min-h-[60px]">暂无备注信息</p>
+                            </div>
+
+                            <!-- 总计 -->
+                            <div class="mt-6 flex justify-end">
+                                <div class="w-1/2">
+                                    <div class="flex justify-between py-2 border-b border-gray-200">
+                                        <span class="text-gray-600">商品总价</span>
+                                        <span id="previewSubtotal" class="font-medium">¥0.00</span>
+                                    </div>
+                                    <div class="flex justify-between py-2 border-b border-gray-200">
+                                        <span class="text-gray-600">优惠折扣</span>
+                                        <span id="previewDiscount" class="font-medium">-¥0.00</span>
+                                    </div>
+                                    <div class="flex justify-between py-2 border-b border-gray-200">
+                                        <span class="text-gray-600">税费</span>
+                                        <span id="previewTax" class="font-medium">¥0.00</span>
+                                    </div>
+                                    <div class="flex justify-between py-3 mt-2">
+                                        <span class="text-lg font-semibold text-gray-800">总计</span>
+                                        <span id="previewTotal" class="text-lg font-bold text-primary">¥0.00</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 报价单底部 -->
+                        <div class="bg-gray-50 p-6 border-t border-gray-200">
+                            <div class="flex justify-between items-center">
+                                <div>
+                                    <p class="text-sm text-gray-600">制单人：<span id="previewCreator">系统用户</span></p>
+                                </div>
+                                <div class="text-right">
+                                    <p class="text-sm text-gray-600">公司名称：<span id="previewCompanyName" class="font-medium">未设置</span></p>
+                                    <p class="text-sm text-gray-600 mt-1">联系人：<span id="previewContactPerson" class="font-medium">未设置</span></p>
+                                    <p class="text-sm text-gray-600 mt-1">联系电话：<span id="previewContactPhone" class="font-medium">未设置</span></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+
+                <!-- 已选商品列表 -->
+                <div class="bg-white rounded-lg shadow-sm p-4">
+                    <h2 class="text-lg font-semibold text-gray-800 mb-4">已选商品</h2>
+                    <div id="selectedProductsList" class="space-y-3">
+                        <div class="text-center text-gray-500 py-6">
+                            <i class="fa fa-clipboard text-2xl mb-2"></i>
+                            <p>暂无已选商品</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 帮助模态框 -->
+    <div id="helpModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-lg max-w-lg w-full mx-4 max-h-[80vh] overflow-y-auto">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-xl font-bold text-gray-800">使用帮助</h3>
+                    <button id="closeHelpBtn" class="text-gray-500 hover:text-gray-700">
+                        <i class="fa fa-times text-xl"></i>
+                    </button>
+                </div>
+                <div class="space-y-4">
+                    <div>
+                        <h4 class="font-semibold text-gray-700">如何使用报价单生成器</h4>
+                        <ol class="list-decimal list-inside mt-2 text-gray-600 space-y-1">
+                            <li>从左侧商品列表中选择需要的商品</li>
+                            <li>调整商品的数量和规格</li>
+                            <li>填写报价单信息（公司名称、联系人等）</li>
+                            <li>在右侧预览报价单效果</li>
+                            <li>点击"下载报价单"按钮将报价单保存为图片</li>
+                        </ol>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold text-gray-700">功能说明</h4>
+                        <ul class="list-disc list-inside mt-2 text-gray-600 space-y-1">
+                            <li>商品搜索：可通过名称搜索商品</li>
+                            <li>商品分类：可按分类筛选商品</li>
+                            <li>数量调整：可调整已选商品的数量</li>
+                            <li>删除商品：可从已选商品列表中删除商品</li>
+                            <li>报价单信息：可填写公司信息和备注</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold text-gray-700">注意事项</h4>
+                        <ul class="list-disc list-inside mt-2 text-gray-600 space-y-1">
+                            <li>报价单生成后请仔细核对商品信息和价格</li>
+                            <li>下载的报价单图片可用于打印或发送给客户</li>
+                            <li>如需修改报价单，请在下载前进行调整</li>
+                            <li>系统不会自动保存报价单，请及时下载保存</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="mt-6 pt-4 border-t border-gray-200">
+                    <button id="closeHelpBtnBottom" class="w-full py-2 bg-primary text-white rounded-md hover:bg-primary/90 transition-all-300">
+                        我知道了
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 重置确认模态框 -->
+    <div id="resetModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-lg max-w-md w-full mx-4">
+            <div class="p-6">
+                <div class="text-center mb-4">
+                    <i class="fa fa-exclamation-triangle text-yellow-500 text-3xl"></i>
+                    <h3 class="text-xl font-bold text-gray-800 mt-2">确认重置</h3>
+                    <p class="text-gray-600 mt-2">您确定要重置所有已选商品和报价单信息吗？此操作不可撤销。</p>
+                </div>
+                <div class="flex space-x-3 mt-6">
+                    <button id="cancelResetBtn" class="flex-1 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition-all-300">
+                        取消
+                    </button>
+                    <button id="confirmResetBtn" class="flex-1 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition-all-300">
+                        确认重置
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 下载成功提示 -->
+    <div id="downloadSuccessToast" class="fixed bottom-4 right-4 bg-green-500 text-white px-4 py-3 rounded-md shadow-lg transform translate-y-20 opacity-0 transition-all duration-300 flex items-center">
+        <i class="fa fa-check-circle mr-2"></i>
+        <span>报价单下载成功！</span>
+    </div>
+
+    <script>
+        // 商品数据
+        const products = [
+  {
+    "id": 1,
+    "name": "皓视通摄像枪",
+    "category": "camera",
+    "price": 135,
+    "image": "https://p11-doubao-search-sign.byteimg.com/labis/d2c5a4589279c2932cd0b03ef4f0e33a~tplv-be4g95zd3a-image.jpeg?rk3s=542c0f93&x-expires=1780933962&x-signature=AixibetsKb33jBoPIMznulDgGEo%3D",
+    "description": "枪机",
+    "models": [
+      {
+        "id": "model1",
+        "name": "枪机",
+        "specs": [
+          {
+            "id": "spec1-1",
+            "name": "200万像素/普通夜视",
+            "price": 135,
+            "internalModels": [
+              {
+                "id": "int1-1-1",
+                "name": "IPC22V2-LA(PoE)",
+                "price": 135
+              }
+            ]
+          },
+          {
+            "id": "spec1-2",
+            "name": "400万像素/普通夜视",
+            "price": 170,
+            "internalModels": [
+              {
+                "id": "int1-2-1",
+                "name": "IPC24V2-LA(PoE)",
+                "price": 170
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "name": "海康威视摄像枪",
+    "category": "camera",
+    "price": 168,
+    "image": "https://p11-doubao-search-sign.byteimg.com/labis/d2c5a4589279c2932cd0b03ef4f0e33a~tplv-be4g95zd3a-image.jpeg?rk3s=542c0f93&x-expires=1780933962&x-signature=AixibetsKb33jBoPIMznulDgGEo%3D",
+    "description": "枪机/半球/球机",
+    "models": [
+      {
+        "id": "model2-1",
+        "name": "枪机",
+        "specs": [
+          {
+            "id": "spec2-1-1",
+            "name": "200万像素/普通夜视",
+            "price": 168,
+            "internalModels": [
+              {
+                "id": "int2-1-1-1",
+                "name": "DS-IPC-B12HV3-IA(POE)",
+                "price": 168
+              }
+            ]
+          },
+          {
+            "id": "spec2-1-2",
+            "name": "200万像素/全彩夜视",
+            "price": 285,
+            "internalModels": [
+              {
+                "id": "int2-1-2-1",
+                "name": "DS-2CD3T27SWDV3-L",
+                "price": 285
+              }
+            ]
+          },
+          {
+            "id": "spec2-1-3",
+            "name": "400万像素/普通夜视",
+            "price": 210,
+            "internalModels": [
+              {
+                "id": "int2-1-3-1",
+                "name": "DS-2CD1245-LA(POE)",
+                "price": 210
+              }
+            ]
+          },
+          {
+            "id": "spec2-1-4",
+            "name": "400万像素/全彩夜视",
+            "price": 358,
+            "internalModels": [
+              {
+                "id": "int2-1-4-1",
+                "name": "DS-2CD3T47SWDV3-L",
+                "price": 358
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "model2-2",
+        "name": "半球",
+        "specs": [
+          {
+            "id": "spec2-2-1",
+            "name": "200万像素/普通夜视",
+            "price": 168,
+            "internalModels": [
+              {
+                "id": "int2-2-1-1",
+                "name": "DS-IPC-T12HV3-IA（POE）",
+                "price": 168
+              }
+            ]
+          },
+          {
+            "id": "spec2-2-2",
+            "name": "200万像素/全彩夜视",
+            "price": 285,
+            "internalModels": [
+              {
+                "id": "int2-2-2-1",
+                "name": "DS-2CD3327SWDV3-L",
+                "price": 285
+              }
+            ]
+          },
+          {
+            "id": "spec2-2-3",
+            "name": "400万像素/普通夜视",
+            "price": 210,
+            "internalModels": [
+              {
+                "id": "int2-2-3-1",
+                "name": "DS-2CD1345V2-LA(POE)",
+                "price": 210
+              }
+            ]
+          },
+          {
+            "id": "spec2-2-4",
+            "name": "400万像素/全彩夜视",
+            "price": 358,
+            "internalModels": [
+              {
+                "id": "int2-2-4-1",
+                "name": "DS-2CD3347SWDV3-L",
+                "price": 358
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "model2-3",
+        "name": "球机",
+        "specs": [
+          {
+            "id": "spec2-3-1",
+            "name": "400万像素/360度旋转球机",
+            "price": 1346,
+            "internalModels": [
+              {
+                "id": "int2-3-1-1",
+                "name": "DS-2DC4425DW-D",
+                "price": 1346
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "name": "大华摄像枪",
+    "category": "camera",
+    "price": 198,
+    "image": "https://p11-doubao-search-sign.byteimg.com/labis/d2c5a4589279c2932cd0b03ef4f0e33a~tplv-be4g95zd3a-image.jpeg?rk3s=542c0f93&x-expires=1780933962&x-signature=AixibetsKb33jBoPIMznulDgGEo%3D",
+    "description": "枪机/半球/球机",
+    "models": [
+      {
+        "id": "model3-1",
+        "name": "枪机",
+        "specs": [
+          {
+            "id": "spec3-1-1",
+            "name": "200万像素/全彩夜视",
+            "price": 198,
+            "internalModels": [
+              {
+                "id": "int3-1-1-1",
+                "name": "DH-IPC-HFW3230M3-A-IL4",
+                "price": 198
+              }
+            ]
+          },
+          {
+            "id": "spec3-1-2",
+            "name": "400万像素/全彩夜视",
+            "price": 210,
+            "internalModels": [
+              {
+                "id": "int3-1-2-1",
+                "name": "DH-IPC-HFW3430M3-A-IL4",
+                "price": 210
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "model3-2",
+        "name": "半球",
+        "specs": [
+          {
+            "id": "spec3-2-1",
+            "name": "200万像素/全彩夜视",
+            "price": 198,
+            "internalModels": [
+              {
+                "id": "int3-2-1-1",
+                "name": "DH-IPC-HDW3230T3-A-IL2",
+                "price": 198
+              }
+            ]
+          },
+          {
+            "id": "spec3-2-2",
+            "name": "400万像素/全彩夜视",
+            "price": 210,
+            "internalModels": [
+              {
+                "id": "int3-2-2-1",
+                "name": "DH-IPC-HDW3430T3-A-IL2",
+                "price": 210
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "model3-3",
+        "name": "球机",
+        "specs": [
+          {
+            "id": "spec3-3-1",
+            "name": "400万像素/360度旋转球机",
+            "price": 1350,
+            "internalModels": [
+              {
+                "id": "int3-3-1-1",
+                "name": "DH-SD-4D1420-HN-NB-D",
+                "price": 1350
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  
+  {
+    "id": 5,
+    "name": "TP-LINK硬盘录像机",
+    "category": "nvr",
+    "price": 111,
+    "image": "https://p11-doubao-search-sign.byteimg.com/labis/d2c5a4589279c2932cd0b03ef4f0e33a~tplv-be4g95zd3a-image.jpeg?rk3s=542c0f93&x-expires=1780933962&x-signature=AixibetsKb33jBoPIMznulDgGEo%21D",
+    "description": "最大32路/2盘",
+    "models": [
+      {
+        "id": "model5",
+        "name": "硬盘录像机",
+        "specs": [
+          {
+            "id": "spec5-1",
+            "name": "4路/1盘",
+            "price": 111,
+            "internalModels": [
+              {
+                "id": "int5-1-1",
+                "name": "TL-NVR6104C-L",
+                "price": 111
+              }
+            ]
+          },
+          {
+            "id": "spec5-2",
+            "name": "8路/1盘",
+            "price": 144,
+            "internalModels": [
+              {
+                "id": "int5-2-1",
+                "name": "TL-NVR6108C-L",
+                "price": 144
+              }
+            ]
+          },
+          {
+            "id": "spec5-3",
+            "name": "16路/1盘",
+            "price": 186,
+            "internalModels": [
+              {
+                "id": "int5-3-1",
+                "name": "TL-NVR6116C-L",
+                "price": 186
+              }
+            ]
+          },
+          {
+            "id": "spec5-4",
+            "name": "16路/2盘",
+            "price": 576,
+            "internalModels": [
+              {
+                "id": "int5-4-1",
+                "name": "TL-NVR6216E-N",
+                "price": 576
+              }
+            ]
+          },
+          {
+            "id": "spec5-5",
+            "name": "32路/2盘",
+            "price": 744,
+            "internalModels": [
+              {
+                "id": "int5-5-1",
+                "name": "TL-NVR6232E-N",
+                "price": 744
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "name": "大华硬盘录像机",
+    "category": "nvr",
+    "price": 180,
+    "image": "https://p11-doubao-search-sign.byteimg.com/labis/d2c5a4589279c2932cd0b03ef4f0e33a~tplv-be4g95zd3a-image.jpeg?rk3s=542c0f93&x-expires=1780933962&x-signature=AixibetsKb33jBoPIMznulDgGEo%26D",
+    "description": "最大32路/8盘",
+    "models": [
+      {
+        "id": "model6",
+        "name": "硬盘录像机",
+        "specs": [
+          {
+            "id": "spec6-1",
+            "name": "4路/1盘",
+            "price": 180,
+            "internalModels": [
+              {
+                "id": "int6-1-1",
+                "name": "DH-NVR4104HC-4KS3/L",
+                "price": 180
+              }
+            ]
+          },
+          {
+            "id": "spec6-2",
+            "name": "8路/1盘",
+            "price": 220,
+            "internalModels": [
+              {
+                "id": "int6-2-1",
+                "name": "DH-NVR4108HC-4KS3/L",
+                "price": 220
+              }
+            ]
+          },
+          {
+            "id": "spec6-3",
+            "name": "8路/2盘",
+            "price": 588,
+            "internalModels": [
+              {
+                "id": "int6-3-1",
+                "name": "DH-NVR4208-4KS2",
+                "price": 588
+              }
+            ]
+          },
+          {
+            "id": "spec6-4",
+            "name": "16路/1盘",
+            "price": 492,
+            "internalModels": [
+              {
+                "id": "int6-4-1",
+                "name": "DH-NVR4116HS-4KS3",
+                "price": 492
+              }
+            ]
+          },
+          {
+            "id": "spec6-5",
+            "name": "16路/4盘",
+            "price": 1332,
+            "internalModels": [
+              {
+                "id": "int6-5-1",
+                "name": "DH-NVR4416-4KS2",
+                "price": 1332
+              }
+            ]
+          },
+          {
+            "id": "spec6-6",
+            "name": "32路/8盘",
+            "price": 1980,
+            "internalModels": [
+              {
+                "id": "int6-6-1",
+                "name": "DH-NVR4832-4KS2",
+                "price": 1980
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 7,
+    "name": "海康威视硬盘录像机",
+    "category": "nvr",
+    "price": 175,
+    "image": "https://p11-doubao-search-sign.byteimg.com/labis/d2c5a4589279c2932cd0b03ef4f0e33a~tplv-be4g95zd3a-image.jpeg?rk3s=542c0f93&x-expires=1780933962&x-signature=AixibetsKb33jBoPIMznulDgGEo%32D",
+    "description": "最大64路/16盘",
+    "models": [
+      {
+        "id": "model7",
+        "name": "硬盘录像机",
+        "specs": [
+          {
+            "id": "spec7-1",
+            "name": "4路/1盘",
+            "price": 175,
+            "internalModels": [
+              {
+                "id": "int7-1-1",
+                "name": "DS-7804N-G1",
+                "price": 175
+              }
+            ]
+          },
+          {
+            "id": "spec7-2",
+            "name": "8路/1盘",
+            "price": 240,
+            "internalModels": [
+              {
+                "id": "int7-2-1",
+                "name": "DS-7808N-G1",
+                "price": 240
+              }
+            ]
+          },
+          {
+            "id": "spec7-3",
+            "name": "8路/2盘",
+            "price": 570,
+            "internalModels": [
+              {
+                "id": "int7-3-1",
+                "name": "DS-7808N-Q2",
+                "price": 570
+              }
+            ]
+          },
+          {
+            "id": "spec7-4",
+            "name": "16路/1盘",
+            "price": 523,
+            "internalModels": [
+              {
+                "id": "int7-4-1",
+                "name": "7816N-Q1",
+                "price": 523
+              }
+            ]
+          },
+          {
+            "id": "spec7-5",
+            "name": "16路/2盘",
+            "price": 650,
+            "internalModels": [
+              {
+                "id": "int7-5-1",
+                "name": "DS-7816N-Q2",
+                "price": 650
+              }
+            ]
+          },
+          {
+            "id": "spec7-6",
+            "name": "16路/4盘",
+            "price": 1230,
+            "internalModels": [
+              {
+                "id": "int7-6-1",
+                "name": "DS-7916N-R4",
+                "price": 1230
+              }
+            ]
+          },
+          {
+            "id": "spec7-7",
+            "name": "32路/2盘",
+            "price": 1050,
+            "internalModels": [
+              {
+                "id": "int7-7-1",
+                "name": "DS-7832N-R2",
+                "price": 1050
+              }
+            ]
+          },
+          {
+            "id": "spec7-8",
+            "name": "32路/4盘",
+            "price": 1495,
+            "internalModels": [
+              {
+                "id": "int7-8-1",
+                "name": "DS-7932N-R4",
+                "price": 1495
+              }
+            ]
+          },
+          {
+            "id": "spec7-9",
+            "name": "32路/8盘",
+            "price": 2090,
+            "internalModels": [
+              {
+                "id": "int7-9-1",
+                "name": "DS-8832N-R8",
+                "price": 2090
+              }
+            ]
+          },
+          {
+            "id": "spec7-10",
+            "name": "64路/8盘",
+            "price": 2710,
+            "internalModels": [
+              {
+                "id": "int7-10-1",
+                "name": "DS-8864N-R8",
+                "price": 2710
+              }
+            ]
+          },
+          {
+            "id": "spec7-11",
+            "name": "64路/16盘",
+            "price": 5250,
+            "internalModels": [
+              {
+                "id": "int7-11-1",
+                "name": "DS-8864N-R16/16K",
+                "price": 5250
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 8,
+    "name": "皓视通硬盘录像机",
+    "category": "nvr",
+    "price": 135,
+    "image": "https://p11-doubao-search-sign.byteimg.com/labis/d2c5a4589279c2932cd0b03ef4f0e33a~tplv-be4g95zd3a-image.jpeg?rk3s=542c0f93&x-expires=1780933962&x-signature=AixibetsKb33jBoPIMznulDgGEo%43D",
+    "description": "最大16路/2盘",
+    "models": [
+      {
+        "id": "model8",
+        "name": "硬盘录像机",
+        "specs": [
+          {
+            "id": "spec8-1",
+            "name": "4路/1盘",
+            "price": 135,
+            "internalModels": [
+              {
+                "id": "int8-1-1",
+                "name": "HNVR3106-V3",
+                "price": 135
+              }
+            ]
+          },
+          {
+            "id": "spec8-2",
+            "name": "8路/1盘",
+            "price": 170,
+            "internalModels": [
+              {
+                "id": "int8-2-1",
+                "name": "HNVR3110-V3",
+                "price": 170
+              }
+            ]
+          },
+          {
+            "id": "spec8-3",
+            "name": "16路/2盘",
+            "price": 465,
+            "internalModels": [
+              {
+                "id": "int8-3-1",
+                "name": "HNVR5216",
+                "price": 465
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  
+  
+  {
+    "id": 9,
+    "name": "硬盘",
+    "category": "harddisk",
+    "price": 755,
+    "image": "https://p11-doubao-search-sign.byteimg.com/labis/d2c5a4589279c2932cd0b03ef4f0e33a~tplv-be4g95zd3a-image.jpeg?rk3s=542c0f93&x-expires=1780933962&x-signature=AixibetsKb33jBoPIMznulDgGEo%3D",
+    "description": "必选",
+    "models": [
+      {
+        "id": "model9-1",
+        "name": "1路硬盘配置",
+        "specs": [
+          {
+            "id": "spec9-1-1",
+            "name": "最少录像7天/2T",
+            "price": 755,
+            "internalModels": [
+              {
+                "id": "int9-1-1-1",
+                "name": "2T容量",
+                "price": 755
+              }
+            ]
+          },
+          {
+            "id": "spec9-1-2",
+            "name": "最少录像15天/2T",
+            "price": 755,
+            "internalModels": [
+              {
+                "id": "int9-1-2-1",
+                "name": "2T容量",
+                "price": 755
+              }
+            ]
+          },
+          {
+            "id": "spec9-1-3",
+            "name": "最少录像30天/2T",
+            "price": 755,
+            "internalModels": [
+              {
+                "id": "int9-1-3-1",
+                "name": "2T容量",
+                "price": 755
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "model9-2",
+        "name": "2路硬盘配置",
+        "specs": [
+          {
+            "id": "spec9-2-1",
+            "name": "最少录像7天/2T",
+            "price": 755,
+            "internalModels": [
+              {
+                "id": "int9-2-1-1",
+                "name": "2T容量",
+                "price": 755
+              }
+            ]
+          },
+          {
+            "id": "spec9-2-2",
+            "name": "最少录像15天/2T",
+            "price": 755,
+            "internalModels": [
+              {
+                "id": "int9-2-2-1",
+                "name": "2T容量",
+                "price": 755
+              }
+            ]
+          },
+          {
+            "id": "spec9-2-3",
+            "name": "最少录像30天/2T",
+            "price": 755,
+            "internalModels": [
+              {
+                "id": "int9-2-3-1",
+                "name": "2T容量",
+                "price": 755
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "model9-3",
+        "name": "3路硬盘配置",
+        "specs": [
+          {
+            "id": "spec9-3-1",
+            "name": "最少录像7天/2T",
+            "price": 755,
+            "internalModels": [
+              {
+                "id": "int9-3-1-1",
+                "name": "2T容量",
+                "price": 755
+              }
+            ]
+          },
+          {
+            "id": "spec9-3-2",
+            "name": "最少录像15天/2T",
+            "price": 755,
+            "internalModels": [
+              {
+                "id": "int9-3-2-1",
+                "name": "2T容量",
+                "price": 755
+              }
+            ]
+          },
+          {
+            "id": "spec9-3-3",
+            "name": "最少录像30天/2T",
+            "price": 755,
+            "internalModels": [
+              {
+                "id": "int9-3-3-1",
+                "name": "2T容量",
+                "price": 755
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "model9-4",
+        "name": "4路硬盘配置",
+        "specs": [
+          {
+            "id": "spec9-4-1",
+            "name": "最少录像7天/2T",
+            "price": 755,
+            "internalModels": [
+              {
+                "id": "int9-4-1-1",
+                "name": "2T容量",
+                "price": 755
+              }
+            ]
+          },
+          {
+            "id": "spec9-4-2",
+            "name": "最少录像15天/2T",
+            "price": 755,
+            "internalModels": [
+              {
+                "id": "int9-4-2-1",
+                "name": "2T容量",
+                "price": 755
+              }
+            ]
+          },
+          {
+            "id": "spec9-4-3",
+            "name": "最少录像30天/4T",
+            "price": 944,
+            "internalModels": [
+              {
+                "id": "int9-4-3-1",
+                "name": "4T容量",
+                "price": 944
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "model9-5",
+        "name": "5路硬盘配置",
+        "specs": [
+          {
+            "id": "spec9-5-1",
+            "name": "最少录像7天/2T",
+            "price": 755,
+            "internalModels": [
+              {
+                "id": "int9-5-1-1",
+                "name": "2T容量",
+                "price": 755
+              }
+            ]
+          },
+          {
+            "id": "spec9-5-2",
+            "name": "最少录像15天/2T",
+            "price": 755,
+            "internalModels": [
+              {
+                "id": "int9-5-2-1",
+                "name": "2T容量",
+                "price": 755
+              }
+            ]
+          },
+          {
+            "id": "spec9-5-3",
+            "name": "最少录像30天/4T",
+            "price": 944,
+            "internalModels": [
+              {
+                "id": "int9-5-3-1",
+                "name": "4T容量",
+                "price": 944
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "model9-6",
+        "name": "6路硬盘配置",
+        "specs": [
+          {
+            "id": "spec9-6-1",
+            "name": "最少录像7天/2T",
+            "price": 755,
+            "internalModels": [
+              {
+                "id": "int9-6-1-1",
+                "name": "2T容量",
+                "price": 755
+              }
+            ]
+          },
+          {
+            "id": "spec9-6-2",
+            "name": "最少录像15天/2T",
+            "price": 755,
+            "internalModels": [
+              {
+                "id": "int9-6-2-1",
+                "name": "2T容量",
+                "price": 755
+              }
+            ]
+          },
+          {
+            "id": "spec9-6-3",
+            "name": "最少录像30天/2T",
+            "price": 755,
+            "internalModels": [
+              {
+                "id": "int9-6-3-1",
+                "name": "2T容量",
+                "price": 755
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "model9-7",
+        "name": "7路硬盘配置",
+        "specs": [
+          {
+            "id": "spec9-7-1",
+            "name": "最少录像7天/2T",
+            "price": 755,
+            "internalModels": [
+              {
+                "id": "int9-7-1-1",
+                "name": "2T容量",
+                "price": 755
+              }
+            ]
+          },
+          {
+            "id": "spec9-7-2",
+            "name": "最少录像15天/4T",
+            "price": 944,
+            "internalModels": [
+              {
+                "id": "int9-7-2-1",
+                "name": "4T容量",
+                "price": 944
+              }
+            ]
+          },
+          {
+            "id": "spec9-7-3",
+            "name": "最少录像30天/6T",
+            "price": 1323,
+            "internalModels": [
+              {
+                "id": "int9-7-3-1",
+                "name": "6T容量",
+                "price": 1323
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "model9-8",
+        "name": "8路硬盘配置",
+        "specs": [
+          {
+            "id": "spec9-8-1",
+            "name": "最少录像7天/2T",
+            "price": 755,
+            "internalModels": [
+              {
+                "id": "int9-8-1-1",
+                "name": "2T容量",
+                "price": 755
+              }
+            ]
+          },
+          {
+            "id": "spec9-8-2",
+            "name": "最少录像15天/4T",
+            "price": 944,
+            "internalModels": [
+              {
+                "id": "int9-8-2-1",
+                "name": "4T容量",
+                "price": 944
+              }
+            ]
+          },
+          {
+            "id": "spec9-8-3",
+            "name": "最少录像30天/6T",
+            "price": 1323,
+            "internalModels": [
+              {
+                "id": "int9-8-3-1",
+                "name": "6T容量",
+                "price": 1323
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "model9-9",
+        "name": "9路硬盘配置",
+        "specs": [
+          {
+            "id": "spec9-9-1",
+            "name": "最少录像7天/2T",
+            "price": 755,
+            "internalModels": [
+              {
+                "id": "int9-9-1-1",
+                "name": "2T容量",
+                "price": 755
+              }
+            ]
+          },
+          {
+            "id": "spec9-9-2",
+            "name": "最少录像15天/4T",
+            "price": 944,
+            "internalModels": [
+              {
+                "id": "int9-9-2-1",
+                "name": "4T容量",
+                "price": 944
+              }
+            ]
+          },
+          {
+            "id": "spec9-9-3",
+            "name": "最少录像30天/8T",
+            "price": 1975,
+            "internalModels": [
+              {
+                "id": "int9-9-3-1",
+                "name": "8T容量",
+                "price": 1975
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "model9-10",
+        "name": "10路硬盘配置",
+        "specs": [
+          {
+            "id": "spec9-10-1",
+            "name": "最少录像7天/2T",
+            "price": 755,
+            "internalModels": [
+              {
+                "id": "int9-10-1-1",
+                "name": "2T容量",
+                "price": 755
+              }
+            ]
+          },
+          {
+            "id": "spec9-10-2",
+            "name": "最少录像15天/4T",
+            "price": 944,
+            "internalModels": [
+              {
+                "id": "int9-10-2-1",
+                "name": "4T容量",
+                "price": 944
+              }
+            ]
+          },
+          {
+            "id": "spec9-10-3",
+            "name": "最少录像30天/8T",
+            "price": 1975,
+            "internalModels": [
+              {
+                "id": "int9-10-3-1",
+                "name": "8T容量",
+                "price": 1975
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+  
+  
+  
+  
+  
+  
+  
+  
+        ];
+
+        // 全局变量
+        let selectedProducts = [];
+        let quoteId = generateQuoteId();
+        let currentDate = formatDate(new Date());
+        let currentPage = 1;
+        let productsPerPage = 6;
+        let filteredProducts = [...products];
+
+        // 初始化页面
+        document.addEventListener('DOMContentLoaded', function() {
+            // 渲染商品列表
+            renderProducts(products);
+            
+            // 设置报价单初始信息
+            document.getElementById('previewQuoteId').textContent = quoteId;
+            document.getElementById('previewDate').textContent = currentDate;
+            
+            // 绑定事件
+            bindEvents();
+        });
+
+        // 渲染商品列表
+        function renderProducts(productsToRender, page = 1) {
+            const container = document.getElementById('productsContainer');
+            container.innerHTML = '';
+            
+            // 保存过滤后的商品列表
+            filteredProducts = [...productsToRender];
+            
+            if (productsToRender.length === 0) {
+                container.innerHTML = `
+                    <div class="col-span-2 text-center py-8 text-gray-500">
+                        <i class="fa fa-search text-2xl mb-2"></i>
+                        <p>未找到匹配的商品</p>
+                    </div>
+                `;
+                renderPagination(0);
+                return;
+            }
+            
+            // 计算分页
+            const startIndex = (page - 1) * productsPerPage;
+            const endIndex = startIndex + productsPerPage;
+            const paginatedProducts = productsToRender.slice(startIndex, endIndex);
+            
+            paginatedProducts.forEach(product => {
+                const productCard = document.createElement('div');
+                productCard.className = 'bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-card-hover transition-all-300';
+                productCard.dataset.category = product.category;
+                
+                productCard.innerHTML = `
+                    <div class="relative">
+                        <img src="${product.image}" alt="${product.name}" class="w-full h-40 object-cover">
+                        <div class="absolute top-2 right-2 bg-primary text-white text-xs px-2 py-1 rounded-full">
+                            ${getCategoryName(product.category)}
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-semibold text-gray-800 truncate">${product.name}</h3>
+                        <p class="text-gray-600 text-sm mt-1 line-clamp-2 h-10">${product.description}</p>
+                        <div class="mt-3 flex justify-between items-center">
+                            <span class="text-primary font-bold">¥${product.price.toLocaleString()}</span>
+                            <button class="add-to-quote-btn px-3 py-1 bg-primary text-white text-sm rounded-md hover:bg-primary/90 transition-all-300" data-product-id="${product.id}">
+                                <i class="fa fa-plus mr-1"></i> 选择
+                            </button>
+                        </div>
+                    </div>
+                `;
+                
+                container.appendChild(productCard);
+            });
+            
+            // 绑定添加到报价单按钮事件
+            document.querySelectorAll('.add-to-quote-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const productId = parseInt(this.dataset.productId);
+                    showProductSpecsModal(productId);
+                });
+            });
+            
+            // 渲染分页控件
+            renderPagination(productsToRender.length, page);
+        }
+        
+        // 渲染分页控件
+        function renderPagination(totalProducts, currentPage = 1) {
+            const totalPages = Math.ceil(totalProducts / productsPerPage);
+            
+            // 查找或创建分页容器
+            let paginationContainer = document.getElementById('paginationContainer');
+            if (!paginationContainer) {
+                paginationContainer = document.createElement('div');
+                paginationContainer.id = 'paginationContainer';
+                paginationContainer.className = 'mt-6 flex justify-center';
+                
+                // 插入到商品列表容器之后
+                const productsContainer = document.getElementById('productsContainer');
+                productsContainer.parentNode.insertBefore(paginationContainer, productsContainer.nextSibling);
+            }
+            
+            // 如果只有一页或没有商品，隐藏分页
+            if (totalPages <= 1) {
+                paginationContainer.innerHTML = '';
+                paginationContainer.classList.add('hidden');
+                return;
+            }
+            
+            // 显示分页
+            paginationContainer.classList.remove('hidden');
+            
+            // 构建分页HTML
+            let paginationHTML = `
+                <div class="inline-flex rounded-md shadow-sm">
+                    <button class="pagination-btn px-3 py-1 rounded-l-md border border-gray-300 bg-white text-gray-500 hover:bg-gray-50 transition-all-300 ${currentPage === 1 ? 'opacity-50 cursor-not-allowed' : ''}" data-page="${currentPage - 1}">
+                        <i class="fa fa-chevron-left"></i>
+                    </button>
+            `;
+            
+            // 添加页码按钮
+            for (let i = 1; i <= totalPages; i++) {
+                paginationHTML += `
+                    <button class="pagination-btn px-3 py-1 border-t border-b border-gray-300 bg-white text-sm ${i === currentPage ? 'bg-primary text-white' : 'text-gray-700 hover:bg-gray-50'} transition-all-300" data-page="${i}">
+                        ${i}
+                    </button>
+                `;
+            }
+            
+            paginationHTML += `
+                    <button class="pagination-btn px-3 py-1 rounded-r-md border border-gray-300 bg-white text-gray-500 hover:bg-gray-50 transition-all-300 ${currentPage === totalPages ? 'opacity-50 cursor-not-allowed' : ''}" data-page="${currentPage + 1}">
+                        <i class="fa fa-chevron-right"></i>
+                    </button>
+                </div>
+            `;
+            
+            paginationContainer.innerHTML = paginationHTML;
+            
+            // 绑定分页按钮事件
+            paginationContainer.querySelectorAll('.pagination-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const page = parseInt(this.dataset.page);
+                    
+                    // 检查是否是有效页码
+                    if (page < 1 || page > totalPages) {
+                        return;
+                    }
+                    
+                    // 更新当前页码并重新渲染
+                    currentPage = page;
+                    renderProducts(filteredProducts, currentPage);
+                    
+                    // 滚动到商品列表顶部
+                    const productsSection = document.querySelector('.bg-white.rounded-lg.shadow-sm.p-4.mb-6');
+                    if (productsSection) {
+                        productsSection.scrollIntoView({ behavior: 'smooth' });
+                    }
+                });
+            });
+        }
+        
+        // 渲染分页控件
+        function renderPagination(totalProducts, currentPage = 1) {
+            const totalPages = Math.ceil(totalProducts / productsPerPage);
+            
+            // 查找或创建分页容器
+            let paginationContainer = document.getElementById('paginationContainer');
+            if (!paginationContainer) {
+                paginationContainer = document.createElement('div');
+                paginationContainer.id = 'paginationContainer';
+                paginationContainer.className = 'mt-6 flex justify-center';
+                
+                // 插入到商品列表容器之后
+                const productsContainer = document.getElementById('productsContainer');
+                productsContainer.parentNode.insertBefore(paginationContainer, productsContainer.nextSibling);
+            }
+            
+            // 如果只有一页或没有商品，隐藏分页
+            if (totalPages <= 1) {
+                paginationContainer.innerHTML = '';
+                paginationContainer.classList.add('hidden');
+                return;
+            }
+            
+            // 显示分页
+            paginationContainer.classList.remove('hidden');
+            
+            // 构建分页HTML
+            let paginationHTML = `
+                <div class="inline-flex rounded-md shadow-sm">
+                    <button class="pagination-btn px-3 py-1 rounded-l-md border border-gray-300 bg-white text-gray-500 hover:bg-gray-50 transition-all-300 ${currentPage === 1 ? 'opacity-50 cursor-not-allowed' : ''}" data-page="${currentPage - 1}">
+                        <i class="fa fa-chevron-left"></i>
+                    </button>
+            `;
+            
+            // 添加页码按钮
+            for (let i = 1; i <= totalPages; i++) {
+                paginationHTML += `
+                    <button class="pagination-btn px-3 py-1 border-t border-b border-gray-300 bg-white text-sm ${i === currentPage ? 'bg-primary text-white' : 'text-gray-700 hover:bg-gray-50'} transition-all-300" data-page="${i}">
+                        ${i}
+                    </button>
+                `;
+            }
+            
+            paginationHTML += `
+                    <button class="pagination-btn px-3 py-1 rounded-r-md border border-gray-300 bg-white text-gray-500 hover:bg-gray-50 transition-all-300 ${currentPage === totalPages ? 'opacity-50 cursor-not-allowed' : ''}" data-page="${currentPage + 1}">
+                        <i class="fa fa-chevron-right"></i>
+                    </button>
+                </div>
+            `;
+            
+            paginationContainer.innerHTML = paginationHTML;
+            
+            // 绑定分页按钮事件
+            paginationContainer.querySelectorAll('.pagination-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const page = parseInt(this.dataset.page);
+                    
+                    // 检查是否是有效页码
+                    if (page < 1 || page > totalPages) {
+                        return;
+                    }
+                    
+                    // 更新当前页码并重新渲染
+                    currentPage = page;
+                    renderProducts(filteredProducts, currentPage);
+                    
+                    // 滚动到商品列表顶部
+                    const productsSection = document.querySelector('.bg-white.rounded-lg.shadow-sm.p-4.mb-6');
+                    if (productsSection) {
+                        productsSection.scrollIntoView({ behavior: 'smooth' });
+                    }
+                });
+            });
+        }
+
+        // 显示商品规格选择模态框
+        function showProductSpecsModal(productId) {
+            const product = products.find(p => p.id === productId);
+            if (!product) return;
+            
+            // 创建模态框
+            const modal = document.createElement('div');
+            modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
+            modal.id = 'productSpecsModal';
+            
+            modal.innerHTML = `
+                <div class="bg-white rounded-lg max-w-md w-full mx-4">
+                    <div class="p-6">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-xl font-bold text-gray-800">选择规格</h3>
+                            <button class="close-specs-modal text-gray-500 hover:text-gray-700">
+                                <i class="fa fa-times text-xl"></i>
+                            </button>
+                        </div>
+                        <div class="flex items-start space-x-4">
+                            <img src="${product.image}" alt="${product.name}" class="w-24 h-24 object-cover rounded-md">
+                            <div>
+                                <h4 class="font-semibold text-gray-800">${product.name}</h4>
+                                <p class="text-gray-600 text-sm mt-1">${product.description}</p>
+                            </div>
+                        </div>
+                        ${product.models && product.models.length > 0 ? `
+                        <div class="mt-4">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">型号选择</label>
+                            <div class="grid grid-cols-2 gap-2">
+                                ${product.models.map(model => `
+                                    <div class="flex items-center">
+                                        <input type="radio" id="model-${model.id}" name="productModel" value="${model.id}" class="model-radio" ${model.id === product.models[0].id ? 'checked' : ''}>
+                                        <label for="model-${model.id}" class="ml-2 flex-1">
+                                            <span>${model.name}</span>
+                                        </label>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                        ` : ''}
+                        <div class="mt-4">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">规格选择</label>
+                            <div class="space-y-2 specs-container">
+                                <!-- 规格选项将通过JavaScript动态生成 -->
+                                ${product.models && product.models.length > 0 ? `
+                                    ${product.models[0].specs.map(spec => `
+                                        <div class="flex items-center">
+                                            <input type="radio" id="spec-${spec.id}" name="productSpec" value="${spec.id}" class="spec-radio" data-price="${spec.price}" ${spec.id === product.models[0].specs[0].id ? 'checked' : ''}>
+                                            <label for="spec-${spec.id}" class="ml-2 flex-1">
+                                                <div class="flex justify-between">
+                                                    <span>${spec.name}</span>
+                                                    <span class="text-primary font-medium">¥${spec.price.toLocaleString()}</span>
+                                                </div>
+                                            </label>
+                                        </div>
+                                    `).join('')}
+                                ` : ''}
+                            </div>
+                        <div class="mt-4">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">内部型号选择</label>
+                            <div class="space-y-2 internal-models-container">
+                                <!-- 内部型号选项将通过JavaScript动态生成 -->
+                                ${product.models && product.models.length > 0 && product.models[0].specs && product.models[0].specs.length > 0 && product.models[0].specs[0].internalModels ? `
+                                    ${product.models[0].specs[0].internalModels.map(internalModel => `
+                                        <div class="flex items-center">
+                                            <input type="radio" id="internal-${internalModel.id}" name="productInternalModel" value="${internalModel.id}" class="internal-model-radio" data-price="${internalModel.price}" ${internalModel.id === product.models[0].specs[0].internalModels[0].id ? 'checked' : ''}>
+                                            <label for="internal-${internalModel.id}" class="ml-2 flex-1">
+                                                <div class="flex justify-between">
+                                                    <span>${internalModel.name}</span>
+                                                    <span class="text-primary font-medium">¥${internalModel.price.toLocaleString()}</span>
+                                                </div>
+                                            </label>
+                                        </div>
+                                    `).join('')}
+                                ` : `
+                                    <div class="text-gray-500 text-sm">暂无内部型号选项</div>
+                                `}
+                            </div>
+                        </div>
+                        <div class="mt-4">
+                            <label for="productQuantity" class="block text-sm font-medium text-gray-700 mb-2">数量</label>
+                            <div class="flex items-center">
+                                <button id="decreaseQuantity" class="px-3 py-1 bg-gray-200 text-gray-700 rounded-l-md hover:bg-gray-300 transition-all-300">
+                                    <i class="fa fa-minus"></i>
+                                </button>
+                                <input type="number" id="productQuantity" min="1" value="1" class="w-16 text-center border-t border-b border-gray-300 focus:outline-none">
+                                <button id="increaseQuantity" class="px-3 py-1 bg-gray-200 text-gray-700 rounded-r-md hover:bg-gray-300 transition-all-300">
+                                    <i class="fa fa-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="mt-6 flex space-x-3">
+                            <button class="close-specs-modal flex-1 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition-all-300">
+                                取消
+                            </button>
+                            <button id="confirmAddToQuote" class="flex-1 py-2 bg-primary text-white rounded-md hover:bg-primary/90 transition-all-300">
+                                确认添加
+                            </button>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            
+            // 绑定数量调整按钮事件
+            const quantityInput = modal.querySelector('#productQuantity');
+            modal.querySelector('#decreaseQuantity').addEventListener('click', () => {
+                const currentValue = parseInt(quantityInput.value);
+                if (currentValue > 1) {
+                    quantityInput.value = currentValue - 1;
+                }
+            });
+            
+            modal.querySelector('#increaseQuantity').addEventListener('click', () => {
+                const currentValue = parseInt(quantityInput.value);
+                quantityInput.value = currentValue + 1;
+            });
+            
+            // 绑定型号选择事件，动态更新规格选项
+            modal.querySelectorAll('.model-radio').forEach(radio => {
+                radio.addEventListener('change', function() {
+                    const selectedModelId = this.value;
+                    const selectedModel = product.models.find(model => model.id === selectedModelId);
+                    
+                    if (selectedModel && selectedModel.specs) {
+                        const specsContainer = modal.querySelector('.specs-container');
+                        specsContainer.innerHTML = selectedModel.specs.map(spec => `
+                            <div class="flex items-center">
+                                <input type="radio" id="spec-${spec.id}" name="productSpec" value="${spec.id}" class="spec-radio" data-price="${spec.price}" ${spec.id === selectedModel.specs[0].id ? 'checked' : ''}>
+                                <label for="spec-${spec.id}" class="ml-2 flex-1">
+                                    <div class="flex justify-between">
+                                        <span>${spec.name}</span>
+                                        <span class="text-primary font-medium">¥${spec.price.toLocaleString()}</span>
+                                    </div>
+                                </label>
+                            </div>
+                        `).join('');
+                        
+                        // 更新内部型号选项
+                        updateInternalModels(selectedModel.specs[0]);
+                        
+                        // 重新绑定规格选择事件
+                        bindSpecSelectionEvents();
+                    }
+                });
+            });
+            
+            // 绑定规格选择事件，动态更新内部型号选项
+            function bindSpecSelectionEvents() {
+                modal.querySelectorAll('.spec-radio').forEach(radio => {
+                    radio.addEventListener('change', function() {
+                        const selectedSpecId = this.value;
+                        const selectedModelId = modal.querySelector('input[name="productModel"]:checked').value;
+                        const selectedModel = product.models.find(model => model.id === selectedModelId);
+                        const selectedSpec = selectedModel.specs.find(spec => spec.id === selectedSpecId);
+                        
+                        if (selectedSpec) {
+                            updateInternalModels(selectedSpec);
+                        }
+                    });
+                });
+            }
+            
+            // 更新内部型号选项
+            function updateInternalModels(selectedSpec) {
+                const internalModelsContainer = modal.querySelector('.internal-models-container');
+                
+                if (selectedSpec && selectedSpec.internalModels && selectedSpec.internalModels.length > 0) {
+                    internalModelsContainer.innerHTML = selectedSpec.internalModels.map(internalModel => `
+                        <div class="flex items-center">
+                            <input type="radio" id="internal-${internalModel.id}" name="productInternalModel" value="${internalModel.id}" class="internal-model-radio" data-price="${internalModel.price}" ${internalModel.id === selectedSpec.internalModels[0].id ? 'checked' : ''}>
+                            <label for="internal-${internalModel.id}" class="ml-2 flex-1">
+                                <div class="flex justify-between">
+                                    <span>${internalModel.name}</span>
+                                    <span class="text-primary font-medium">¥${internalModel.price.toLocaleString()}</span>
+                                </div>
+                            </label>
+                        </div>
+                    `).join('');
+                } else {
+                    internalModelsContainer.innerHTML = `<div class="text-gray-500 text-sm">暂无内部型号选项</div>`;
+                }
+            }
+            
+            // 初始绑定规格选择事件
+            bindSpecSelectionEvents();
+            
+            // 绑定关闭模态框事件
+            modal.querySelectorAll('.close-specs-modal').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.body.removeChild(modal);
+                });
+            });
+            
+            // 绑定确认添加事件
+            modal.querySelector('#confirmAddToQuote').addEventListener('click', () => {
+                const selectedSpecRadio = modal.querySelector('input[name="productSpec"]:checked');
+                if (!selectedSpecRadio) {
+                    alert('请选择商品规格');
+                    return;
+                }
+                
+                const quantity = parseInt(quantityInput.value);
+                
+                // 获取选择的型号
+                let selectedModel = null;
+                const selectedModelRadio = modal.querySelector('input[name="productModel"]:checked');
+                if (selectedModelRadio) {
+                    const selectedModelId = selectedModelRadio.value;
+                    selectedModel = product.models.find(model => model.id === selectedModelId);
+                }
+                
+                // 从选中的型号中查找规格
+                const selectedSpecId = selectedSpecRadio.value;
+                let selectedSpec = null;
+                if (selectedModel && selectedModel.specs) {
+                    selectedSpec = selectedModel.specs.find(spec => spec.id === selectedSpecId);
+                }
+                
+                // 获取选择的内部型号
+                let selectedInternalModel = null;
+                const selectedInternalModelRadio = modal.querySelector('input[name="productInternalModel"]:checked');
+                if (selectedInternalModelRadio && selectedSpec && selectedSpec.internalModels) {
+                    const selectedInternalModelId = selectedInternalModelRadio.value;
+                    selectedInternalModel = selectedSpec.internalModels.find(internalModel => internalModel.id === selectedInternalModelId);
+                }
+                
+                if (selectedSpec && quantity > 0) {
+                    addProductToQuote(product, selectedSpec, selectedModel, selectedInternalModel, quantity);
+                    document.body.removeChild(modal);
+                }
+            });
+            
+            // 点击模态框外部关闭
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    document.body.removeChild(modal);
+                }
+            });
+        }
+
+        // 添加商品到报价单
+        function addProductToQuote(product, spec, selectedModel, selectedInternalModel, quantity) {
+            // 使用内部型号的价格，如果没有则使用规格价格
+            const price = selectedInternalModel ? selectedInternalModel.price : spec.price;
+            
+            // 检查商品是否已在报价单中（考虑型号、规格和内部型号）
+            const existingProductIndex = selectedProducts.findIndex(
+                p => p.id === product.id && 
+                     p.selectedSpec.id === spec.id && 
+                     ((!selectedModel && !p.selectedModel) || 
+                      (selectedModel && p.selectedModel && p.selectedModel.id === selectedModel.id)) &&
+                     ((!selectedInternalModel && !p.selectedInternalModel) || 
+                      (selectedInternalModel && p.selectedInternalModel && p.selectedInternalModel.id === selectedInternalModel.id))
+            );
+            
+            if (existingProductIndex >= 0) {
+                // 如果已存在，增加数量
+                selectedProducts[existingProductIndex].quantity += quantity;
+                selectedProducts[existingProductIndex].totalPrice = price * selectedProducts[existingProductIndex].quantity;
+            } else {
+                // 如果不存在，添加新商品
+                selectedProducts.push({
+                    id: product.id,
+                    name: product.name,
+                    image: product.image,
+                    category: product.category,
+                    selectedSpec: spec,
+                    selectedModel: selectedModel,
+                    selectedInternalModel: selectedInternalModel,
+                    quantity: quantity,
+                    price: price,
+                    totalPrice: price * quantity
+                });
+            }
+            
+            // 更新报价单
+            updateQuotePreview();
+            updateSelectedProductsList();
+        }
+
+        // 更新报价单预览
+        function updateQuotePreview() {
+            const productsList = document.getElementById('previewProductsList');
+            const subtotalElement = document.getElementById('previewSubtotal');
+            const discountElement = document.getElementById('previewDiscount');
+            const taxElement = document.getElementById('previewTax');
+            const totalElement = document.getElementById('previewTotal');
+            
+            // 计算总价
+            let subtotal = 0;
+            selectedProducts.forEach(item => {
+                item.totalPrice = item.selectedSpec.price * item.quantity;
+                subtotal += item.totalPrice;
+            });
+            
+            // 计算折扣（这里假设没有折扣，实际应用中可以根据需求调整）
+            const discount = 0;
+            
+            // 计算税费（这里假设税率为13%，实际应用中可以根据需求调整）
+            const taxRate = 0.13;
+            const tax = (subtotal - discount) * taxRate;
+            
+            // 计算总计
+            const total = subtotal - discount + tax;
+            
+            // 更新商品列表
+            if (selectedProducts.length === 0) {
+                productsList.innerHTML = `
+                    <tr>
+                        <td colspan="5" class="py-8 text-center text-gray-500">
+                            <i class="fa fa-shopping-cart text-2xl mb-2"></i>
+                            <p>请选择商品添加到报价单</p>
+                        </td>
+                    </tr>
+                `;
+            } else {
+                productsList.innerHTML = selectedProducts.map(item => `
+                    <tr class="border-b border-gray-200">
+                        <td class="py-3">
+                            <div class="flex items-center">
+                                <img src="${item.image}" alt="${item.name}" class="w-10 h-10 object-cover rounded-md">
+                                <span class="ml-2">${item.name}</span>
+                            </div>
+                        </td>
+                        <td class="py-3">
+                            <div>
+                                <div>${item.selectedSpec.name}</div>
+                                ${item.selectedModel ? `<div class="text-xs text-gray-500">${item.selectedModel.name}</div>` : ''}
+                                ${item.selectedInternalModel ? `<div class="text-xs text-gray-500">${item.selectedInternalModel.name}</div>` : ''}
+                            </div>
+                        </td>
+                        <td class="py-3">${item.quantity}</td>
+                        <td class="py-3">¥${item.price.toLocaleString()}</td>
+                        <td class="py-3">¥${item.totalPrice.toLocaleString()}</td>
+                    </tr>
+                `).join('');
+            }
+            
+            // 更新价格信息
+            subtotalElement.textContent = `¥${subtotal.toLocaleString()}`;
+            discountElement.textContent = `-¥${discount.toLocaleString()}`;
+            taxElement.textContent = `¥${tax.toLocaleString()}`;
+            totalElement.textContent = `¥${total.toLocaleString()}`;
+        }
+
+        // 更新已选商品列表
+        function updateSelectedProductsList() {
+            const container = document.getElementById('selectedProductsList');
+            
+            if (selectedProducts.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center text-gray-500 py-6">
+                        <i class="fa fa-clipboard text-2xl mb-2"></i>
+                        <p>暂无已选商品</p>
+                    </div>
+                `;
+            } else {
+                container.innerHTML = selectedProducts.map((item, index) => `
+                    <div class="flex items-center justify-between bg-gray-50 p-3 rounded-md">
+                        <div class="flex items-center">
+                            <img src="${item.image}" alt="${item.name}" class="w-12 h-12 object-cover rounded-md">
+                            <div class="ml-3">
+                                <h4 class="font-medium text-gray-800 text-sm">${item.name}</h4>
+                                <p class="text-gray-600 text-xs">${item.selectedSpec.name}</p>
+                                ${item.selectedModel ? `<p class="text-gray-500 text-xs">${item.selectedModel.name}</p>` : ''}
+                                ${item.selectedInternalModel ? `<p class="text-gray-500 text-xs">${item.selectedInternalModel.name}</p>` : ''}
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <div class="flex items-center">
+                                <button class="decrease-quantity-btn px-2 py-1 bg-gray-200 text-gray-700 rounded-l-md hover:bg-gray-300 transition-all-300" data-index="${index}">
+                                    <i class="fa fa-minus text-xs"></i>
+                                </button>
+                                <span class="px-3 py-1 border-t border-b border-gray-300">${item.quantity}</span>
+                                <button class="increase-quantity-btn px-2 py-1 bg-gray-200 text-gray-700 rounded-r-md hover:bg-gray-300 transition-all-300" data-index="${index}">
+                                    <i class="fa fa-plus text-xs"></i>
+                                </button>
+                            </div>
+                            <button class="remove-product-btn px-2 py-1 bg-red-500 text-white text-xs rounded-md hover:bg-red-600 transition-all-300" data-index="${index}">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                    </div>
+                `).join('');
+                
+                // 绑定数量调整按钮事件
+                document.querySelectorAll('.decrease-quantity-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const index = parseInt(this.dataset.index);
+                        if (selectedProducts[index].quantity > 1) {
+                            selectedProducts[index].quantity--;
+                            updateQuotePreview();
+                            updateSelectedProductsList();
+                        }
+                    });
+                });
+                
+                document.querySelectorAll('.increase-quantity-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const index = parseInt(this.dataset.index);
+                        selectedProducts[index].quantity++;
+                        updateQuotePreview();
+                        updateSelectedProductsList();
+                    });
+                });
+                
+                // 绑定删除商品按钮事件
+                document.querySelectorAll('.remove-product-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const index = parseInt(this.dataset.index);
+                        selectedProducts.splice(index, 1);
+                        updateQuotePreview();
+                        updateSelectedProductsList();
+                    });
+                });
+            }
+        }
+
+        // 下载报价单为图片
+        function downloadQuoteAsImage() {
+            const quotePreview = document.getElementById('quotePreview');
+            
+            // 显示加载状态
+            const downloadBtn = document.getElementById('downloadBtn');
+            const originalText = downloadBtn.innerHTML;
+            downloadBtn.innerHTML = '<i class="fa fa-spinner fa-spin mr-1"></i> 处理中...';
+            downloadBtn.disabled = true;
+            
+            // 保存当前滚动位置
+            const scrollX = window.scrollX;
+            const scrollY = window.scrollY;
+            
+            // 移动端适配：确保元素在视口中
+            const originalPosition = quotePreview.style.position;
+            const originalTop = quotePreview.style.top;
+            const originalLeft = quotePreview.style.left;
+            const originalZIndex = quotePreview.style.zIndex;
+            
+            // 对于移动端，临时将元素定位到视口内
+            if (window.innerWidth < 768) {
+                quotePreview.style.position = 'absolute';
+                quotePreview.style.top = '0';
+                quotePreview.style.left = '0';
+                quotePreview.style.zIndex = '9999';
+                window.scrollTo(0, 0);
+            }
+            
+            // 配置参数
+            const options = {
+                scale: 2, // 提高图片质量
+                useCORS: true, // 允许加载跨域图片
+                logging: false,
+                letterRendering: true,
+                allowTaint: true,
+                backgroundColor: '#ffffff',
+                // 确保捕获整个元素
+                width: quotePreview.offsetWidth,
+                height: quotePreview.offsetHeight
+            };
+            
+            html2canvas(quotePreview, options).then(canvas => {
+                // 恢复原始位置
+                quotePreview.style.position = originalPosition;
+                quotePreview.style.top = originalTop;
+                quotePreview.style.left = originalLeft;
+                quotePreview.style.zIndex = originalZIndex;
+                window.scrollTo(scrollX, scrollY);
+                
+                // 创建下载链接
+                const link = document.createElement('a');
+                link.download = `报价单_${quoteId}.png`;
+                
+                // 对于移动端，使用更兼容的方式
+                if (window.innerWidth < 768) {
+                    // 使用toBlob替代toDataURL，移动端兼容性更好
+                    canvas.toBlob(function(blob) {
+                        const url = URL.createObjectURL(blob);
+                        link.href = url;
+                        
+                        // 触发下载
+                        document.body.appendChild(link);
+                        
+                        // 移动端触发点击的兼容方式
+                        if (navigator.userAgent.match(/(iPad|iPhone|iPod)/i)) {
+                            // iOS设备兼容
+                            const e = document.createEvent('MouseEvents');
+                            e.initMouseEvent('click', true, true, window, 1, 0, 0, 0, 0, false, false, false, false, 0, null);
+                            link.dispatchEvent(e);
+                        } else {
+                            link.click();
+                        }
+                        
+                        // 清理
+                        setTimeout(() => {
+                            document.body.removeChild(link);
+                            URL.revokeObjectURL(url);
+                        }, 100);
+                    }, 'image/png', 1.0);
+                } else {
+                    // 桌面端使用原有方式
+                    link.href = canvas.toDataURL('image/png');
+                    
+                    // 触发下载
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                }
+                
+                // 恢复按钮状态
+                downloadBtn.innerHTML = originalText;
+                downloadBtn.disabled = false;
+                
+                // 显示成功提示
+                showDownloadSuccessToast();
+            }).catch(error => {
+                console.error('下载报价单失败:', error);
+                
+                // 恢复原始位置
+                quotePreview.style.position = originalPosition;
+                quotePreview.style.top = originalTop;
+                quotePreview.style.left = originalLeft;
+                quotePreview.style.zIndex = originalZIndex;
+                window.scrollTo(scrollX, scrollY);
+                
+                // 恢复按钮状态
+                downloadBtn.innerHTML = originalText;
+                downloadBtn.disabled = false;
+                
+                // 显示错误提示
+                alert('下载报价单失败，请重试。错误信息：' + error.message);
+            });
+        }
+
+        // 显示下载成功提示
+        function showDownloadSuccessToast() {
+            const toast = document.getElementById('downloadSuccessToast');
+            
+            // 显示提示
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            
+            // 3秒后隐藏提示
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        }
+
+        // 重置报价单
+        function resetQuote() {
+            // 清空已选商品
+            selectedProducts = [];
+            
+            // 重置表单
+            document.getElementById('clientName').value = '';
+            document.getElementById('clientContact').value = '';
+            document.getElementById('clientPhone').value = '';
+            document.getElementById('companyName').value = '';
+            document.getElementById('contactPerson').value = '';
+            document.getElementById('contactPhone').value = '';
+            document.getElementById('creatorName').value = '';
+            document.getElementById('quoteNotes').value = '';
+            document.getElementById('searchInput').value = '';
+            
+            // 重置分类筛选
+            document.querySelectorAll('.category-btn').forEach(b => {
+                b.classList.remove('bg-primary', 'text-white');
+                b.classList.add('bg-gray-200', 'text-gray-700');
+            });
+            document.querySelector('.category-btn[data-category="all"]').classList.remove('bg-gray-200', 'text-gray-700');
+            document.querySelector('.category-btn[data-category="all"]').classList.add('bg-primary', 'text-white');
+            
+            // 重置页码
+            currentPage = 1;
+            
+            // 更新预览
+            updateQuotePreview();
+            updateSelectedProductsList();
+            updateQuoteInfoPreview();
+            
+            // 重新渲染商品列表
+            renderProducts(products, currentPage);
+            
+            // 生成新的报价单号
+            quoteId = generateQuoteId();
+            document.getElementById('previewQuoteId').textContent = quoteId;
+        }
+
+        // 更新报价单信息预览
+        function updateQuoteInfoPreview() {
+            const clientName = document.getElementById('clientName').value;
+            const clientContact = document.getElementById('clientContact').value;
+            const clientPhone = document.getElementById('clientPhone').value;
+            const companyName = document.getElementById('companyName').value;
+            const contactPerson = document.getElementById('contactPerson').value;
+            const contactPhone = document.getElementById('contactPhone').value;
+            const creatorName = document.getElementById('creatorName').value || '系统用户';
+            const notes = document.getElementById('quoteNotes').value || '暂无备注信息';
+            
+            // 更新客户信息
+            document.getElementById('previewClientName').textContent = clientName || '未设置';
+            document.getElementById('previewClientContact').textContent = clientContact || '未设置';
+            document.getElementById('previewClientPhone').textContent = clientPhone || '未设置';
+            
+            // 更新公司信息
+            document.getElementById('previewCompanyName').textContent = companyName || '未设置';
+            document.getElementById('previewContactPerson').textContent = contactPerson || '未设置';
+            document.getElementById('previewContactPhone').textContent = contactPhone || '未设置';
+            
+            // 更新制单人
+            document.getElementById('previewCreator').textContent = creatorName;
+            
+            // 更新备注
+            document.getElementById('previewNotes').textContent = notes;
+        }
+
+        // 绑定事件
+        function bindEvents() {
+            // 搜索功能
+            const searchInput = document.getElementById('searchInput');
+            searchInput.addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase().trim();
+                
+                // 重置当前页码
+                currentPage = 1;
+                
+                if (searchTerm === '') {
+                    // 获取当前选中的分类
+                    const activeCategory = document.querySelector('.category-btn.bg-primary').dataset.category;
+                    
+                    if (activeCategory === 'all') {
+                        renderProducts(products, currentPage);
+                    } else {
+                        const categoryFiltered = products.filter(product => product.category === activeCategory);
+                        renderProducts(categoryFiltered, currentPage);
+                    }
+                } else {
+                    // 先按分类筛选，再按搜索词筛选
+                    const activeCategory = document.querySelector('.category-btn.bg-primary').dataset.category;
+                    let categoryFiltered = products;
+                    
+                    if (activeCategory !== 'all') {
+                        categoryFiltered = products.filter(product => product.category === activeCategory);
+                    }
+                    
+                    const filteredProducts = categoryFiltered.filter(product => 
+                        product.name.toLowerCase().includes(searchTerm) || 
+                        product.description.toLowerCase().includes(searchTerm)
+                    );
+                    
+                    renderProducts(filteredProducts, currentPage);
+                }
+            });
+            
+            // 分类筛选
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const category = this.dataset.category;
+                    
+                    // 重置当前页码
+                    currentPage = 1;
+                    
+                    // 更新按钮样式
+                    document.querySelectorAll('.category-btn').forEach(b => {
+                        b.classList.remove('bg-primary', 'text-white');
+                        b.classList.add('bg-gray-200', 'text-gray-700');
+                    });
+                    this.classList.remove('bg-gray-200', 'text-gray-700');
+                    this.classList.add('bg-primary', 'text-white');
+                    
+                    // 获取当前搜索词
+                    const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
+                    
+                    // 先按分类筛选
+                    let categoryFiltered = products;
+                    if (category !== 'all') {
+                        categoryFiltered = products.filter(product => product.category === category);
+                    }
+                    
+                    // 再按搜索词筛选
+                    if (searchTerm === '') {
+                        renderProducts(categoryFiltered, currentPage);
+                    } else {
+                        const filteredProducts = categoryFiltered.filter(product => 
+                            product.name.toLowerCase().includes(searchTerm) || 
+                            product.description.toLowerCase().includes(searchTerm)
+                        );
+                        renderProducts(filteredProducts, currentPage);
+                    }
+                });
+            });
+            
+            // 下载报价单
+            document.getElementById('downloadBtn').addEventListener('click', function() {
+                if (selectedProducts.length === 0) {
+                    alert('请先添加商品到报价单');
+                    return;
+                }
+                
+                downloadQuoteAsImage();
+            });
+            
+            // 帮助按钮
+            document.getElementById('helpBtn').addEventListener('click', function() {
+                document.getElementById('helpModal').classList.remove('hidden');
+            });
+            
+            document.getElementById('helpBtnMobile').addEventListener('click', function() {
+                document.getElementById('helpModal').classList.remove('hidden');
+            });
+            
+            // 关闭帮助模态框
+            document.getElementById('closeHelpBtn').addEventListener('click', function() {
+                document.getElementById('helpModal').classList.add('hidden');
+            });
+            
+            document.getElementById('closeHelpBtnBottom').addEventListener('click', function() {
+                document.getElementById('helpModal').classList.add('hidden');
+            });
+            
+            // 重置按钮
+            document.getElementById('resetBtn').addEventListener('click', function() {
+                document.getElementById('resetModal').classList.remove('hidden');
+            });
+            
+            document.getElementById('resetBtnMobile').addEventListener('click', function() {
+                document.getElementById('resetModal').classList.remove('hidden');
+            });
+            
+            // 取消重置
+            document.getElementById('cancelResetBtn').addEventListener('click', function() {
+                document.getElementById('resetModal').classList.add('hidden');
+            });
+            
+            // 确认重置
+            document.getElementById('confirmResetBtn').addEventListener('click', function() {
+                resetQuote();
+                document.getElementById('resetModal').classList.add('hidden');
+            });
+            
+            // 报价单信息输入事件
+            document.getElementById('clientName').addEventListener('input', updateQuoteInfoPreview);
+            document.getElementById('clientContact').addEventListener('input', updateQuoteInfoPreview);
+            document.getElementById('clientPhone').addEventListener('input', updateQuoteInfoPreview);
+            document.getElementById('companyName').addEventListener('input', updateQuoteInfoPreview);
+            document.getElementById('contactPerson').addEventListener('input', updateQuoteInfoPreview);
+            document.getElementById('contactPhone').addEventListener('input', updateQuoteInfoPreview);
+            document.getElementById('creatorName').addEventListener('input', updateQuoteInfoPreview);
+            document.getElementById('quoteNotes').addEventListener('input', updateQuoteInfoPreview);
+            
+            // 点击模态框外部关闭
+            document.getElementById('helpModal').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    this.classList.add('hidden');
+                }
+            });
+            
+            document.getElementById('resetModal').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    this.classList.add('hidden');
+                }
+            });
+        }
+
+        // 辅助函数：获取分类名称
+        function getCategoryName(category) {
+            const categoryNames = {
+                'electronics': '电子产品',
+                'furniture': '办公家具',
+                'accessories': '配件'
+            };
+            
+            return categoryNames[category] || '其他';
+        }
+
+        // 辅助函数：生成报价单号
+        function generateQuoteId() {
+            const date = new Date();
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            const random = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
+            
+            return `QD-${year}-${month}${day}-${random}`;
+        }
+
+        // 辅助函数：格式化日期
+        function formatDate(date) {
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            
+            return `${year}-${month}-${day}`;
+        }
+    </script>
 </body>
-
 </html>
-	
