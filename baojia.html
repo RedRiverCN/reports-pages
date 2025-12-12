@@ -4002,8 +4002,8 @@
                 const aText = a.textContent.toLowerCase();
                 const bText = b.textContent.toLowerCase();
                 
-                const isAAccessory = aText.includes('配件') || aText.includes('支架') || aText.includes('网线') || aText.includes('线管');
-                const isBAccessory = bText.includes('配件') || bText.includes('支架') || bText.includes('网线') || bText.includes('线管');
+                const isAAccessory = aText.includes('配件') || aText.includes('支架') || aText.includes('网线') || aText.includes('线管')|| aText.includes('特殊费用');
+                const isBAccessory = bText.includes('配件') || bText.includes('支架') || bText.includes('网线') || bText.includes('线管')|| aText.includes('特殊费用');
                 
                 // 主商品排在配件前面
                 if (isAAccessory !== isBAccessory) {
