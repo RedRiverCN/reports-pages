@@ -92,11 +92,18 @@
                     </div>
 
                     <!-- 商品分类标签 -->
-                    <div class="flex overflow-x-auto scrollbar-hide space-x-2 mb-4 pb-2">
+                    <div class="flex flex-wrap space-x-2 mb-4">
                         <button class="category-btn whitespace-nowrap px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/90 transition-all-300" data-category="all">全部</button>
                         <button class="category-btn whitespace-nowrap px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition-all-300" data-category="camera">摄像枪</button>
                         <button class="category-btn whitespace-nowrap px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition-all-300" data-category="nvr">录像机</button>
                         <button class="category-btn whitespace-nowrap px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition-all-300" data-category="harddisk">硬盘</button>
+                        <button class="category-btn whitespace-nowrap px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition-all-300" data-category="monitor">显示器</button>
+                        <button class="category-btn whitespace-nowrap px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition-all-300" data-category="POE">交换机</button>
+                        <button class="category-btn whitespace-nowrap px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition-all-300" data-category="pipe">线管</button>
+                        <button class="category-btn whitespace-nowrap px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition-all-300" data-category="cabinet">机柜</button>
+                        <button class="category-btn whitespace-nowrap px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition-all-300" data-category="accessories">插座</button>
+                        <button class="category-btn whitespace-nowrap px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition-all-300" data-category="construction">施工耗材</button>
+                        <button class="category-btn whitespace-nowrap px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition-all-300" data-category="teshu">特殊费用</button>
                     </div>
 
                     <!-- 商品列表 -->
@@ -136,6 +143,11 @@
                         <div>
                             <label for="creatorName" class="block text-sm font-medium text-gray-700 mb-1">制单人</label>
                             <input type="text" id="creatorName" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="请输入制单人姓名">
+                        </div>
+                        <div>
+                            <label for="quoteDiscount" class="block text-sm font-medium text-gray-700 mb-1">优惠折扣（元）</label>
+                            <input type="number" id="quoteDiscount" min="0" value="0" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="请输入优惠金额">
+                            <p class="text-xs text-gray-500 mt-1">输入正数表示优惠金额，如：400 表示优惠400元</p>
                         </div>
                         <div>
                             <label for="quoteNotes" class="block text-sm font-medium text-gray-700 mb-1">备注</label>
@@ -239,7 +251,7 @@
                                         <span id="previewDiscount" class="font-medium">-¥0.00</span>
                                     </div>
                                     <div class="flex justify-between py-2 border-b border-gray-200">
-                                        <span class="text-gray-600">税费</span>
+                                        <span class="text-gray-600">安装调测费</span>
                                         <span id="previewTax" class="font-medium">¥0.00</span>
                                     </div>
                                     <div class="flex justify-between py-3 mt-2">
@@ -362,37 +374,42 @@
         // 商品数据
         const products = [
 
-  {
+
+{
     "id": 1,
     "name": "皓视通摄像枪",
     "category": "camera",
     "price": 135,
-    "image": "https://p11-doubao-search-sign.byteimg.com/labis/d2c5a4589279c2932cd0b03ef4f0e33a~tplv-be4g95zd3a-image.jpeg?rk3s=542c0f93&x-expires=1780933962&x-signature=AixibetsKb33jBoPIMznulDgGEo%3D",
+    "requiresAccessories": true,
+    "requiredAccessories": [101, 102, 109],
+    "image": "https://s41.ax1x.com/2025/12/12/pZKoNSU.md.jpg",
     "description": "枪机",
     "models": [
       {
-        "id": "model1",
+        "id": "model-1-1",
         "name": "枪机",
         "specs": [
           {
-            "id": "spec1-1",
+            "id": "spec-1-1-1",
             "name": "200万像素/普通夜视",
             "price": 135,
+            "installationFee": 57,
             "internalModels": [
               {
-                "id": "int1-1-1",
+                "id": "int-1-1-1-1",
                 "name": "IPC22V2-LA(PoE)",
                 "price": 135
               }
             ]
           },
           {
-            "id": "spec1-2",
+            "id": "spec-1-1-2",
             "name": "400万像素/普通夜视",
             "price": 170,
+            "installationFee": 57,
             "internalModels": [
               {
-                "id": "int1-2-1",
+                "id": "int-1-1-2-1",
                 "name": "IPC24V2-LA(PoE)",
                 "price": 170
               }
@@ -407,56 +424,62 @@
     "name": "海康威视摄像枪",
     "category": "camera",
     "price": 168,
-    "image": "https://p11-doubao-search-sign.byteimg.com/labis/d2c5a4589279c2932cd0b03ef4f0e33a~tplv-be4g95zd3a-image.jpeg?rk3s=542c0f93&x-expires=1780933962&x-signature=AixibetsKb33jBoPIMznulDgGEo%3D",
+    "requiresAccessories": true,
+    "requiredAccessories": [101, 102, 109],
+    "image": "https://s41.ax1x.com/2025/12/12/pZKoNSU.md.jpg",
     "description": "枪机/半球/球机",
     "models": [
       {
-        "id": "model2-1",
+        "id": "model-2-1",
         "name": "枪机",
         "specs": [
           {
-            "id": "spec2-1-1",
+            "id": "spec-2-1-1",
             "name": "200万像素/普通夜视",
             "price": 168,
+            "installationFee": 57,
             "internalModels": [
               {
-                "id": "int2-1-1-1",
+                "id": "int-2-1-1-1",
                 "name": "DS-IPC-B12HV3-IA(POE)",
                 "price": 168
               }
             ]
           },
           {
-            "id": "spec2-1-2",
+            "id": "spec-2-1-2",
             "name": "200万像素/全彩夜视",
             "price": 285,
+            "installationFee": 57,
             "internalModels": [
               {
-                "id": "int2-1-2-1",
+                "id": "int-2-1-2-1",
                 "name": "DS-2CD3T27SWDV3-L",
                 "price": 285
               }
             ]
           },
           {
-            "id": "spec2-1-3",
+            "id": "spec-2-1-3",
             "name": "400万像素/普通夜视",
             "price": 210,
+            "installationFee": 57,
             "internalModels": [
               {
-                "id": "int2-1-3-1",
+                "id": "int-2-1-3-1",
                 "name": "DS-2CD1245-LA(POE)",
                 "price": 210
               }
             ]
           },
           {
-            "id": "spec2-1-4",
+            "id": "spec-2-1-4",
             "name": "400万像素/全彩夜视",
             "price": 358,
+            "installationFee": 57,
             "internalModels": [
               {
-                "id": "int2-1-4-1",
+                "id": "int-2-1-4-1",
                 "name": "DS-2CD3T47SWDV3-L",
                 "price": 358
               }
@@ -465,52 +488,56 @@
         ]
       },
       {
-        "id": "model2-2",
+        "id": "model-2-2",
         "name": "半球",
         "specs": [
           {
-            "id": "spec2-2-1",
+            "id": "spec-2-2-1",
             "name": "200万像素/普通夜视",
             "price": 168,
+            "installationFee": 57,
             "internalModels": [
               {
-                "id": "int2-2-1-1",
+                "id": "int-2-2-1-1",
                 "name": "DS-IPC-T12HV3-IA（POE）",
                 "price": 168
               }
             ]
           },
           {
-            "id": "spec2-2-2",
+            "id": "spec-2-2-2",
             "name": "200万像素/全彩夜视",
             "price": 285,
+            "installationFee": 57,
             "internalModels": [
               {
-                "id": "int2-2-2-1",
+                "id": "int-2-2-2-1",
                 "name": "DS-2CD3327SWDV3-L",
                 "price": 285
               }
             ]
           },
           {
-            "id": "spec2-2-3",
+            "id": "spec-2-2-3",
             "name": "400万像素/普通夜视",
             "price": 210,
+            "installationFee": 57,
             "internalModels": [
               {
-                "id": "int2-2-3-1",
+                "id": "int-2-2-3-1",
                 "name": "DS-2CD1345V2-LA(POE)",
                 "price": 210
               }
             ]
           },
           {
-            "id": "spec2-2-4",
+            "id": "spec-2-2-4",
             "name": "400万像素/全彩夜视",
             "price": 358,
+            "installationFee": 57,
             "internalModels": [
               {
-                "id": "int2-2-4-1",
+                "id": "int-2-2-4-1",
                 "name": "DS-2CD3347SWDV3-L",
                 "price": 358
               }
@@ -519,16 +546,17 @@
         ]
       },
       {
-        "id": "model2-3",
+        "id": "model-2-3",
         "name": "球机",
         "specs": [
           {
-            "id": "spec2-3-1",
+            "id": "spec-2-3-1",
             "name": "400万像素/360度旋转球机",
             "price": 1346,
+            "installationFee": 57,
             "internalModels": [
               {
-                "id": "int2-3-1-1",
+                "id": "int-2-3-1-1",
                 "name": "DS-2DC4425DW-D",
                 "price": 1346
               }
@@ -538,37 +566,41 @@
       }
     ]
   },
-  {
+{
     "id": 3,
     "name": "大华摄像枪",
     "category": "camera",
     "price": 198,
-    "image": "https://p11-doubao-search-sign.byteimg.com/labis/d2c5a4589279c2932cd0b03ef4f0e33a~tplv-be4g95zd3a-image.jpeg?rk3s=542c0f93&x-expires=1780933962&x-signature=AixibetsKb33jBoPIMznulDgGEo%3D",
+    "requiresAccessories": true,
+    "requiredAccessories": [101, 102, 109],
+    "image": "https://s41.ax1x.com/2025/12/12/pZKoNSU.md.jpg",
     "description": "枪机/半球/球机",
     "models": [
       {
-        "id": "model3-1",
+        "id": "model-3-1",
         "name": "枪机",
         "specs": [
           {
-            "id": "spec3-1-1",
+            "id": "spec-3-1-1",
             "name": "200万像素/全彩夜视",
             "price": 198,
+            "installationFee": 57,
             "internalModels": [
               {
-                "id": "int3-1-1-1",
+                "id": "int-3-1-1-1",
                 "name": "DH-IPC-HFW3230M3-A-IL4",
                 "price": 198
               }
             ]
           },
           {
-            "id": "spec3-1-2",
+            "id": "spec-3-1-2",
             "name": "400万像素/全彩夜视",
             "price": 210,
+            "installationFee": 57,
             "internalModels": [
               {
-                "id": "int3-1-2-1",
+                "id": "int-3-1-2-1",
                 "name": "DH-IPC-HFW3430M3-A-IL4",
                 "price": 210
               }
@@ -577,28 +609,30 @@
         ]
       },
       {
-        "id": "model3-2",
+        "id": "model-3-2",
         "name": "半球",
         "specs": [
           {
-            "id": "spec3-2-1",
+            "id": "spec-3-2-1",
             "name": "200万像素/全彩夜视",
             "price": 198,
+            "installationFee": 57,
             "internalModels": [
               {
-                "id": "int3-2-1-1",
+                "id": "int-3-2-1-1",
                 "name": "DH-IPC-HDW3230T3-A-IL2",
                 "price": 198
               }
             ]
           },
           {
-            "id": "spec3-2-2",
+            "id": "spec-3-2-2",
             "name": "400万像素/全彩夜视",
             "price": 210,
+            "installationFee": 57,
             "internalModels": [
               {
-                "id": "int3-2-2-1",
+                "id": "int-3-2-2-1",
                 "name": "DH-IPC-HDW3430T3-A-IL2",
                 "price": 210
               }
@@ -607,16 +641,17 @@
         ]
       },
       {
-        "id": "model3-3",
+        "id": "model-3-3",
         "name": "球机",
         "specs": [
           {
-            "id": "spec3-3-1",
+            "id": "spec-3-3-1",
             "name": "400万像素/360度旋转球机",
             "price": 1350,
+            "installationFee": 57,
             "internalModels": [
               {
-                "id": "int3-3-1-1",
+                "id": "int-3-3-1-1",
                 "name": "DH-SD-4D1420-HN-NB-D",
                 "price": 1350
               }
@@ -631,20 +666,23 @@
     "name": "TP-LINK摄像枪",
     "category": "camera",
     "price": 160,
-    "image": "https://p11-doubao-search-sign.byteimg.com/labis/d2c5a4589279c2932cd0b03ef4f0e33a~tplv-be4g95zd3a-image.jpeg?rk3s=542c0f93&x-expires=1780933962&x-signature=AixibetsKb33jBoPIMznulDgGEo%3D",
+    "requiresAccessories": true,
+    "requiredAccessories": [101, 102, 109],
+    "image": "https://s41.ax1x.com/2025/12/12/pZKoNSU.md.jpg",
     "description": "枪机/半球/球机",
     "models": [
       {
-        "id": "model4-1",
+        "id": "model-4-1",
         "name": "枪机",
         "specs": [
           {
-            "id": "spec4-1-1",
+            "id": "spec-4-1-1",
             "name": "400万像素/全彩夜视",
             "price": 160,
+            "installationFee": 57,
             "internalModels": [
               {
-                "id": "int4-1-1-1",
+                "id": "int-4-1-1-1",
                 "name": "TL-IPC548GP-W4",
                 "price": 160
               }
@@ -653,16 +691,17 @@
         ]
       },
       {
-        "id": "model4-2",
+        "id": "model-4-2",
         "name": "半球",
         "specs": [
           {
-            "id": "spec4-2-1",
+            "id": "spec-4-2-1",
             "name": "400万像素/全彩夜视",
             "price": 160,
+            "installationFee": 57,
             "internalModels": [
               {
-                "id": "int4-2-1-1",
+                "id": "int-4-2-1-1",
                 "name": "TL-IPC445GP-W4",
                 "price": 160
               }
@@ -671,16 +710,17 @@
         ]
       },
       {
-        "id": "model4-3",
+        "id": "model-4-3",
         "name": "球机",
         "specs": [
           {
-            "id": "spec4-3-1",
+            "id": "spec-4-3-1",
             "name": "400万像素/360度旋转球机",
             "price": 985,
+            "installationFee": 57,
             "internalModels": [
               {
-                "id": "int4-3-1-1",
+                "id": "int-4-3-1-1",
                 "name": "TL-IPC4423X-WDC",
                 "price": 985
               }
@@ -690,74 +730,80 @@
       }
     ]
   },
-  
   {
     "id": 5,
     "name": "TP-LINK硬盘录像机",
     "category": "nvr",
     "price": 111,
-    "image": "https://p11-doubao-search-sign.byteimg.com/labis/d2c5a4589279c2932cd0b03ef4f0e33a~tplv-be4g95zd3a-image.jpeg?rk3s=542c0f93&x-expires=1780933962&x-signature=AixibetsKb33jBoPIMznulDgGEo%21D",
+    "requiresAccessories": false,
+    "requiredAccessories": [],
+    "image": "https://s41.ax1x.com/2025/12/12/pZKoYWT.md.jpg",
     "description": "最大32路/2盘",
     "models": [
       {
-        "id": "model5",
-        "name": "硬盘录像机",
+        "id": "model-5-1",
+        "name": "录像机",
         "specs": [
           {
-            "id": "spec5-1",
+            "id": "spec-5-1-1",
             "name": "4路/1盘",
             "price": 111,
+            "installationFee": 60,
             "internalModels": [
               {
-                "id": "int5-1-1",
+                "id": "int-5-1-1-1",
                 "name": "TL-NVR6104C-L",
                 "price": 111
               }
             ]
           },
           {
-            "id": "spec5-2",
+            "id": "spec-5-1-2",
             "name": "8路/1盘",
             "price": 144,
+            "installationFee": 60,
             "internalModels": [
               {
-                "id": "int5-2-1",
+                "id": "int-5-1-2-1",
                 "name": "TL-NVR6108C-L",
                 "price": 144
               }
             ]
           },
           {
-            "id": "spec5-3",
+            "id": "spec-5-1-3",
             "name": "16路/1盘",
             "price": 186,
+            "installationFee": 60,
             "internalModels": [
               {
-                "id": "int5-3-1",
+                "id": "int-5-1-3-1",
                 "name": "TL-NVR6116C-L",
                 "price": 186
               }
             ]
           },
           {
-            "id": "spec5-4",
+            "id": "spec-5-1-4",
             "name": "16路/2盘",
             "price": 576,
+            "installationFee": 60,
             "internalModels": [
               {
-                "id": "int5-4-1",
+                "id": "int-5-1-4-1",
                 "name": "TL-NVR6216E-N",
                 "price": 576
               }
             ]
           },
           {
-            "id": "spec5-5",
+            "id": "spec-5-1-5",
             "name": "32路/2盘",
             "price": 744,
+            "installationFee": 60,
             "internalModels": [
               {
-                "id": "int5-5-1",
+                "id": "int-5-1-5-1",
                 "name": "TL-NVR6232E-N",
                 "price": 744
               }
@@ -772,80 +818,88 @@
     "name": "大华硬盘录像机",
     "category": "nvr",
     "price": 180,
-    "image": "https://p11-doubao-search-sign.byteimg.com/labis/d2c5a4589279c2932cd0b03ef4f0e33a~tplv-be4g95zd3a-image.jpeg?rk3s=542c0f93&x-expires=1780933962&x-signature=AixibetsKb33jBoPIMznulDgGEo%26D",
+    "requiresAccessories": false,
+    "requiredAccessories": [],
+    "image": "https://s41.ax1x.com/2025/12/12/pZKoYWT.md.jpg",
     "description": "最大32路/8盘",
     "models": [
       {
-        "id": "model6",
-        "name": "硬盘录像机",
+        "id": "model-6-1",
+        "name": "录像机",
         "specs": [
           {
-            "id": "spec6-1",
+            "id": "spec-6-1-1",
             "name": "4路/1盘",
             "price": 180,
+            "installationFee": 60,
             "internalModels": [
               {
-                "id": "int6-1-1",
+                "id": "int-6-1-1-1",
                 "name": "DH-NVR4104HC-4KS3/L",
                 "price": 180
               }
             ]
           },
           {
-            "id": "spec6-2",
+            "id": "spec-6-1-2",
             "name": "8路/1盘",
             "price": 220,
+            "installationFee": 60,
             "internalModels": [
               {
-                "id": "int6-2-1",
+                "id": "int-6-1-2-1",
                 "name": "DH-NVR4108HC-4KS3/L",
                 "price": 220
               }
             ]
           },
           {
-            "id": "spec6-3",
+            "id": "spec-6-1-3",
             "name": "8路/2盘",
             "price": 588,
+            "installationFee": 60,
             "internalModels": [
               {
-                "id": "int6-3-1",
+                "id": "int-6-1-3-1",
                 "name": "DH-NVR4208-4KS2",
                 "price": 588
               }
             ]
           },
           {
-            "id": "spec6-4",
+            "id": "spec-6-1-4",
             "name": "16路/1盘",
             "price": 492,
+            "installationFee": 60,
             "internalModels": [
               {
-                "id": "int6-4-1",
+                "id": "int-6-1-4-1",
                 "name": "DH-NVR4116HS-4KS3",
                 "price": 492
               }
             ]
           },
           {
-            "id": "spec6-5",
+            "id": "spec-6-1-5",
             "name": "16路/4盘",
             "price": 1332,
+            "installationFee": 60,
             "internalModels": [
               {
-                "id": "int6-5-1",
+                "id": "int-6-1-5-1",
                 "name": "DH-NVR4416-4KS2",
                 "price": 1332
               }
             ]
           },
           {
-            "id": "spec6-6",
+            "id": "spec-6-1-6",
             "name": "32路/8盘",
             "price": 1980,
+            "installationFee": 60,
             "internalModels": [
               {
-                "id": "int6-6-1",
+                "id": "int-6-1-6-1",
                 "name": "DH-NVR4832-4KS2",
                 "price": 1980
               }
@@ -859,141 +913,128 @@
     "id": 7,
     "name": "海康威视硬盘录像机",
     "category": "nvr",
-    "price": 175,
-    "image": "https://p11-doubao-search-sign.byteimg.com/labis/d2c5a4589279c2932cd0b03ef4f0e33a~tplv-be4g95zd3a-image.jpeg?rk3s=542c0f93&x-expires=1780933962&x-signature=AixibetsKb33jBoPIMznulDgGEo%32D",
+    "price": 523,
+    "requiresAccessories": false,
+    "requiredAccessories": [],
+    "image": "https://s41.ax1x.com/2025/12/12/pZKoYWT.md.jpg",
     "description": "最大64路/16盘",
     "models": [
       {
-        "id": "model7",
-        "name": "硬盘录像机",
+        "id": "model-7-1",
+        "name": "录像机",
         "specs": [
           {
-            "id": "spec7-1",
-            "name": "4路/1盘",
-            "price": 175,
-            "internalModels": [
-              {
-                "id": "int7-1-1",
-                "name": "DS-7804N-G1",
-                "price": 175
-              }
-            ]
-          },
-          {
-            "id": "spec7-2",
-            "name": "8路/1盘",
-            "price": 240,
-            "internalModels": [
-              {
-                "id": "int7-2-1",
-                "name": "DS-7808N-G1",
-                "price": 240
-              }
-            ]
-          },
-          {
-            "id": "spec7-3",
+            "id": "spec-7-1-1",
             "name": "8路/2盘",
             "price": 570,
+            "installationFee": 60,
             "internalModels": [
               {
-                "id": "int7-3-1",
+                "id": "int-7-1-1-1",
                 "name": "DS-7808N-Q2",
                 "price": 570
               }
             ]
           },
           {
-            "id": "spec7-4",
+            "id": "spec-7-1-2",
             "name": "16路/1盘",
             "price": 523,
+            "installationFee": 60,
             "internalModels": [
               {
-                "id": "int7-4-1",
+                "id": "int-7-1-2-1",
                 "name": "7816N-Q1",
                 "price": 523
               }
             ]
           },
           {
-            "id": "spec7-5",
+            "id": "spec-7-1-3",
             "name": "16路/2盘",
             "price": 650,
+            "installationFee": 60,
             "internalModels": [
               {
-                "id": "int7-5-1",
+                "id": "int-7-1-3-1",
                 "name": "DS-7816N-Q2",
                 "price": 650
               }
             ]
           },
           {
-            "id": "spec7-6",
+            "id": "spec-7-1-4",
             "name": "16路/4盘",
             "price": 1230,
+            "installationFee": 60,
             "internalModels": [
               {
-                "id": "int7-6-1",
+                "id": "int-7-1-4-1",
                 "name": "DS-7916N-R4",
                 "price": 1230
               }
             ]
           },
           {
-            "id": "spec7-7",
+            "id": "spec-7-1-5",
             "name": "32路/2盘",
             "price": 1050,
+            "installationFee": 60,
             "internalModels": [
               {
-                "id": "int7-7-1",
+                "id": "int-7-1-5-1",
                 "name": "DS-7832N-R2",
                 "price": 1050
               }
             ]
           },
           {
-            "id": "spec7-8",
+            "id": "spec-7-1-6",
             "name": "32路/4盘",
             "price": 1495,
+            "installationFee": 60,
             "internalModels": [
               {
-                "id": "int7-8-1",
+                "id": "int-7-1-6-1",
                 "name": "DS-7932N-R4",
                 "price": 1495
               }
             ]
           },
           {
-            "id": "spec7-9",
+            "id": "spec-7-1-7",
             "name": "32路/8盘",
             "price": 2090,
+            "installationFee": 60,
             "internalModels": [
               {
-                "id": "int7-9-1",
+                "id": "int-7-1-7-1",
                 "name": "DS-8832N-R8",
                 "price": 2090
               }
             ]
           },
           {
-            "id": "spec7-10",
+            "id": "spec-7-1-8",
             "name": "64路/8盘",
             "price": 2710,
+            "installationFee": 60,
             "internalModels": [
               {
-                "id": "int7-10-1",
+                "id": "int-7-1-8-1",
                 "name": "DS-8864N-R8",
                 "price": 2710
               }
             ]
           },
           {
-            "id": "spec7-11",
+            "id": "spec-7-1-9",
             "name": "64路/16盘",
             "price": 5250,
+            "installationFee": 60,
             "internalModels": [
               {
-                "id": "int7-11-1",
+                "id": "int-7-1-9-1",
                 "name": "DS-8864N-R16/16K",
                 "price": 5250
               }
@@ -1008,44 +1049,49 @@
     "name": "皓视通硬盘录像机",
     "category": "nvr",
     "price": 135,
-    "image": "https://p11-doubao-search-sign.byteimg.com/labis/d2c5a4589279c2932cd0b03ef4f0e33a~tplv-be4g95zd3a-image.jpeg?rk3s=542c0f93&x-expires=1780933962&x-signature=AixibetsKb33jBoPIMznulDgGEo%43D",
+    "requiresAccessories": false,
+    "requiredAccessories": [],
+    "image": "https://s41.ax1x.com/2025/12/12/pZKoYWT.md.jpg",
     "description": "最大16路/2盘",
     "models": [
       {
-        "id": "model8",
-        "name": "硬盘录像机",
+        "id": "model-8-1",
+        "name": "录像机",
         "specs": [
           {
-            "id": "spec8-1",
+            "id": "spec-8-1-1",
             "name": "4路/1盘",
             "price": 135,
+            "installationFee": 60,
             "internalModels": [
               {
-                "id": "int8-1-1",
+                "id": "int-8-1-1-1",
                 "name": "HNVR3106-V3",
                 "price": 135
               }
             ]
           },
           {
-            "id": "spec8-2",
+            "id": "spec-8-1-2",
             "name": "8路/1盘",
             "price": 170,
+            "installationFee": 60,
             "internalModels": [
               {
-                "id": "int8-2-1",
+                "id": "int-8-1-2-1",
                 "name": "HNVR3110-V3",
                 "price": 170
               }
             ]
           },
           {
-            "id": "spec8-3",
+            "id": "spec-8-1-3",
             "name": "16路/2盘",
             "price": 465,
+            "installationFee": 60,
             "internalModels": [
               {
-                "id": "int8-3-1",
+                "id": "int-8-1-3-1",
                 "name": "HNVR5216",
                 "price": 465
               }
@@ -1056,50 +1102,55 @@
     ]
   },
   
-  
   {
-    "id": 9,
+    "id": 109,
     "name": "硬盘",
     "category": "harddisk",
     "price": 755,
+    "requiresAccessories": false,
+    "requiredAccessories": [],
     "image": "https://p11-doubao-search-sign.byteimg.com/labis/d2c5a4589279c2932cd0b03ef4f0e33a~tplv-be4g95zd3a-image.jpeg?rk3s=542c0f93&x-expires=1780933962&x-signature=AixibetsKb33jBoPIMznulDgGEo%3D",
-    "description": "必选",
+    "description": "必选配件",
+	"isAccessory": true, // 标记为配件
     "models": [
       {
-        "id": "model9-1",
-        "name": "1路硬盘配置",
+        "id": "model_1",
+        "name": "1路",
         "specs": [
           {
-            "id": "spec9-1-1",
+            "id": "spec_1_1",
             "name": "最少录像7天/2T",
             "price": 755,
+            "installationFee": 0,
             "internalModels": [
               {
-                "id": "int9-1-1-1",
+                "id": "int_1_1_1",
                 "name": "2T容量",
                 "price": 755
               }
             ]
           },
           {
-            "id": "spec9-1-2",
+            "id": "spec_1_2",
             "name": "最少录像15天/2T",
             "price": 755,
+            "installationFee": 0,
             "internalModels": [
               {
-                "id": "int9-1-2-1",
+                "id": "int_1_2_1",
                 "name": "2T容量",
                 "price": 755
               }
             ]
           },
           {
-            "id": "spec9-1-3",
+            "id": "spec_1_3",
             "name": "最少录像30天/2T",
             "price": 755,
+            "installationFee": 0,
             "internalModels": [
               {
-                "id": "int9-1-3-1",
+                "id": "int_1_3_1",
                 "name": "2T容量",
                 "price": 755
               }
@@ -1108,40 +1159,43 @@
         ]
       },
       {
-        "id": "model9-2",
-        "name": "2路硬盘配置",
+        "id": "model_2",
+        "name": "2路",
         "specs": [
           {
-            "id": "spec9-2-1",
+            "id": "spec_2_1",
             "name": "最少录像7天/2T",
             "price": 755,
+            "installationFee": 0,
             "internalModels": [
               {
-                "id": "int9-2-1-1",
+                "id": "int_2_1_1",
                 "name": "2T容量",
                 "price": 755
               }
             ]
           },
           {
-            "id": "spec9-2-2",
+            "id": "spec_2_2",
             "name": "最少录像15天/2T",
             "price": 755,
+            "installationFee": 0,
             "internalModels": [
               {
-                "id": "int9-2-2-1",
+                "id": "int_2_2_1",
                 "name": "2T容量",
                 "price": 755
               }
             ]
           },
           {
-            "id": "spec9-2-3",
+            "id": "spec_2_3",
             "name": "最少录像30天/2T",
             "price": 755,
+            "installationFee": 0,
             "internalModels": [
               {
-                "id": "int9-2-3-1",
+                "id": "int_2_3_1",
                 "name": "2T容量",
                 "price": 755
               }
@@ -1150,40 +1204,43 @@
         ]
       },
       {
-        "id": "model9-3",
-        "name": "3路硬盘配置",
+        "id": "model_3",
+        "name": "3路",
         "specs": [
           {
-            "id": "spec9-3-1",
+            "id": "spec_3_1",
             "name": "最少录像7天/2T",
             "price": 755,
+            "installationFee": 0,
             "internalModels": [
               {
-                "id": "int9-3-1-1",
+                "id": "int_3_1_1",
                 "name": "2T容量",
                 "price": 755
               }
             ]
           },
           {
-            "id": "spec9-3-2",
+            "id": "spec_3_2",
             "name": "最少录像15天/2T",
             "price": 755,
+            "installationFee": 0,
             "internalModels": [
               {
-                "id": "int9-3-2-1",
+                "id": "int_3_2_1",
                 "name": "2T容量",
                 "price": 755
               }
             ]
           },
           {
-            "id": "spec9-3-3",
+            "id": "spec_3_3",
             "name": "最少录像30天/2T",
             "price": 755,
+            "installationFee": 0,
             "internalModels": [
               {
-                "id": "int9-3-3-1",
+                "id": "int_3_3_1",
                 "name": "2T容量",
                 "price": 755
               }
@@ -1192,40 +1249,43 @@
         ]
       },
       {
-        "id": "model9-4",
-        "name": "4路硬盘配置",
+        "id": "model_4",
+        "name": "4路",
         "specs": [
           {
-            "id": "spec9-4-1",
+            "id": "spec_4_1",
             "name": "最少录像7天/2T",
             "price": 755,
+            "installationFee": 0,
             "internalModels": [
               {
-                "id": "int9-4-1-1",
+                "id": "int_4_1_1",
                 "name": "2T容量",
                 "price": 755
               }
             ]
           },
           {
-            "id": "spec9-4-2",
+            "id": "spec_4_2",
             "name": "最少录像15天/2T",
             "price": 755,
+            "installationFee": 0,
             "internalModels": [
               {
-                "id": "int9-4-2-1",
+                "id": "int_4_2_1",
                 "name": "2T容量",
                 "price": 755
               }
             ]
           },
           {
-            "id": "spec9-4-3",
+            "id": "spec_4_3",
             "name": "最少录像30天/4T",
             "price": 944,
+            "installationFee": 0,
             "internalModels": [
               {
-                "id": "int9-4-3-1",
+                "id": "int_4_3_1",
                 "name": "4T容量",
                 "price": 944
               }
@@ -1234,40 +1294,43 @@
         ]
       },
       {
-        "id": "model9-5",
-        "name": "5路硬盘配置",
+        "id": "model_5",
+        "name": "5路",
         "specs": [
           {
-            "id": "spec9-5-1",
+            "id": "spec_5_1",
             "name": "最少录像7天/2T",
             "price": 755,
+            "installationFee": 0,
             "internalModels": [
               {
-                "id": "int9-5-1-1",
+                "id": "int_5_1_1",
                 "name": "2T容量",
                 "price": 755
               }
             ]
           },
           {
-            "id": "spec9-5-2",
+            "id": "spec_5_2",
             "name": "最少录像15天/2T",
             "price": 755,
+            "installationFee": 0,
             "internalModels": [
               {
-                "id": "int9-5-2-1",
+                "id": "int_5_2_1",
                 "name": "2T容量",
                 "price": 755
               }
             ]
           },
           {
-            "id": "spec9-5-3",
+            "id": "spec_5_3",
             "name": "最少录像30天/4T",
             "price": 944,
+            "installationFee": 0,
             "internalModels": [
               {
-                "id": "int9-5-3-1",
+                "id": "int_5_3_1",
                 "name": "4T容量",
                 "price": 944
               }
@@ -1276,40 +1339,43 @@
         ]
       },
       {
-        "id": "model9-6",
-        "name": "6路硬盘配置",
+        "id": "model_6",
+        "name": "6路",
         "specs": [
           {
-            "id": "spec9-6-1",
+            "id": "spec_6_1",
             "name": "最少录像7天/2T",
             "price": 755,
+            "installationFee": 0,
             "internalModels": [
               {
-                "id": "int9-6-1-1",
+                "id": "int_6_1_1",
                 "name": "2T容量",
                 "price": 755
               }
             ]
           },
           {
-            "id": "spec9-6-2",
+            "id": "spec_6_2",
             "name": "最少录像15天/2T",
             "price": 755,
+            "installationFee": 0,
             "internalModels": [
               {
-                "id": "int9-6-2-1",
+                "id": "int_6_2_1",
                 "name": "2T容量",
                 "price": 755
               }
             ]
           },
           {
-            "id": "spec9-6-3",
+            "id": "spec_6_3",
             "name": "最少录像30天/2T",
             "price": 755,
+            "installationFee": 0,
             "internalModels": [
               {
-                "id": "int9-6-3-1",
+                "id": "int_6_3_1",
                 "name": "2T容量",
                 "price": 755
               }
@@ -1318,40 +1384,43 @@
         ]
       },
       {
-        "id": "model9-7",
-        "name": "7路硬盘配置",
+        "id": "model_7",
+        "name": "7路",
         "specs": [
           {
-            "id": "spec9-7-1",
+            "id": "spec_7_1",
             "name": "最少录像7天/2T",
             "price": 755,
+            "installationFee": 0,
             "internalModels": [
               {
-                "id": "int9-7-1-1",
+                "id": "int_7_1_1",
                 "name": "2T容量",
                 "price": 755
               }
             ]
           },
           {
-            "id": "spec9-7-2",
+            "id": "spec_7_2",
             "name": "最少录像15天/4T",
             "price": 944,
+            "installationFee": 0,
             "internalModels": [
               {
-                "id": "int9-7-2-1",
+                "id": "int_7_2_1",
                 "name": "4T容量",
                 "price": 944
               }
             ]
           },
           {
-            "id": "spec9-7-3",
+            "id": "spec_7_3",
             "name": "最少录像30天/6T",
             "price": 1323,
+            "installationFee": 0,
             "internalModels": [
               {
-                "id": "int9-7-3-1",
+                "id": "int_7_3_1",
                 "name": "6T容量",
                 "price": 1323
               }
@@ -1360,40 +1429,43 @@
         ]
       },
       {
-        "id": "model9-8",
-        "name": "8路硬盘配置",
+        "id": "model_8",
+        "name": "8路",
         "specs": [
           {
-            "id": "spec9-8-1",
+            "id": "spec_8_1",
             "name": "最少录像7天/2T",
             "price": 755,
+            "installationFee": 0,
             "internalModels": [
               {
-                "id": "int9-8-1-1",
+                "id": "int_8_1_1",
                 "name": "2T容量",
                 "price": 755
               }
             ]
           },
           {
-            "id": "spec9-8-2",
+            "id": "spec_8_2",
             "name": "最少录像15天/4T",
             "price": 944,
+            "installationFee": 0,
             "internalModels": [
               {
-                "id": "int9-8-2-1",
+                "id": "int_8_2_1",
                 "name": "4T容量",
                 "price": 944
               }
             ]
           },
           {
-            "id": "spec9-8-3",
+            "id": "spec_8_3",
             "name": "最少录像30天/6T",
             "price": 1323,
+            "installationFee": 0,
             "internalModels": [
               {
-                "id": "int9-8-3-1",
+                "id": "int_8_3_1",
                 "name": "6T容量",
                 "price": 1323
               }
@@ -1402,40 +1474,43 @@
         ]
       },
       {
-        "id": "model9-9",
-        "name": "9路硬盘配置",
+        "id": "model_9",
+        "name": "9路",
         "specs": [
           {
-            "id": "spec9-9-1",
+            "id": "spec_9_1",
             "name": "最少录像7天/2T",
             "price": 755,
+            "installationFee": 0,
             "internalModels": [
               {
-                "id": "int9-9-1-1",
+                "id": "int_9_1_1",
                 "name": "2T容量",
                 "price": 755
               }
             ]
           },
           {
-            "id": "spec9-9-2",
+            "id": "spec_9_2",
             "name": "最少录像15天/4T",
             "price": 944,
+            "installationFee": 0,
             "internalModels": [
               {
-                "id": "int9-9-2-1",
+                "id": "int_9_2_1",
                 "name": "4T容量",
                 "price": 944
               }
             ]
           },
           {
-            "id": "spec9-9-3",
+            "id": "spec_9_3",
             "name": "最少录像30天/8T",
             "price": 1975,
+            "installationFee": 0,
             "internalModels": [
               {
-                "id": "int9-9-3-1",
+                "id": "int_9_3_1",
                 "name": "8T容量",
                 "price": 1975
               }
@@ -1444,42 +1519,1612 @@
         ]
       },
       {
-        "id": "model9-10",
-        "name": "10路硬盘配置",
+        "id": "model_10",
+        "name": "10路",
         "specs": [
           {
-            "id": "spec9-10-1",
+            "id": "spec_10_1",
             "name": "最少录像7天/2T",
             "price": 755,
+            "installationFee": 0,
             "internalModels": [
               {
-                "id": "int9-10-1-1",
+                "id": "int_10_1_1",
                 "name": "2T容量",
                 "price": 755
               }
             ]
           },
           {
-            "id": "spec9-10-2",
+            "id": "spec_10_2",
             "name": "最少录像15天/4T",
             "price": 944,
+            "installationFee": 0,
             "internalModels": [
               {
-                "id": "int9-10-2-1",
+                "id": "int_10_2_1",
                 "name": "4T容量",
                 "price": 944
               }
             ]
           },
           {
-            "id": "spec9-10-3",
+            "id": "spec_10_3",
             "name": "最少录像30天/8T",
             "price": 1975,
+            "installationFee": 0,
             "internalModels": [
               {
-                "id": "int9-10-3-1",
+                "id": "int_10_3_1",
                 "name": "8T容量",
                 "price": 1975
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "model_11",
+        "name": "11路",
+        "specs": [
+          {
+            "id": "spec_11_1",
+            "name": "最少录像7天/2T",
+            "price": 755,
+            "installationFee": 0,
+            "internalModels": [
+              {
+                "id": "int_11_1_1",
+                "name": "2T容量",
+                "price": 755
+              }
+            ]
+          },
+          {
+            "id": "spec_11_2",
+            "name": "最少录像15天/4T",
+            "price": 944,
+            "installationFee": 0,
+            "internalModels": [
+              {
+                "id": "int_11_2_1",
+                "name": "4T容量",
+                "price": 944
+              }
+            ]
+          },
+          {
+            "id": "spec_11_3",
+            "name": "最少录像30天/8T",
+            "price": 1975,
+            "installationFee": 0,
+            "internalModels": [
+              {
+                "id": "int_11_3_1",
+                "name": "8T容量",
+                "price": 1975
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "model_12",
+        "name": "12路",
+        "specs": [
+          {
+            "id": "spec_12_1",
+            "name": "最少录像7天/2T",
+            "price": 755,
+            "installationFee": 0,
+            "internalModels": [
+              {
+                "id": "int_12_1_1",
+                "name": "2T容量",
+                "price": 755
+              }
+            ]
+          },
+          {
+            "id": "spec_12_2",
+            "name": "最少录像15天/6T",
+            "price": 1323,
+            "installationFee": 0,
+            "internalModels": [
+              {
+                "id": "int_12_2_1",
+                "name": "6T容量",
+                "price": 1323
+              }
+            ]
+          },
+          {
+            "id": "spec_12_3",
+            "name": "最少录像30天/10T",
+            "price": 2036,
+            "installationFee": 0,
+            "internalModels": [
+              {
+                "id": "int_12_3_1",
+                "name": "10T容量",
+                "price": 2036
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "model_13",
+        "name": "13路",
+        "specs": [
+          {
+            "id": "spec_13_1",
+            "name": "最少录像7天/4T",
+            "price": 944,
+            "installationFee": 0,
+            "internalModels": [
+              {
+                "id": "int_13_1_1",
+                "name": "4T容量",
+                "price": 944
+              }
+            ]
+          },
+          {
+            "id": "spec_13_2",
+            "name": "最少录像15天/6T",
+            "price": 1323,
+            "installationFee": 0,
+            "internalModels": [
+              {
+                "id": "int_13_2_1",
+                "name": "6T容量",
+                "price": 1323
+              }
+            ]
+          },
+          {
+            "id": "spec_13_3",
+            "name": "最少录像30天/10T",
+            "price": 2036,
+            "installationFee": 0,
+            "internalModels": [
+              {
+                "id": "int_13_3_1",
+                "name": "10T容量",
+                "price": 2036
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "model_14",
+        "name": "14路",
+        "specs": [
+          {
+            "id": "spec_14_1",
+            "name": "最少录像7天/4T",
+            "price": 944,
+            "installationFee": 0,
+            "internalModels": [
+              {
+                "id": "int_14_1_1",
+                "name": "4T容量",
+                "price": 944
+              }
+            ]
+          },
+          {
+            "id": "spec_14_2",
+            "name": "最少录像15天/6T",
+            "price": 1323,
+            "installationFee": 0,
+            "internalModels": [
+              {
+                "id": "int_14_2_1",
+                "name": "6T容量",
+                "price": 1323
+              }
+            ]
+          },
+          {
+            "id": "spec_14_3",
+            "name": "最少录像30天/10T",
+            "price": 2036,
+            "installationFee": 0,
+            "internalModels": [
+              {
+                "id": "int_14_3_1",
+                "name": "10T容量",
+                "price": 2036
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "model_15",
+        "name": "15路",
+        "specs": [
+          {
+            "id": "spec_15_1",
+            "name": "最少录像7天/4T",
+            "price": 944,
+            "installationFee": 0,
+            "internalModels": [
+              {
+                "id": "int_15_1_1",
+                "name": "4T容量",
+                "price": 944
+              }
+            ]
+          },
+          {
+            "id": "spec_15_2",
+            "name": "最少录像15天/6T",
+            "price": 1323,
+            "installationFee": 0,
+            "internalModels": [
+              {
+                "id": "int_15_2_1",
+                "name": "6T容量",
+                "price": 1323
+              }
+            ]
+          },
+          {
+            "id": "spec_15_3",
+            "name": "最少录像30天/12T",
+            "price": 2358,
+            "installationFee": 0,
+            "internalModels": [
+              {
+                "id": "int_15_3_1",
+                "name": "12T容量",
+                "price": 2358
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "model_16",
+        "name": "16路",
+        "specs": [
+          {
+            "id": "spec_16_1",
+            "name": "最少录像7天/4T",
+            "price": 944,
+            "installationFee": 0,
+            "internalModels": [
+              {
+                "id": "int_16_1_1",
+                "name": "4T容量",
+                "price": 944
+              }
+            ]
+          },
+          {
+            "id": "spec_16_2",
+            "name": "最少录像15天/6T",
+            "price": 1323,
+            "installationFee": 0,
+            "internalModels": [
+              {
+                "id": "int_16_2_1",
+                "name": "6T容量",
+                "price": 1323
+              }
+            ]
+          },
+          {
+            "id": "spec_16_3",
+            "name": "最少录像30天/12T",
+            "price": 2358,
+            "installationFee": 0,
+            "internalModels": [
+              {
+                "id": "int_16_3_1",
+                "name": "12T容量",
+                "price": 2358
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "model_17",
+        "name": "17路",
+        "specs": [
+          {
+            "id": "spec_17_1",
+            "name": "最少录像7天/4T",
+            "price": 944,
+            "installationFee": 0,
+            "internalModels": [
+              {
+                "id": "int_17_1_1",
+                "name": "4T容量",
+                "price": 944
+              }
+            ]
+          },
+          {
+            "id": "spec_17_2",
+            "name": "最少录像15天/6T",
+            "price": 1323,
+            "installationFee": 0,
+            "internalModels": [
+              {
+                "id": "int_17_2_1",
+                "name": "6T容量",
+                "price": 1323
+              }
+            ]
+          },
+          {
+            "id": "spec_17_3",
+            "name": "最少录像30天/12T",
+            "price": 2358,
+            "installationFee": 0,
+            "internalModels": [
+              {
+                "id": "int_17_3_1",
+                "name": "12T容量",
+                "price": 2358
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "model_18",
+        "name": "18路",
+        "specs": [
+          {
+            "id": "spec_18_1",
+            "name": "最少录像7天/4T",
+            "price": 944,
+            "installationFee": 0,
+            "internalModels": [
+              {
+                "id": "int_18_1_1",
+                "name": "4T容量",
+                "price": 944
+              }
+            ]
+          },
+          {
+            "id": "spec_18_2",
+            "name": "最少录像15天/8T",
+            "price": 1975,
+            "installationFee": 0,
+            "internalModels": [
+              {
+                "id": "int_18_2_1",
+                "name": "8T容量",
+                "price": 1975
+              }
+            ]
+          },
+          {
+            "id": "spec_18_3",
+            "name": "最少录像30天/14T",
+            "price": 3298,
+            "installationFee": 0,
+            "internalModels": [
+              {
+                "id": "int_18_3_1",
+                "name": "14T容量（6T+8T）",
+                "price": 3298
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "model_19",
+        "name": "19路",
+        "specs": [
+          {
+            "id": "spec_19_1",
+            "name": "最少录像7天/4T",
+            "price": 944,
+            "installationFee": 0,
+            "internalModels": [
+              {
+                "id": "int_19_1_1",
+                "name": "4T容量",
+                "price": 944
+              }
+            ]
+          },
+          {
+            "id": "spec_19_2",
+            "name": "最少录像15天/8T",
+            "price": 1975,
+            "installationFee": 0,
+            "internalModels": [
+              {
+                "id": "int_19_2_1",
+                "name": "8T容量",
+                "price": 1975
+              }
+            ]
+          },
+          {
+            "id": "spec_19_3",
+            "name": "最少录像30天/14T",
+            "price": 3298,
+            "installationFee": 0,
+            "internalModels": [
+              {
+                "id": "int_19_3_1",
+                "name": "14T容量（6T+8T）",
+                "price": 3298
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "model_20",
+        "name": "20路",
+        "specs": [
+          {
+            "id": "spec_20_1",
+            "name": "最少录像7天/4T",
+            "price": 944,
+            "installationFee": 0,
+            "internalModels": [
+              {
+                "id": "int_20_1_1",
+                "name": "4T容量",
+                "price": 944
+              }
+            ]
+          },
+          {
+            "id": "spec_20_2",
+            "name": "最少录像15天/8T",
+            "price": 1975,
+            "installationFee": 0,
+            "internalModels": [
+              {
+                "id": "int_20_2_1",
+                "name": "8T容量",
+                "price": 1975
+              }
+            ]
+          },
+          {
+            "id": "spec_20_3",
+            "name": "最少录像30天/14T",
+            "price": 3298,
+            "installationFee": 0,
+            "internalModels": [
+              {
+                "id": "int_20_3_1",
+                "name": "14T容量（6T+8T）",
+                "price": 3298
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "model_21",
+        "name": "21路",
+        "specs": [
+          {
+            "id": "spec_21_1",
+            "name": "最少录像7天/4T",
+            "price": 944,
+            "installationFee": 0,
+            "internalModels": [
+              {
+                "id": "int_21_1_1",
+                "name": "4T容量",
+                "price": 944
+              }
+            ]
+          },
+          {
+            "id": "spec_21_2",
+            "name": "最少录像15天/8T",
+            "price": 1975,
+            "installationFee": 0,
+            "internalModels": [
+              {
+                "id": "int_21_2_1",
+                "name": "8T容量",
+                "price": 1975
+              }
+            ]
+          },
+          {
+            "id": "spec_21_3",
+            "name": "最少录像30天/16T",
+            "price": 3950,
+            "installationFee": 0,
+            "internalModels": [
+              {
+                "id": "int_21_3_1",
+                "name": "16T容量（8T+8T）",
+                "price": 3950
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "model_22",
+        "name": "22路",
+        "specs": [
+          {
+            "id": "spec_22_1",
+            "name": "最少录像7天/4T",
+            "price": 944,
+            "installationFee": 0,
+            "internalModels": [
+              {
+                "id": "int_22_1_1",
+                "name": "4T容量",
+                "price": 944
+              }
+            ]
+          },
+          {
+            "id": "spec_22_2",
+            "name": "最少录像15天/8T",
+            "price": 1975,
+            "installationFee": 0,
+            "internalModels": [
+              {
+                "id": "int_22_2_1",
+                "name": "8T容量",
+                "price": 1975
+              }
+            ]
+          },
+          {
+            "id": "spec_22_3",
+            "name": "最少录像30天/16T",
+            "price": 3950,
+            "installationFee": 0,
+            "internalModels": [
+              {
+                "id": "int_22_3_1",
+                "name": "16T容量（8T+8T）",
+                "price": 3950
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "model_23",
+        "name": "23路",
+        "specs": [
+          {
+            "id": "spec_23_1",
+            "name": "最少录像7天/4T",
+            "price": 944,
+            "installationFee": 0,
+            "internalModels": [
+              {
+                "id": "int_23_1_1",
+                "name": "4T容量",
+                "price": 944
+              }
+            ]
+          },
+          {
+            "id": "spec_23_2",
+            "name": "最少录像15天/8T",
+            "price": 1975,
+            "installationFee": 0,
+            "internalModels": [
+              {
+                "id": "int_23_2_1",
+                "name": "8T容量",
+                "price": 1975
+              }
+            ]
+          },
+          {
+            "id": "spec_23_3",
+            "name": "最少录像30天/16T",
+            "price": 3950,
+            "installationFee": 0,
+            "internalModels": [
+              {
+                "id": "int_23_3_1",
+                "name": "16T容量（8T+8T）",
+                "price": 3950
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "model_24",
+        "name": "24路",
+        "specs": [
+          {
+            "id": "spec_24_1",
+            "name": "最少录像7天/6T",
+            "price": 1323,
+            "installationFee": 0,
+            "internalModels": [
+              {
+                "id": "int_24_1_1",
+                "name": "6T容量",
+                "price": 1323
+              }
+            ]
+          },
+          {
+            "id": "spec_24_2",
+            "name": "最少录像15天/10T",
+            "price": 2036,
+            "installationFee": 0,
+            "internalModels": [
+              {
+                "id": "int_24_2_1",
+                "name": "10T容量",
+                "price": 2036
+              }
+            ]
+          },
+          {
+            "id": "spec_24_3",
+            "name": "最少录像30天/18T",
+            "price": 4011,
+            "installationFee": 0,
+            "internalModels": [
+              {
+                "id": "int_24_3_1",
+                "name": "18T容量（10T+8T）",
+                "price": 4011
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "model_25",
+        "name": "25路",
+        "specs": [
+          {
+            "id": "spec_25_1",
+            "name": "最少录像7天/6T",
+            "price": 1323,
+            "installationFee": 0,
+            "internalModels": [
+              {
+                "id": "int_25_1_1",
+                "name": "6T容量",
+                "price": 1323
+              }
+            ]
+          },
+          {
+            "id": "spec_25_2",
+            "name": "最少录像15天/10T",
+            "price": 2036,
+            "installationFee": 0,
+            "internalModels": [
+              {
+                "id": "int_25_2_1",
+                "name": "10T容量",
+                "price": 2036
+              }
+            ]
+          },
+          {
+            "id": "spec_25_3",
+            "name": "最少录像30天/18T",
+            "price": 4011,
+            "installationFee": 0,
+            "internalModels": [
+              {
+                "id": "int_25_3_1",
+                "name": "18T容量（10T+8T）",
+                "price": 4011
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "model_26",
+        "name": "26路",
+        "specs": [
+          {
+            "id": "spec_26_1",
+            "name": "最少录像7天/6T",
+            "price": 1323,
+            "installationFee": 0,
+            "internalModels": [
+              {
+                "id": "int_26_1_1",
+                "name": "6T容量",
+                "price": 1323
+              }
+            ]
+          },
+          {
+            "id": "spec_26_2",
+            "name": "最少录像15天/10T",
+            "price": 2036,
+            "installationFee": 0,
+            "internalModels": [
+              {
+                "id": "int_26_2_1",
+                "name": "10T容量",
+                "price": 2036
+              }
+            ]
+          },
+          {
+            "id": "spec_26_3",
+            "name": "最少录像30天/20T",
+            "price": 4072,
+            "installationFee": 0,
+            "internalModels": [
+              {
+                "id": "int_26_3_1",
+                "name": "20T容量（10T+10T）",
+                "price": 4072
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "model_27",
+        "name": "27路",
+        "specs": [
+          {
+            "id": "spec_27_1",
+            "name": "最少录像7天/6T",
+            "price": 1323,
+            "installationFee": 0,
+            "internalModels": [
+              {
+                "id": "int_27_1_1",
+                "name": "6T容量",
+                "price": 1323
+              }
+            ]
+          },
+          {
+            "id": "spec_27_2",
+            "name": "最少录像15天/10T",
+            "price": 2036,
+            "installationFee": 0,
+            "internalModels": [
+              {
+                "id": "int_27_2_1",
+                "name": "10T容量",
+                "price": 2036
+              }
+            ]
+          },
+          {
+            "id": "spec_27_3",
+            "name": "最少录像30天/20T",
+            "price": 4072,
+            "installationFee": 0,
+            "internalModels": [
+              {
+                "id": "int_27_3_1",
+                "name": "20T容量（10T+10T）",
+                "price": 4072
+              }
+            ]
+          }
+        ]
+      },
+	  
+      {
+        "id": "model-28",
+        "name": "28路",
+        "specs": [
+			{
+            "id": "spec-28-1",
+            "name": "最少录像7天/6T",
+            "price": 1323,
+            "installationFee": 0,
+            "internalModels": [
+              {
+                "id": "int-28-1-1",
+                "name": "6T容量",
+                "price": 1323
+              }
+            ]
+          },
+          {
+            "id": "spec-28-2",
+            "name": "最少录像15天/10T",
+            "price": 2036,
+            "installationFee": 0,
+            "internalModels": [
+              {
+                "id": "int-28-2-1",
+                "name": "10T容量",
+                "price": 2036
+              }
+            ]
+          },
+          {
+            "id": "spec-28-3",
+            "name": "最少录像30天/20T",
+            "price": 4072,
+            "installationFee": 0,
+            "internalModels": [
+              {
+                "id": "int-28-3-1",
+                "name": "20T容量（10T+10T）",
+                "price": 4072
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "model-29",
+        "name": "29路",
+        "specs": [
+          {
+            "id": "spec-29-1",
+            "name": "最少录像7天/6T",
+            "price": 1323,
+            "installationFee": 0,
+            "internalModels": [
+              {
+                "id": "int-29-1-1",
+                "name": "6T容量",
+                "price": 1323
+              }
+            ]
+          },
+          {
+            "id": "spec-29-2",
+            "name": "最少录像15天/12T",
+            "price": 2358,
+            "installationFee": 0,
+            "internalModels": [
+              {
+                "id": "int-29-2-1",
+                "name": "12T容量",
+                "price": 2358
+              }
+            ]
+          },
+          {
+            "id": "spec-29-3",
+            "name": "最少录像30天/22T",
+            "price": 4394,
+            "installationFee": 0,
+            "internalModels": [
+              {
+                "id": "int-29-3-1",
+                "name": "22T容量（12T+10T）",
+                "price": 4394
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "model-30",
+        "name": "30路",
+        "specs": [
+          {
+            "id": "spec-30-1",
+            "name": "最少录像7天/6T",
+            "price": 1323,
+            "installationFee": 0,
+            "internalModels": [
+              {
+                "id": "int-30-1-1",
+                "name": "6T容量",
+                "price": 1323
+              }
+            ]
+          },
+          {
+            "id": "spec-30-2",
+            "name": "最少录像15天/12T",
+            "price": 2358,
+            "installationFee": 0,
+            "internalModels": [
+              {
+                "id": "int-30-2-1",
+                "name": "12T容量",
+                "price": 2358
+              }
+            ]
+          },
+          {
+            "id": "spec-30-3",
+            "name": "最少录像30天/22T",
+            "price": 4394,
+            "installationFee": 0,
+            "internalModels": [
+              {
+                "id": "int-30-3-1",
+                "name": "22T容量（12T+10T）",
+                "price": 4394
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "model-31",
+        "name": "31路",
+        "specs": [
+          {
+            "id": "spec-31-1",
+            "name": "最少录像7天/6T",
+            "price": 1323,
+            "installationFee": 0,
+            "internalModels": [
+              {
+                "id": "int-31-1-1",
+                "name": "6T容量",
+                "price": 1323
+              }
+            ]
+          },
+          {
+            "id": "spec-31-2",
+            "name": "最少录像15天/12T",
+            "price": 2358,
+            "installationFee": 0,
+            "internalModels": [
+              {
+                "id": "int-31-2-1",
+                "name": "12T容量",
+                "price": 2358
+              }
+            ]
+          },
+          {
+            "id": "spec-31-3",
+            "name": "最少录像30天/22T",
+            "price": 4394,
+            "installationFee": 0,
+            "internalModels": [
+              {
+                "id": "int-31-3-1",
+                "name": "22T容量（12T+10T）",
+                "price": 4394
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "model-32",
+        "name": "32路",
+        "specs": [
+          {
+            "id": "spec-32-1",
+            "name": "最少录像7天/6T",
+            "price": 1323,
+            "installationFee": 0,
+            "internalModels": [
+              {
+                "id": "int-32-1-1",
+                "name": "6T容量",
+                "price": 1323
+              }
+            ]
+          },
+          {
+            "id": "spec-32-2",
+            "name": "最少录像15天/12T",
+            "price": 2358,
+            "installationFee": 0,
+            "internalModels": [
+              {
+                "id": "int-32-2-1",
+                "name": "12T容量",
+                "price": 2358
+              }
+            ]
+          },
+          {
+            "id": "spec-32-3",
+            "name": "最少录像30天/24T",
+            "price": 4716,
+            "installationFee": 0,
+            "internalModels": [
+              {
+                "id": "int-32-3-1",
+                "name": "24T容量（12T+12T）",
+                "price": 4716
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  
+  
+  {
+    "id": 10,
+    "name": "显示器",
+    "category": "monitor",
+    "price": 480,
+    "requiresAccessories": false,
+    "requiredAccessories": [],
+    "image": "https://s41.ax1x.com/2025/12/12/pZKoBwR.md.jpg",
+    "description": "选配",
+    "models": [
+      {
+        "id": "model_10_1",
+        "name": "桢田",
+        "specs": [
+          {
+            "id": "spec_10_1_1",
+            "name": "24寸",
+            "price": 480,
+            "installationFee": 80,
+            "internalModels": [
+              {
+                "id": "int_10_1_1_1",
+                "name": "GNT-LB2D2KA",
+                "price": 480
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "model_10_2",
+        "name": "海康威视",
+        "specs": [
+          {
+            "id": "spec_10_2_1",
+            "name": "21.5寸",
+            "price": 495,
+            "installationFee": 80,
+            "internalModels": [
+              {
+                "id": "int_10_2_1_1",
+                "name": "DS-D5022FQ",
+                "price": 495
+              }
+            ]
+          }
+		  ,
+		  {
+            "id": "spec_10_2_2",
+            "name": "43寸",
+            "price": 1920,
+            "installationFee": 80,
+            "internalModels": [
+              {
+                "id": "int_10_2_2_1",
+                "name": "DS-D5043FQ",
+                "price": 1920
+              }
+            ]
+          }
+		  ,
+		  {
+            "id": "spec_10_2_3",
+            "name": "55寸",
+            "price": 2860,
+            "installationFee": 80,
+            "internalModels": [
+              {
+                "id": "int_10_2_3_1",
+                "name": "DS-D5055UE",
+                "price": 2860
+              }
+            ]
+          }
+		  
+        ]
+      }
+    ]
+  },
+  {
+    "id": 102,
+    "name": "POE交换机",
+    "category": "POE",
+    "price": 200,
+    "requiresAccessories": false,
+    "requiredAccessories": [],
+    "image": "https://s41.ax1x.com/2025/12/12/pZKoay4.md.jpg",
+    "description": "配件,关联摄像头数量",
+	"isAccessory": true, // 标记为配件
+    "models": [
+      {
+        "id": "model_102_1",
+        "name": "POE交换机",
+        "specs": [
+          {
+            "id": "spec_102_1_1",
+            "name": "摄像头1-5路",
+            "price": 200,
+            "installationFee": 30,
+            "internalModels": [
+              {
+                "id": "int_102_1_1_1",
+                "name": "-",
+                "price": 200
+              }
+			  ,
+			            {
+            "id": "spec_102_1_2",
+            "name": "摄像头6-8路",
+            "price": 400,
+            "installationFee": 30,
+            "internalModels": [
+              {
+                "id": "int_102_1_2_1",
+                "name": "-",
+                "price": 400
+              }
+            ]
+          }
+		  ,
+          {
+            "id": "spec_102_1_3",
+            "name": "摄像头9-16路",
+            "price": 800,
+            "installationFee": 50,
+            "internalModels": [
+              {
+                "id": "int_102_1_3_1",
+                "name": "-",
+                "price": 800
+              }
+            ]
+          }
+		  ,
+		            {
+            "id": "spec_102_1_4",
+            "name": "摄像头17-24路",
+            "price": 1200,
+            "installationFee": 50,
+            "internalModels": [
+              {
+                "id": "int_102_1_4_1",
+                "name": "-",
+                "price": 1200
+              }
+            ]
+          }
+		  
+            ]
+          }
+        ]
+      }
+
+
+    ]
+  },
+  {
+    "id": 101,
+    "name": "支架",
+    "category": "accessories",
+    "price": 16,
+    "requiresAccessories": false,
+    "requiredAccessories": [],
+    "image": "https://p11-doubao-search-sign.byteimg.com/labis/d2c5a4589279c2932cd0b03ef4f0e33a~tplv-be4g95zd3a-image.jpeg?rk3s=542c0f93&x-expires=1780933962&x-signature=AixibetsKb33jBoPIMznulDgGEo%3D",
+    "description": "配件,关联摄像头数量",
+	"isAccessory": true, // 标记为配件
+    "models": [
+      {
+        "id": "model_101_1",
+        "name": "支架",
+        "specs": [
+          {
+            "id": "spec_101_1_1",
+            "name": "按个计算",
+            "price": 16,
+            "installationFee": 0,
+            "internalModels": [
+              {
+                "id": "int_101_1_1_1",
+                "name": "-",
+                "price": 16
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 103,
+    "name": "超五类网线",
+    "category": "pipe",
+    "price": 2,
+    "requiresAccessories": true,
+    "requiredAccessories": [104],
+    "image": "https://s41.ax1x.com/2025/12/12/pZKo0m9.md.jpg",
+    "description": "配件,网线",
+	"isAccessory": true, // 标记为配件
+    "models": [
+      {
+        "id": "model_103_1",
+        "name": "超五类网线",
+        "specs": [
+          {
+            "id": "spec_103_1_1",
+            "name": "按米计算/普通高度",
+            "price": 2,
+            "installationFee": 1.3,
+            "internalModels": [
+              {
+                "id": "int_103_1_1_1",
+                "name": "-",
+                "price": 2
+              }
+            ]
+          }
+		  ,
+		  {
+            "id": "spec_103_1_2",
+            "name": "按米计算/高空作业",
+            "price": 2,
+            "installationFee": 2.5,
+            "internalModels": [
+              {
+                "id": "int_103_1_2_1",
+                "name": "-",
+                "price": 2
+              }
+            ]
+          }
+		  
+        ]
+      }
+    ]
+  },
+  {
+    "id": 104,
+    "name": "线管",
+    "category": "pipe",
+    "price": 3,
+    "requiresAccessories": false,
+    "requiredAccessories": [],
+    "image": "https://s41.ax1x.com/2025/12/12/pZKosFx.md.jpg",
+    "description": "配件,PVC线管按网线*0.6算",
+	"isAccessory": true, // 标记为配件
+    "models": [
+      {
+        "id": "model_104_1",
+        "name": "线管",
+        "specs": [
+          {
+            "id": "spec_104_1_1",
+            "name": "按米计算/普通高度",
+            "price": 3,
+            "installationFee": 2.9,
+            "internalModels": [
+              {
+                "id": "int_104_1_1_1",
+                "name": "-",
+                "price": 3
+              }
+            ]
+          }
+		  ,
+		  {
+            "id": "spec_104_1_2",
+            "name": "按米计算/高空作业",
+            "price": 3,
+            "installationFee": 5,
+            "internalModels": [
+              {
+                "id": "int_104_1_2_1",
+                "name": "-",
+                "price": 3
+              }
+            ]
+          }
+		  
+        ]
+      }
+    ]
+  },
+  {
+    "id": 11,
+    "name": "机柜",
+    "category": "cabinet",
+    "price": 235,
+    "requiresAccessories": false,
+    "requiredAccessories": [],
+    "image": "https://s41.ax1x.com/2025/12/12/pZKoDT1.md.jpg",
+    "description": "选配",
+    "models": [
+      {
+        "id": "model_11_1",
+        "name": "机柜",
+        "specs": [
+          {
+            "id": "spec_11_1_1",
+            "name": "安装2台以下设备",
+            "price": 235,
+            "installationFee": 50,
+            "internalModels": [
+              {
+                "id": "int_11_1_1_1",
+                "name": "-",
+                "price": 235
+              }
+            ]
+          }
+		  ,
+		  {
+            "id": "spec_11_1_2",
+            "name": "安装3台以下设备",
+            "price": 255,
+            "installationFee": 50,
+            "internalModels": [
+              {
+                "id": "int_11_1_2_1",
+                "name": "-",
+                "price": 255
+              }
+            ]
+          }
+		  ,
+		  {
+            "id": "spec_11_1_3",
+            "name": "安装4台以下设备",
+            "price": 325,
+            "installationFee": 50,
+            "internalModels": [
+              {
+                "id": "int_11_1_3_1",
+                "name": "-",
+                "price": 325
+              }
+            ]
+          }
+		  ,
+		  {
+            "id": "spec_11_1_4",
+            "name": "安装6台以下设备",
+            "price": 695,
+            "installationFee": 50,
+            "internalModels": [
+              {
+                "id": "int_11_1_4_1",
+                "name": "-",
+                "price": 695
+              }
+            ]
+          }
+		  
+        ]
+      }
+      
+    ]
+  },
+  {
+    "id": 105,
+    "name": "插座",
+    "category": "accessories",
+    "price": 46,
+    "requiresAccessories": false,
+    "requiredAccessories": [],
+    "image": "https://s41.ax1x.com/2025/12/12/pZKoUlF.md.jpg",
+    "description": "配件",
+	"isAccessory": true, // 标记为配件
+    "models": [
+      {
+        "id": "model_105_1",
+        "name": "插座",
+        "specs": [
+          {
+            "id": "spec_105_1_1",
+            "name": "4位/1.8米线",
+            "price": 46,
+            "installationFee": 0,
+            "internalModels": [
+              {
+                "id": "int_105_1_1_1",
+                "name": "-",
+                "price": 46
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 106,
+    "name": "施工耗材",
+    "category": "construction",
+    "price": 80,
+    "requiresAccessories": false,
+    "requiredAccessories": [],
+    "image": "https://s41.ax1x.com/2025/12/12/pZKodOJ.md.jpg",
+    "description": "必选,关联摄像头数量",
+	"isAccessory": true, // 标记为配件
+    "models": [
+      {
+        "id": "model_106_1",
+        "name": "施工耗材",
+        "specs": [
+          {
+            "id": "spec_106_1_1",
+            "name": "摄像头1-5路",
+            "price": 80,
+            "installationFee": 0,
+            "internalModels": [
+              {
+                "id": "int_106_1_1_1",
+                "name": "-",
+                "price": 80
+              }
+            ]
+          }
+		  ,
+		  {
+            "id": "spec_106_1_2",
+            "name": "摄像头6-8路",
+            "price": 150,
+            "installationFee": 0,
+            "internalModels": [
+              {
+                "id": "int_106_1_2_1",
+                "name": "-",
+                "price": 150
+              }
+            ]
+          }
+		  ,
+		  {
+            "id": "spec_106_1_3",
+            "name": "摄像头9-16路",
+            "price": 250,
+            "installationFee": 0,
+            "internalModels": [
+              {
+                "id": "int_106_1_3_1",
+                "name": "-",
+                "price": 250
+              }
+            ]
+          }
+		  ,
+		  {
+            "id": "spec_106_1_4",
+            "name": "摄像头17-24路",
+            "price": 500,
+            "installationFee": 0,
+            "internalModels": [
+              {
+                "id": "int_106_1_4_1",
+                "name": "-",
+                "price": 500
+              }
+            ]
+          }
+		  ,
+		  {
+            "id": "spec_106_1_5",
+            "name": "摄像头25-32路",
+            "price": 700,
+            "installationFee": 0,
+            "internalModels": [
+              {
+                "id": "int_106_1_5_1",
+                "name": "-",
+                "price": 700
+              }
+            ]
+          }
+		  
+        ]
+      }
+    ]
+  },
+{
+    "id": 12,
+    "name": "特殊费用",
+    "category": "teshu",
+    "price": 150,
+    "requiresAccessories": false,
+    "requiredAccessories": [],
+    "image": "https://s41.ax1x.com/2025/12/12/pZKodOJ.md.jpg",
+    "description": "特殊费用",
+    "models": [
+      {
+        "id": "model1",
+        "name": "特殊费用",
+        "specs": [
+          {
+            "id": "spec1",
+            "name": "开挖水泥路面",
+            "price": 150,
+            "installationFee": 0,
+            "internalModels": [
+              {
+                "id": "int1-1",
+                "name": "10cm*10cm，回填",
+                "price": 150
+              }
+            ]
+          },
+          {
+            "id": "spec2",
+            "name": "开挖泥土路面",
+            "price": 80,
+            "installationFee": 0,
+            "internalModels": [
+              {
+                "id": "int2-1",
+                "name": "10cm*10cm，回填",
+                "price": 80
+              }
+            ]
+          },
+          {
+            "id": "spec3",
+            "name": "开挖暗线墙体",
+            "price": 30,
+            "installationFee": 0,
+            "internalModels": [
+              {
+                "id": "int3-1",
+                "name": "5cm*5cm,不回填",
+                "price": 30
+              }
+            ]
+          },
+          {
+            "id": "spec4",
+            "name": "高空车(第一天)",
+            "price": 750,
+            "installationFee": 0,
+            "internalModels": [
+              {
+                "id": "int4-1",
+                "name": "含来回运费，20公里内",
+                "price": 750
+              }
+            ]
+          },
+          {
+            "id": "spec5",
+            "name": "高空车(第二天起)",
+            "price": 350,
+            "installationFee": 0,
+            "internalModels": [
+              {
+                "id": "int5-1",
+                "name": "-",
+                "price": 350
+              }
+            ]
+          },
+          {
+            "id": "spec6",
+            "name": "不可预见费用",
+            "price": 1,
+            "installationFee": 0,
+            "internalModels": [
+              {
+                "id": "int6-1",
+                "name": "-",
+                "price": 1
               }
             ]
           }
@@ -1487,10 +3132,13 @@
       }
     ]
   }
-  
-  
 
-        ];
+       ];
+		
+		
+		
+		
+		
 
         // 全局变量
         let selectedProducts = [];
@@ -1568,7 +3216,25 @@
             document.querySelectorAll('.add-to-quote-btn').forEach(btn => {
                 btn.addEventListener('click', function() {
                     const productId = parseInt(this.dataset.productId);
-                    showProductSpecsModal(productId);
+                    const product = products.find(p => p.id === productId);
+                    
+                    if (!product) {
+                        console.error('商品未找到:', productId);
+                        alert('商品未找到，请刷新页面重试');
+                        return;
+                    }
+                    
+                    console.log('点击商品:', product.name, 'ID:', productId);
+                    
+                    if (product.isSpecialProduct && !product.isAccessory) {
+                        // 只有非配件的特殊商品才需要选择主商品
+                        console.log('特殊商品（非配件），显示主商品选择模态框');
+                        showMainProductSelectionModal(productId);
+                    } else {
+                        // 普通商品和配件商品都显示规格选择模态框
+                        console.log('显示规格选择模态框');
+                        showProductSpecsModal(productId);
+                    }
                 });
             });
             
@@ -1613,7 +3279,7 @@
             // 添加页码按钮
             for (let i = 1; i <= totalPages; i++) {
                 paginationHTML += `
-                    <button class="pagination-btn px-3 py-1 border-t border-b border-gray-300 bg-white text-sm ${i === currentPage ? 'bg-primary text-white' : 'text-gray-700 hover:bg-gray-50'} transition-all-300" data-page="${i}">
+                    <button class="pagination-btn px-3 py-1 border-t border-b border-gray-300 bg-white text-sm ${i === currentPage ? 'font-bold text-black border-b-2 border-black' : 'text-gray-700 hover:bg-gray-50'} transition-all-300" data-page="${i}">
                         ${i}
                     </button>
                 `;
@@ -1688,7 +3354,7 @@
             // 添加页码按钮
             for (let i = 1; i <= totalPages; i++) {
                 paginationHTML += `
-                    <button class="pagination-btn px-3 py-1 border-t border-b border-gray-300 bg-white text-sm ${i === currentPage ? 'bg-primary text-white' : 'text-gray-700 hover:bg-gray-50'} transition-all-300" data-page="${i}">
+                    <button class="pagination-btn px-3 py-1 border-t border-b border-gray-300 bg-white text-sm ${i === currentPage ? 'font-bold text-black border-b-2 border-black' : 'text-gray-700 hover:bg-gray-50'} transition-all-300" data-page="${i}">
                         ${i}
                     </button>
                 `;
@@ -1970,10 +3636,113 @@
             });
         }
 
+        // 检查并提示添加强制配件
+        function checkAndPromptRequiredAccessories(mainProduct, quantity) {
+            console.log('检查强制配件，主商品:', mainProduct.name, '需要配件ID:', mainProduct.requiredAccessories);
+            
+            // 获取需要的配件信息
+            const requiredAccessories = mainProduct.requiredAccessories
+                .map(accessoryId => products.find(p => p.id === accessoryId && p.isAccessory))
+                .filter(Boolean);
+            
+            if (requiredAccessories.length === 0) return;
+            
+            console.log('找到需要的配件:', requiredAccessories.map(a => a.name));
+            
+            // 显示强制配件提示模态框
+            showRequiredAccessoriesModal(mainProduct, requiredAccessories, quantity);
+        }
+        
+        // 显示强制配件提示模态框
+        function showRequiredAccessoriesModal(mainProduct, requiredAccessories, quantity) {
+            const modal = document.createElement('div');
+            modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
+            modal.innerHTML = `
+                <div class="bg-white rounded-lg shadow-lg w-full max-w-md mx-4">
+                    <div class="p-4 border-b border-gray-200 bg-yellow-50">
+                        <h3 class="text-lg font-semibold text-yellow-800">
+                            <i class="fa fa-exclamation-triangle mr-2"></i>
+                            需要添加必要配件
+                        </h3>
+                    </div>
+                    <div class="p-6">
+                        <p class="text-gray-700 mb-4">
+                            添加 <strong>${mainProduct.name}</strong> (${quantity}个) 需要同时添加以下必要配件:
+                        </p>
+                        <div class="space-y-3 mb-6">
+                            ${requiredAccessories.map(accessory => `
+                                <div class="flex items-center p-3 border border-gray-200 rounded-md bg-gray-50">
+                                    <div class="flex-1">
+                                        <p class="font-medium text-gray-800">${accessory.name}</p>
+                                        <p class="text-sm text-gray-600">${accessory.description}</p>
+                                    </div>
+                                    <button class="add-accessory-btn px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-all-300" data-accessory-id="${accessory.id}">
+                                        添加
+                                    </button>
+                                </div>
+                            `).join('')}
+                        </div>
+                        <div class="flex justify-center">
+                            <button class="cancel-addition px-6 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition-all-300">
+                                取消
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            
+            // 绑定取消按钮事件
+            modal.querySelector('.cancel-addition').addEventListener('click', function() {
+                document.body.removeChild(modal);
+            });
+
+            // 绑定每个配件的添加按钮事件
+            modal.querySelectorAll('.add-accessory-btn').forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const accessoryId = parseInt(this.dataset.accessoryId);
+                    const accessory = products.find(p => p.id === accessoryId);
+                    
+                    if (accessory) {
+                        console.log('添加配件:', accessory.name, '到主商品:', mainProduct.name);
+                        
+                        // 为配件选择主商品并添加
+                        showMainProductSelectionModalForAccessory(accessoryId, mainProduct, quantity, () => {
+                            showToast(`已添加配件: ${accessory.name}`);
+                            // 添加成功后可以选择禁用该按钮或改变样式
+                            this.disabled = true;
+                            this.textContent = '已添加';
+                            this.classList.remove('bg-blue-500', 'hover:bg-blue-600');
+                            this.classList.add('bg-green-500', 'cursor-not-allowed');
+                        });
+                    }
+                });
+            });
+            
+            // 点击模态框外部不关闭
+        }
+        
+        // 为配件显示主商品选择模态框（简化版）
+        function showMainProductSelectionModalForAccessory(accessoryId, mainProduct, quantity, callback) {
+            const accessory = products.find(p => p.id === accessoryId);
+            if (!accessory || !mainProduct) {
+                if (callback) callback();
+                return;
+            }
+            
+            // 直接显示配件的规格选择模态框，并传入主商品信息
+            showProductSpecsModal(accessoryId, mainProduct, callback);
+        }
+        
         // 添加商品到报价单
-        function addProductToQuote(product, spec, selectedModel, selectedInternalModel, quantity) {
+        function addProductToQuote(product, spec, selectedModel, selectedInternalModel, quantity, mainProduct = null, callback = null) {
             // 使用内部型号的价格，如果没有则使用规格价格
             const price = selectedInternalModel ? selectedInternalModel.price : spec.price;
+            
+            // 计算总价
+            const totalPrice = price * quantity;
             
             // 检查商品是否已在报价单中（考虑型号、规格和内部型号）
             const existingProductIndex = selectedProducts.findIndex(
@@ -1982,13 +3751,15 @@
                      ((!selectedModel && !p.selectedModel) || 
                       (selectedModel && p.selectedModel && p.selectedModel.id === selectedModel.id)) &&
                      ((!selectedInternalModel && !p.selectedInternalModel) || 
-                      (selectedInternalModel && p.selectedInternalModel && p.selectedInternalModel.id === selectedInternalModel.id))
+                      (selectedInternalModel && p.selectedInternalModel && p.selectedInternalModel.id === selectedInternalModel.id)) &&
+                     ((!mainProduct && !p.mainProduct) || 
+                      (mainProduct && p.mainProduct && p.mainProduct.id === mainProduct.id))
             );
             
             if (existingProductIndex >= 0) {
-                // 如果已存在，增加数量
+                // 如果已存在，累加数量和更新总价
                 selectedProducts[existingProductIndex].quantity += quantity;
-                selectedProducts[existingProductIndex].totalPrice = price * selectedProducts[existingProductIndex].quantity;
+                selectedProducts[existingProductIndex].totalPrice = selectedProducts[existingProductIndex].price * selectedProducts[existingProductIndex].quantity;
             } else {
                 // 如果不存在，添加新商品
                 selectedProducts.push({
@@ -2001,13 +3772,28 @@
                     selectedInternalModel: selectedInternalModel,
                     quantity: quantity,
                     price: price,
-                    totalPrice: price * quantity
+                    totalPrice: totalPrice,
+                    isSpecialProduct: product.isSpecialProduct || false,
+                    isAccessory: product.isAccessory || false,
+                    mainProduct: mainProduct,
+                    requiresAccessories: product.requiresAccessories || false,
+                    requiredAccessories: product.requiredAccessories || []
                 });
             }
             
             // 更新报价单
             updateQuotePreview();
             updateSelectedProductsList();
+            
+            // 检查是否需要添加强制配件
+            if (product.requiresAccessories && product.requiredAccessories && product.requiredAccessories.length > 0) {
+                checkAndPromptRequiredAccessories(product, quantity);
+            }
+            
+            // 执行回调函数
+            if (callback) {
+                callback();
+            }
         }
 
         // 更新报价单预览
@@ -2018,23 +3804,44 @@
             const taxElement = document.getElementById('previewTax');
             const totalElement = document.getElementById('previewTotal');
             
-            // 计算总价
-            let subtotal = 0;
+            // 计算商品总价和安装调测费
+            let productTotal = 0;
+            let installationFee = 0;
             selectedProducts.forEach(item => {
                 item.totalPrice = item.selectedSpec.price * item.quantity;
-                subtotal += item.totalPrice;
+                productTotal += item.totalPrice;
+                
+                // 计算安装调测费：商品数量 * 单位安装调测费
+                if (item.selectedSpec.installationFee) {
+                    installationFee += item.selectedSpec.installationFee * item.quantity;
+                }
             });
             
-            // 计算折扣（这里假设没有折扣，实际应用中可以根据需求调整）
-            const discount = 0;
-            
-            // 计算税费（这里假设税率为13%，实际应用中可以根据需求调整）
-            const taxRate = 0.13;
-            const tax = (subtotal - discount) * taxRate;
+            // 从输入框获取折扣金额
+            const discountInput = document.getElementById('quoteDiscount');
+            const discount = discountInput ? parseFloat(discountInput.value) || 0 : 0;
             
             // 计算总计
-            const total = subtotal - discount + tax;
+            const total = productTotal + installationFee - discount;
             
+            // 对商品进行排序：主商品在前，配件按主商品分组显示在对应主商品下方
+            const sortedProducts = [...selectedProducts].sort((a, b) => {
+                // 主商品排在配件前面
+                if (a.isAccessory !== b.isAccessory) {
+                    return a.isAccessory ? 1 : -1;
+                }
+                
+                // 如果都是配件，按主商品ID分组
+                if (a.isAccessory && b.isAccessory) {
+                    const aMainId = a.mainProduct ? a.mainProduct.id : 0;
+                    const bMainId = b.mainProduct ? b.mainProduct.id : 0;
+                    return aMainId - bMainId;
+                }
+                
+                // 如果都是主商品，按添加顺序
+                return 0;
+            });
+
             // 更新商品列表
             if (selectedProducts.length === 0) {
                 productsList.innerHTML = `
@@ -2046,7 +3853,7 @@
                     </tr>
                 `;
             } else {
-                productsList.innerHTML = selectedProducts.map(item => `
+                productsList.innerHTML = sortedProducts.map(item => `
                     <tr class="border-b border-gray-200">
                         <td class="py-3">
                             <div class="flex items-center">
@@ -2069,9 +3876,9 @@
             }
             
             // 更新价格信息
-            subtotalElement.textContent = `¥${subtotal.toLocaleString()}`;
+            subtotalElement.textContent = `¥${productTotal.toLocaleString()}`;
             discountElement.textContent = `-¥${discount.toLocaleString()}`;
-            taxElement.textContent = `¥${tax.toLocaleString()}`;
+            taxElement.textContent = `¥${installationFee.toLocaleString()}`;
             totalElement.textContent = `¥${total.toLocaleString()}`;
         }
 
@@ -2177,6 +3984,37 @@
                 quotePreview.style.zIndex = '9999';
                 window.scrollTo(0, 0);
             }
+            
+            // 在生成图片前，对报价单中的商品列表进行排序
+            const productsList = document.getElementById('previewProductsList');
+            const originalRows = Array.from(productsList.querySelectorAll('tr'));
+            
+            // 创建排序后的行
+            const sortedRows = [...originalRows].sort((a, b) => {
+                // 获取行对应的商品数据
+                const aCells = a.querySelectorAll('td');
+                const bCells = b.querySelectorAll('td');
+                
+                if (aCells.length === 0 || bCells.length === 0) return 0;
+                
+                // 简单判断：如果行包含"配件"、"支架"、"网线"、"线管"等关键词，则视为配件行
+                const aText = a.textContent.toLowerCase();
+                const bText = b.textContent.toLowerCase();
+                
+                const isAAccessory = aText.includes('配件') || aText.includes('支架') || aText.includes('网线') || aText.includes('线管');
+                const isBAccessory = bText.includes('配件') || bText.includes('支架') || bText.includes('网线') || bText.includes('线管');
+                
+                // 主商品排在配件前面
+                if (isAAccessory !== isBAccessory) {
+                    return isAAccessory ? 1 : -1;
+                }
+                
+                return 0;
+            });
+            
+            // 清空并重新添加排序后的行
+            productsList.innerHTML = '';
+            sortedRows.forEach(row => productsList.appendChild(row));
             
             // 配置参数
             const options = {
@@ -2478,6 +4316,7 @@
             document.getElementById('contactPhone').addEventListener('input', updateQuoteInfoPreview);
             document.getElementById('creatorName').addEventListener('input', updateQuoteInfoPreview);
             document.getElementById('quoteNotes').addEventListener('input', updateQuoteInfoPreview);
+            document.getElementById('quoteDiscount').addEventListener('input', updateQuotePreview);
             
             // 点击模态框外部关闭
             document.getElementById('helpModal').addEventListener('click', function(e) {
@@ -2498,7 +4337,15 @@
             const categoryNames = {
                 'camera': '摄像枪',
                 'nvr': '录像机',
-                'harddisk': '硬盘'
+                'harddisk': '硬盘',
+                'monitor': '显示器',
+                'harddisk': '硬盘',
+                'POE': '交换机',
+                'pipe': '线管',
+                'cabinet': '机柜',
+                'accessories': '插座',
+                'construction': '施工耗材',
+                'teshu': '特殊费用'
             };
             
             return categoryNames[category] || '其他';
